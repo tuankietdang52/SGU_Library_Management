@@ -8,8 +8,10 @@
         xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         ui:ThemeManager.RequestedTheme="Light"
         ui:WindowHelper.UseModernWindowStyle="True"
+        Style="{StaticResource WindowStyle}"
         Title="SGU Library Management">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" 
@@ -18,7 +20,7 @@
         </StackPanel>
         <Border BorderBrush="LightGray" 
                 BorderThickness="1">
-            <StackPanel x:Name="sideMenu" 
+            <StackPanel x:Name="sideMenu"
                         DockPanel.Dock="Left" 
                         Width="{StaticResource SideMenuWidth}"
                         Background="White">
