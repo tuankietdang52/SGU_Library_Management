@@ -1,13 +1,25 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.modernwpf.com/2019"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu">
+
+    <sys:Double x:Key="AppWidth">1440</sys:Double>
+    <sys:Double x:Key="AppHeight">1024</sys:Double>
+    <sys:Double x:Key="SideMenuWidth">219</sys:Double>
+    <sys:Double x:Key="HeaderHeight">90</sys:Double>
 
     <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Resources/Fonts/#Font Awesome 6 Free Solid</FontFamily>
 
-    <Style TargetType="Window">
+    <Style x:Key="WindowStyle" TargetType="{x:Type Window}">
         <Setter Property="Width" Value="{StaticResource AppWidth}"></Setter>
         <Setter Property="Height" Value="{StaticResource AppHeight}"></Setter>
         <Setter Property="ResizeMode" Value="NoResize"></Setter>
+    </Style>
+
+    <Style x:Key="ContentStyle" TargetType="UserControl">
+        <Setter Property="Width" Value="{DynamicResource AppContentWidth}"></Setter>
+        <Setter Property="Height" Value="{DynamicResource AppContentHeight}"></Setter>
     </Style>
 
     <Style TargetType="sideMenu:SideMenuItem">
@@ -17,4 +29,8 @@
         <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="Height" Value="70"></Setter>
     </Style>
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Components/Buttons/ButtonStyle.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

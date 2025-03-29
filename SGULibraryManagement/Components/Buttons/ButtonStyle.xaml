@@ -1,0 +1,82 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="RoundButton5" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="5"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton10" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="10"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton15" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="15"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton20" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="20"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton25" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="25"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton30" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="30"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton35" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="35"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton40" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="45"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton45" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="45"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="RoundButton50" TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="50"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

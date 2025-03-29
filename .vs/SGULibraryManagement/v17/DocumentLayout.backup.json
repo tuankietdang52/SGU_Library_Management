@@ -3,40 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\equipmentsview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\equipmentsview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\homeview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\homeview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\equipmentsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\equipmentsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\components\\sidemenu\\sidemenuitem.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\components\\sidemenu\\sidemenuitem.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\components\\sidemenu\\sidemenuitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\components\\sidemenu\\sidemenuitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\devicesview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\devicesview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\dao\\devicedao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\dao\\devicedao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\themes\\style.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\themes\\style.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\themes\\colors.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\themes\\colors.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\themes\\generic.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\themes\\generic.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\devicesview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\devicesview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\gui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\gui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|c:\\users\\admin\\source\\repos\\.vs\\project\\sgulibrarymanagement\\sgulibrarymanagement\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1C803338-D2BE-448F-9B8D-F4FA0427F7C6}|SGULibraryManagement\\SGULibraryManagement.csproj|solutionrelative:sgulibrarymanagement\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1029,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,15 +58,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HomeView.xaml",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\HomeView.xaml",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\HomeView.xaml",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\HomeView.xaml",
-              "RelativeToolTip": "SGULibraryManagement\\GUI\\HomeView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "Generic.xaml",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Themes\\Generic.xaml",
+              "RelativeDocumentMoniker": "SGULibraryManagement\\Themes\\Generic.xaml",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Themes\\Generic.xaml",
+              "RelativeToolTip": "SGULibraryManagement\\Themes\\Generic.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-28T15:08:27.216Z",
+              "WhenOpened": "2025-03-29T12:00:00.567Z",
               "EditorCaption": ""
             },
             {
@@ -81,100 +77,87 @@
               "RelativeDocumentMoniker": "SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.xaml",
               "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.xaml",
               "RelativeToolTip": "SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.xaml",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-28T15:08:19.442Z",
+              "WhenOpened": "2025-03-29T11:53:03.561Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "SideMenuItem.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.cs",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.cs",
-              "RelativeToolTip": "SGULibraryManagement\\Components\\SideMenu\\SideMenuItem.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T15:08:17.163Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\MainWindow.xaml",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\MainWindow.xaml",
-              "RelativeToolTip": "SGULibraryManagement\\GUI\\MainWindow.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAuAAAAAAAAAA==",
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\App.xaml",
+              "RelativeDocumentMoniker": "SGULibraryManagement\\App.xaml",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\App.xaml",
+              "RelativeToolTip": "SGULibraryManagement\\App.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-28T15:04:20.199Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "DeviceDAO.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\DAO\\DeviceDAO.cs",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\DAO\\DeviceDAO.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\DAO\\DeviceDAO.cs",
-              "RelativeToolTip": "SGULibraryManagement\\DAO\\DeviceDAO.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAIwCMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T15:03:55.112Z",
+              "WhenOpened": "2025-03-29T10:53:52.804Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Colors.xaml",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Themes\\Colors.xaml",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\Themes\\Colors.xaml",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Themes\\Colors.xaml",
-              "RelativeToolTip": "SGULibraryManagement\\Themes\\Colors.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-28T15:03:07.233Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "DevicesView.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\DevicesView.xaml.cs",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\DevicesView.xaml.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\DevicesView.xaml.cs",
-              "RelativeToolTip": "SGULibraryManagement\\GUI\\DevicesView.xaml.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAAJAAAAAAAAAA==",
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\App.xaml.cs",
+              "RelativeDocumentMoniker": "SGULibraryManagement\\App.xaml.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\App.xaml.cs",
+              "RelativeToolTip": "SGULibraryManagement\\App.xaml.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAwwBgAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T15:02:38.416Z",
+              "WhenOpened": "2025-03-29T10:50:43.787Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "DevicesView.xaml",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\DevicesView.xaml",
-              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\DevicesView.xaml",
-              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\DevicesView.xaml",
-              "RelativeToolTip": "SGULibraryManagement\\GUI\\DevicesView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-28T15:02:34.293Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "Style.xaml",
               "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Themes\\Style.xaml",
               "RelativeDocumentMoniker": "SGULibraryManagement\\Themes\\Style.xaml",
               "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\Themes\\Style.xaml",
               "RelativeToolTip": "SGULibraryManagement\\Themes\\Style.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAiwB4AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-28T14:59:50.892Z",
+              "WhenOpened": "2025-03-29T10:48:34.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\MainWindow.xaml",
+              "RelativeToolTip": "SGULibraryManagement\\GUI\\MainWindow.xaml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-03-29T10:45:55.041Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EquipmentsView.xaml",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\EquipmentsView.xaml",
+              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\EquipmentsView.xaml",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\EquipmentsView.xaml",
+              "RelativeToolTip": "SGULibraryManagement\\GUI\\EquipmentsView.xaml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABMAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-03-29T10:33:38.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EquipmentsView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\EquipmentsView.xaml.cs",
+              "RelativeDocumentMoniker": "SGULibraryManagement\\GUI\\EquipmentsView.xaml.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\.vs\\Project\\SGULibraryManagement\\SGULibraryManagement\\GUI\\EquipmentsView.xaml.cs",
+              "RelativeToolTip": "SGULibraryManagement\\GUI\\EquipmentsView.xaml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAowBUAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-29T10:33:36.342Z",
               "EditorCaption": ""
             }
           ]
