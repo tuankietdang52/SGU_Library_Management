@@ -10,14 +10,6 @@ namespace SGULibraryManagement.Config
 {
     public static class AppConfig
     {
-        public static double AppWidth => 1440;
-        public static double AppHeight => 1024;
-        public static double SideMenuWidth => 219;
-        public static double HeaderHeight => 90;
-
-        public static double AppContentWidth => AppWidth - SideMenuWidth;
-        public static double AppContentHeight => AppHeight - HeaderHeight;
-
         public static App ConfigureMySql(this App app)
         {
             _ = MySqlConnector.Instance;
@@ -26,13 +18,13 @@ namespace SGULibraryManagement.Config
 
         public static App ConfigureSize(this App app)
         {
-            app.Resources[nameof(AppWidth)] = AppWidth;
-            app.Resources[nameof(AppHeight)] = AppHeight;
-            app.Resources[nameof(SideMenuWidth)] = SideMenuWidth;
-            app.Resources[nameof(HeaderHeight)] = HeaderHeight;
+            double appHeight = (double)app.Resources["AppHeight"];
+            double appWidth = (double)app.Resources["AppWidth"];
+            double sideMenuWidth = (double)app.Resources["SideMenuWidth"];
+            double headerHeight = (double)app.Resources["HeaderHeight"];
 
-            app.Resources[nameof(AppContentWidth)] = AppContentWidth;
-            app.Resources[nameof(AppContentHeight)] = AppContentHeight;
+            app.Resources["AppContentWidth"] = appWidth - sideMenuWidth;
+            app.Resources["AppContentHeight"] = appHeight - headerHeight;
 
             return app;
         }
