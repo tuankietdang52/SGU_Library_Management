@@ -47,8 +47,23 @@
                     <sideMenu:SideMenuItem.ContentView>
                         <views:EquipmentsView></views:EquipmentsView>
                     </sideMenu:SideMenuItem.ContentView>
-
                 </sideMenu:SideMenuItem>
+
+
+
+                <sideMenu:SideMenuItem Text="Thông tin" 
+                                       Glyph="&#xf5fd;" 
+                                       MouseDown="Navigate">
+                    <sideMenu:SideMenuItem.ContentView>
+                        <views:SettingView></views:SettingView>
+                    </sideMenu:SideMenuItem.ContentView>
+                </sideMenu:SideMenuItem>
+
+                <sideMenu:SideMenuItem Text="Đăng xuất" 
+                        Glyph="&#xf5fd;" 
+                        MouseDown="Navigate">
+                </sideMenu:SideMenuItem>
+
             </StackPanel>
         </Border>
         <Frame x:Name="content"
