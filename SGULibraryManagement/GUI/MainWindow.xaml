@@ -70,6 +70,15 @@
                             <views:HomeView></views:HomeView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
+
+                    <sideMenu:SideMenuItem Text="Schedule"
+                                           Glyph="&#xf073;"
+                                           MouseDown="Navigate">
+                        <sideMenu:SideMenuItem.ContentView>
+                            <views:ScheduleView></views:ScheduleView>
+                        </sideMenu:SideMenuItem.ContentView>
+                    </sideMenu:SideMenuItem>
+
                     <sideMenu:SideMenuItem Text="Equipments"
                                            Glyph="&#xf5fd;"
                                            MouseDown="Navigate">
@@ -83,6 +92,14 @@
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
                             <views:UsersView></views:UsersView>
+                        </sideMenu:SideMenuItem.ContentView>
+                    </sideMenu:SideMenuItem>
+                    
+                    <sideMenu:SideMenuItem Text="Settings"
+                                           Glyph="&#xf0ad;"
+                                           MouseDown="Navigate">
+                        <sideMenu:SideMenuItem.ContentView>
+                            <views:SettingView></views:SettingView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
                 </StackPanel>
