@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 namespace SGULibraryManagement.GUI;
 
 /// <summary>
@@ -31,6 +32,8 @@ public partial class MainWindow : Window
 
         currentContent = item.ContentView;
         content.Navigate(currentContent);
+
+        PlayNavigateAnimation();
     }
 
     private void OnChangeContent()
@@ -43,6 +46,14 @@ public partial class MainWindow : Window
             var sideMenuItem = (SideMenuItem)child;
 
             sideMenuItem.IsSelected = false;
+        }
+    }
+
+    private void PlayNavigateAnimation()
+    {
+        if (FindResource("ContentFadeIn") is Storyboard storyboard)
+        {
+            storyboard.Begin();
         }
     }
 }

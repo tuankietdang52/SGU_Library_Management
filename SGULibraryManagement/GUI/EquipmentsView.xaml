@@ -4,33 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:button="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:equipments="clr-namespace:SGULibraryManagement.Components.Equipments"
              mc:Ignorable="d"
              Style="{StaticResource ContentStyle}">
-    <StackPanel Margin="0, 10, 0, 0">
-        <Canvas>
-            <TextBlock Canvas.Left="10"
-                       FontWeight="Bold"
-                       FontSize="30">
-                All Equipments
-            </TextBlock>
-            <Button Canvas.Right="30"
-                    Foreground="White"
-                    Background="Black"
-                    Height="50"
-                    Padding="10, 0, 10, 0"
-                    Style="{StaticResource RoundButton10}">
 
+    <UserControl.Resources>
+        <Storyboard x:Key="EquipmentsFadeIn">
+            <DoubleAnimation Storyboard.TargetName="equipmentsContainer"
+                     Storyboard.TargetProperty="Opacity"
+                     From="0.0"
+                     To="1.0"
+                     Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="EquipmentsFadeOut">
+            <DoubleAnimation Storyboard.TargetName="content"
+              Storyboard.TargetProperty="Opacity"
+              From="1.0"
+              To="0.0"
+              Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <StackPanel Margin="0, 10, 0, 0">
+        <Canvas Height="100">
+            <TextBlock Canvas.Left="10"
+                           FontWeight="Bold"
+                           FontSize="30">
+                        All Equipments
+            </TextBlock>
+            <button:RoundButton Canvas.Right="30"
+                            Foreground="White"
+                            Background="Black"
+                            Height="50"
+                            CornerRadius="20"
+                            HoverBackgroundColor="#2B2B2B">
                 <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
                     <Label Content="&#xf055;"
-                           VerticalAlignment="Center"
-                           FontFamily="{StaticResource FontAwesomeSolid}">
+                       VerticalAlignment="Center"
+                       FontFamily="{StaticResource FontAwesomeSolid}">
                     </Label>
                     <Viewbox Width="5"></Viewbox>
-                    <TextBlock Text="Add New Equipment"></TextBlock>
+                    <TextBlock Text="Add New Equipment"
+                               FontSize="15">
+                        
+                    </TextBlock>
                 </StackPanel>
-            </Button>
+            </button:RoundButton>
         </Canvas>
+        <ScrollViewer Height="500" 
+                      Width="{Binding Source={StaticResource AppContentWidth}, 
+                                      Converter={StaticResource subtractConverter}, 
+                                      ConverterParameter=100}"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalAlignment="Center">
+            <WrapPanel x:Name="equipmentsContainer"
+                       HorizontalAlignment="Center">
+
+            </WrapPanel>
+        </ScrollViewer>
     </StackPanel>
 </UserControl>

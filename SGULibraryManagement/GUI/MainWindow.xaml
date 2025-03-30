@@ -13,6 +13,16 @@
         ui:WindowHelper.UseModernWindowStyle="True"
         Style="{StaticResource WindowStyle}"
         Title="SGU Library Management">
+    <Window.Resources>
+        <Storyboard x:Key="ContentFadeIn">
+            <DoubleAnimation Storyboard.TargetName="content"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.0"
+                             To="1.0"
+                             Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" 
                     Height="{StaticResource HeaderHeight}"
@@ -33,21 +43,12 @@
                     </sideMenu:SideMenuItem.ContentView>
                 </sideMenu:SideMenuItem>
 
-                <sideMenu:SideMenuItem Text="Devices"
-                                       Glyph="&#xf02d;"
-                                       MouseDown="Navigate">
-                    <sideMenu:SideMenuItem.ContentView>
-                        <views:DevicesView></views:DevicesView>
-                    </sideMenu:SideMenuItem.ContentView>
-                </sideMenu:SideMenuItem>
-
                 <sideMenu:SideMenuItem Text="Equipments"
                                        Glyph="&#xf5fd;"
                                        MouseDown="Navigate">
                     <sideMenu:SideMenuItem.ContentView>
                         <views:EquipmentsView></views:EquipmentsView>
                     </sideMenu:SideMenuItem.ContentView>
-
                 </sideMenu:SideMenuItem>
             </StackPanel>
         </Border>

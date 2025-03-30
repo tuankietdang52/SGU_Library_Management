@@ -41,7 +41,7 @@ namespace SGULibraryManagement.DAO
 
         public List<DeviceDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM devicess WHERE is_avaible = {(isActive ? 1 : 0)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
             
             try
             {

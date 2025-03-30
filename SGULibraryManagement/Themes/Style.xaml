@@ -2,12 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="http://schemas.modernwpf.com/2019"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converter="clr-namespace:SGULibraryManagement.Components.Converter"
                     xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu">
 
     <sys:Double x:Key="AppWidth">1440</sys:Double>
-    <sys:Double x:Key="AppHeight">1024</sys:Double>
+    <sys:Double x:Key="AppHeight">760</sys:Double>
     <sys:Double x:Key="SideMenuWidth">219</sys:Double>
     <sys:Double x:Key="HeaderHeight">90</sys:Double>
+
+    <converter:SubtractConverter x:Key="subtractConverter"></converter:SubtractConverter>
 
     <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Resources/Fonts/#Font Awesome 6 Free Solid</FontFamily>
 
@@ -29,8 +32,4 @@
         <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="Height" Value="70"></Setter>
     </Style>
-
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Components/Buttons/ButtonStyle.xaml"></ResourceDictionary>
-    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
