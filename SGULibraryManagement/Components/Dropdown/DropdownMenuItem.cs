@@ -18,6 +18,12 @@ namespace SGULibraryManagement.Components.Dropdown
 {
     public class DropdownMenuItem : MenuItem
     {
+        public static readonly DependencyProperty ItemContentProperty =
+         DependencyProperty.Register(nameof(ItemContent),
+                                     typeof(string),
+                                     typeof(DropdownMenuItem),
+                                     new PropertyMetadata(null));
+
         public static readonly DependencyProperty HoverForegroundProperty =
          DependencyProperty.Register(nameof(HoverForeground),
                                      typeof(SolidColorBrush),
@@ -28,6 +34,12 @@ namespace SGULibraryManagement.Components.Dropdown
         {
             get => (SolidColorBrush)GetValue(HoverForegroundProperty);
             set => SetValue(HoverForegroundProperty, value);
+        }
+
+        public string ItemContent
+        {
+            get => (string)GetValue(ItemContentProperty);
+            set => SetValue(ItemContentProperty, value);
         }
 
         static DropdownMenuItem()

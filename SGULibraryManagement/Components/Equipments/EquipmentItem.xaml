@@ -58,21 +58,23 @@
                                                           Height="35"
                                                           CornerRadius="10">
                                     <dropdown:DropdownSubMenu.Header>
-                                        <Label Content="&#xf0d7;"
-                                               FontFamily="{DynamicResource FontAwesomeSolid}">
-                                        </Label>
+                                        <TextBlock Text="&#xf0d7;"
+                                                   Foreground="White"
+                                                   FontFamily="{DynamicResource FontAwesomeSolid}">
+                                        </TextBlock>
                                     </dropdown:DropdownSubMenu.Header>
-                                    
-                                    <dropdown:DropdownMenuItem Header="Edit"
-                                                               Style="{StaticResource menuItemStyle}">
+
+                                    <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
+                                                               ItemContent="Edit">
                                         <dropdown:DropdownMenuItem.Icon>
                                             <TextBlock Text="&#xf044;"
                                                        FontFamily="{DynamicResource FontAwesomeSolid}">
                                             </TextBlock>
                                         </dropdown:DropdownMenuItem.Icon>
                                     </dropdown:DropdownMenuItem>
-                                    <dropdown:DropdownMenuItem Header="Delete"
-                                                               Style="{StaticResource menuItemStyle}">
+
+                                    <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
+                                                               ItemContent="Delete">
                                         <dropdown:DropdownMenuItem.Icon>
                                             <TextBlock Text="&#xf1f8;" 
                                                        FontFamily="{DynamicResource FontAwesomeSolid}">

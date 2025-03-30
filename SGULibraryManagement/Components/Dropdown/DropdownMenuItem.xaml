@@ -7,36 +7,35 @@
                 <ControlTemplate TargetType="{x:Type dropdown:DropdownMenuItem}">
                     <Border x:Name="container"
                             Height="{TemplateBinding Height}"
-                            Background="{TemplateBinding Background}">
+                            Background="{TemplateBinding Background}"
+                            TextBlock.Foreground="{TemplateBinding Foreground}">
+                        <Border.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="OverridesDefaultStyle" Value="True"></Setter>
+                            </Style>
+                        </Border.Resources>
                         <StackPanel Orientation="Horizontal" 
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <ContentPresenter x:Name="icon"
-                                                  Content="{TemplateBinding Icon}"
-                                                  VerticalAlignment="Center"
-                                                  TextElement.Foreground="{TemplateBinding Foreground}"
-                                                  TextElement.FontSize="{TemplateBinding FontSize}"
-                                                  TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                                  RecognizesAccessKey="True" />
-                                <Viewbox Width="10"></Viewbox>
-                                <ContentPresenter x:Name="header"
-                                                  Content="{TemplateBinding Header}"
-                                                  TextElement.FontSize="{TemplateBinding FontSize}"
-                                                  TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                                  TextElement.Foreground="{TemplateBinding Foreground}"
-                                                  RecognizesAccessKey="True" />
-                            </StackPanel>
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <ContentPresenter Content="{TemplateBinding Icon}"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True" />
+                            <Viewbox Width="10"></Viewbox>
+                            <TextBlock Text="{TemplateBinding ItemContent}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       FontFamily="{TemplateBinding FontFamily}">
+                                
+                            </TextBlock>
+                        </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">
                             <Setter Property="Background" 
                                     TargetName="container"
                                     Value="Transparent"/>
-                            <Setter Property="TextElement.Foreground" 
-                                    TargetName="icon"
-                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HoverForeground}"/>
-                            <Setter Property="TextElement.Foreground" 
-                                    TargetName="header"
+                            <Setter Property="TextBlock.Foreground"
+                                    TargetName="container"
                                     Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HoverForeground}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

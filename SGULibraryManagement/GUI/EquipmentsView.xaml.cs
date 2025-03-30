@@ -33,9 +33,8 @@ namespace SGULibraryManagement.GUI
         private void Fetch()
         {
             Paginate = new(BUS.GetAll(), 6);
-            var first = Paginate.GetPageAt(1);
 
-            foreach ( var item in Paginate.GetSource() )
+            foreach (var item in Paginate.GetSource())
             {
                 EquipmentItem equipmentItem = new()
                 {
