@@ -2,13 +2,13 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="GUI\DevicesView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="GUI\EquipmentsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\HomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\UsersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

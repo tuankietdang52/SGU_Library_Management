@@ -2,20 +2,17 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="http://schemas.modernwpf.com/2019"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converter="clr-namespace:SGULibraryManagement.Components.Converter"
                     xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu">
 
     <sys:Double x:Key="AppWidth">1440</sys:Double>
-    <sys:Double x:Key="AppHeight">1024</sys:Double>
+    <sys:Double x:Key="AppHeight">760</sys:Double>
     <sys:Double x:Key="SideMenuWidth">219</sys:Double>
     <sys:Double x:Key="HeaderHeight">90</sys:Double>
 
-    <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Resources/Fonts/#Font Awesome 6 Free Solid</FontFamily>
+    <converter:SubtractConverter x:Key="SubtractConverter"></converter:SubtractConverter>
 
-    <Style x:Key="WindowStyle" TargetType="{x:Type Window}">
-        <Setter Property="Width" Value="{StaticResource AppWidth}"></Setter>
-        <Setter Property="Height" Value="{StaticResource AppHeight}"></Setter>
-        <Setter Property="ResizeMode" Value="NoResize"></Setter>
-    </Style>
+    <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Resources/Fonts/#Font Awesome 6 Free Solid</FontFamily>
 
     <Style x:Key="ContentStyle" TargetType="UserControl">
         <Setter Property="Width" Value="{DynamicResource AppContentWidth}"></Setter>
@@ -30,7 +27,79 @@
         <Setter Property="Height" Value="70"></Setter>
     </Style>
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Components/Buttons/ButtonStyle.xaml"></ResourceDictionary>
-    </ResourceDictionary.MergedDictionaries>
+    <!--<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Foreground" Value="Black"></Setter>
+    </Style>-->
+
+    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="Background" Value="{DynamicResource AppThemeColor}"></Setter>
+    </Style>
+
+    <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="HeadersVisibility" Value="Column"></Setter>
+    </Style>
+
+    <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="BorderBrush" Value="Black"></Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="Black"
+                            BorderThickness="0, 0, 0, 1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+        <Setter Property="Background" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        <Setter Property="BorderBrush" Value="Black"></Setter>
+        <Setter Property="BorderThickness" Value="1, 0, 0, 1"></Setter>
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="OverridesDefaultStyle" Value="True"></Setter>
+        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="BorderBrush" Value="LightGray"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="10">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="Black"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="Black"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
