@@ -40,7 +40,14 @@
                         <views:DevicesView></views:DevicesView>
                     </sideMenu:SideMenuItem.ContentView>
                 </sideMenu:SideMenuItem>
-
+                <sideMenu:SideMenuItem Text="Schedule"
+                                       Glyph="&#xf02d;"
+                                       MouseDown="Navigate">
+                    <sideMenu:SideMenuItem.ContentView>
+                        <views:ScheduleView></views:ScheduleView>
+                    </sideMenu:SideMenuItem.ContentView>
+                </sideMenu:SideMenuItem>
+                    
                 <sideMenu:SideMenuItem Text="Equipments"
                                        Glyph="&#xf5fd;"
                                        MouseDown="Navigate">

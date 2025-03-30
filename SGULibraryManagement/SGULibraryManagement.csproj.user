@@ -11,5 +11,13 @@
     <Compile Update="GUI\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ScheduleView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="GUI\ScheduleView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>
