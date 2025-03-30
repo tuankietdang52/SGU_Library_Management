@@ -1,4 +1,8 @@
-﻿using System;
+﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.Components.Equipments;
+using SGULibraryManagement.DTO;
+using SGULibraryManagement.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +21,31 @@ namespace SGULibraryManagement.GUI
 {
     public partial class EquipmentsView : UserControl
     {
+        private readonly DeviceBUS BUS = new();
+        private Paginate<DeviceDTO>? Paginate;
+
         public EquipmentsView()
         {
             InitializeComponent();
+            Fetch();
+        }
+
+        private void Fetch()
+        {
+            Paginate = new(BUS.GetAll(), 6);
+
+            foreach (var item in Paginate.GetSource())
+            {
+                EquipmentItem equipmentItem = new()
+                {
+                    Model = item,
+                    Margin = new Thickness(0, 0, 15, 15),
+                    BorderBrush = Brushes.Black,
+                    BorderThickness = new Thickness(1),
+                };
+
+                equipmentsContainer.Children.Add(equipmentItem);
+            }
         }
     }
 }

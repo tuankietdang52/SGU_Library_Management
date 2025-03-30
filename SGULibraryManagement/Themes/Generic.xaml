@@ -5,5 +5,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Components/SideMenu/SideMenuItem.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Components/Buttons/RoundButton.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Components/Dropdown/DropdownMenu.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Components/Equipments/EquipmentItem.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

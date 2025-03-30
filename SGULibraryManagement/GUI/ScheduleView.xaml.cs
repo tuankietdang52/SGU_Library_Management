@@ -1,5 +1,4 @@
-﻿using SGULibraryManagement.BUS;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +15,19 @@ using System.Windows.Shapes;
 
 namespace SGULibraryManagement.GUI
 {
-    public partial class DevicesView : UserControl
+    /// <summary>
+    /// Interaction logic for ScheduleView.xaml
+    /// </summary>
+    public partial class ScheduleView : UserControl
     {
-        private readonly DeviceBUS BUS = new();
-
-        public DevicesView()
+        public ScheduleView()
         {
             InitializeComponent();
-            Fetch();
         }
 
-        private void Fetch()
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var list = BUS.GetAll();
-            test.Text = list[0].Name;
+
         }
     }
 }

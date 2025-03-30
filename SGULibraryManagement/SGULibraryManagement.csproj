@@ -9,14 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\avatae.png" />
+    <None Remove="Resources\Images\Books.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
-    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
     <PackageReference Include="MySql.Data" Version="9.2.0" />
+    <PackageReference Include="WPF-UI" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\Font Awesome 6 Free Solid.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\avatae.png" />
+    <Resource Include="Resources\Images\Books.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 
