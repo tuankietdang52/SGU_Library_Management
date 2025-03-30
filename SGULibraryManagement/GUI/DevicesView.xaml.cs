@@ -29,7 +29,7 @@ namespace SGULibraryManagement.GUI
         private void Fetch()
         {
             var list = BUS.GetAll();
-            test.Text = list[0].Name;
+            //test.Text = list[0].Name;
         }
     }
 }
