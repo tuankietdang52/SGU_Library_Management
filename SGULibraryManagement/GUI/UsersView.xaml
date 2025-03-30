@@ -1,0 +1,202 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.UsersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             mc:Ignorable="d" 
+             Style="{StaticResource ContentStyle}">
+    <StackPanel  Margin="0, 10, 0, 0">
+        <Canvas Height="70">
+            <TextBlock Canvas.Left="10"
+                       FontWeight="Bold"
+                       FontSize="30">
+                        All Users
+            </TextBlock>
+            <buttons:RoundButton Canvas.Right="30"
+                                 Foreground="White"
+                                 Background="Black"
+                                 Height="40"
+                                 CornerRadius="20"
+                                 HoverBackgroundColor="#2B2B2B">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="&#xf055;"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontFamily="{StaticResource FontAwesomeSolid}">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock Text="Add New User"
+                               Foreground="White"
+                               FontSize="15">
+
+                    </TextBlock>
+                </StackPanel>
+            </buttons:RoundButton>
+        </Canvas>
+        <Border Width="{Binding Source={StaticResource AppContentWidth}, 
+                                Converter={StaticResource SubtractConverter}, 
+                                ConverterParameter=50}"
+                Height="530"
+                BorderThickness="1"
+                BorderBrush="Black"
+                CornerRadius="10, 10, 0, 0">
+            <StackPanel>
+                <StackPanel Height="180">
+                    <StackPanel Height="70" 
+                                Orientation="Horizontal"
+                                Margin="20, 0">
+                        <TextBlock FontSize="20"
+                                   VerticalAlignment="Center"
+                                   Margin="0, 0, 20, 0">
+                            Search 
+                        </TextBlock>
+                        <TextBox Height="30"
+                                 Width="500"
+                                 VerticalContentAlignment="Center">
+                        </TextBox>
+                        <Viewbox Width="100"></Viewbox>
+                        <TextBlock FontSize="20"
+                                   VerticalAlignment="Center"
+                                   Margin="0, 0, 20, 0">
+                            Search by
+                        </TextBlock>
+                        <ComboBox Height="40"
+                                  Width="200"
+                                  VerticalAlignment="Center">
+                            <ComboBoxItem Content="Username"></ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Height="70" 
+                                Orientation="Horizontal"
+                                Margin="20, 0">
+                        <TextBlock FontSize="20"
+                                   VerticalAlignment="Center"
+                                   Margin="0, 0, 20, 0">
+                            Status
+                        </TextBlock>
+                        <ComboBox Height="40"
+                                  Width="200"
+                                  VerticalAlignment="Center">
+                            <ComboBoxItem Content="Available"></ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <DataGrid x:Name="userTable" 
+                          Width="{Binding Source={StaticResource AppContentWidth}, 
+                                          Converter={StaticResource SubtractConverter}, 
+                                          ConverterParameter=50}"
+                          Height="350"
+                          ColumnWidth="*"
+                          AutoGenerateColumns="False"
+                          CanUserResizeRows="False"
+                          IsReadOnly="True"
+                          Foreground="White"
+                          HorizontalScrollBarVisibility="Disabled"
+                          BorderBrush="Black"
+                          BorderThickness="0, 1, 0, 0"
+                          RowHeaderWidth="30">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Phone" Binding="{Binding Phone}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Username" Binding="{Binding Username}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Password" Binding="{Binding Password}"></DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Is Available">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="10"
+                                            Padding="5"
+                                            Margin="0, 10, 0, 10"
+                                            BorderThickness="1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                                                        <Setter Property="Background" Value="Green"></Setter>
+                                                        <Setter Property="Width" Value="70"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsAvailable}" Value="False">
+                                                        <Setter Property="Background" Value="Red"></Setter>
+                                                        <Setter Property="Width" Value="100"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="White">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                                                            <Setter Property="TextBlock.Text" Value="Available"></Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsAvailable}" Value="False">
+                                                            <Setter Property="TextBlock.Text" Value="Not Available"></Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"
+                                Margin="0, 10, 0, 10">
+                                        <buttons:RoundButton Content="&#xf06e;"
+                                             FontFamily="{DynamicResource FontAwesomeSolid}"
+                                             Background="#00A2E8"
+                                             HoverBackgroundColor="Blue"
+                                             CornerRadius="50"
+                                             FontSize="13"
+                                             Height="35"
+                                             Width="35"
+                                             Foreground="White"
+                                             Margin="0, 0, 10, 0"
+                                             Command="{Binding ViewCommand}">
+
+                                        </buttons:RoundButton>
+                                        <buttons:RoundButton Content="&#xf044;"
+                                             FontFamily="{DynamicResource FontAwesomeSolid}"
+                                             Background="LightGreen"
+                                             HoverBackgroundColor="Green"
+                                             CornerRadius="50"
+                                             FontSize="13"
+                                             Height="35"
+                                             Width="35"
+                                             Foreground="White"
+                                             Margin="0, 0, 10, 0"
+                                             Command="{Binding EditCommand}">
+
+                                        </buttons:RoundButton>
+                                        <buttons:RoundButton Content="&#xf2ed;"
+                                             FontFamily="{DynamicResource FontAwesomeSolid}"
+                                             Background="Red"
+                                             HoverBackgroundColor="DarkRed"
+                                             CornerRadius="50"
+                                             FontSize="13"
+                                             Height="35"
+                                             Width="35"
+                                             Foreground="White"
+                                             Command="{Binding DeleteCommand}">
+
+                                        </buttons:RoundButton>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

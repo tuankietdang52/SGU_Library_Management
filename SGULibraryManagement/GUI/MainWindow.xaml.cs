@@ -5,12 +5,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using Wpf.Ui.Controls;
 namespace SGULibraryManagement.GUI;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow : FluentWindow
 {
     private UserControl? currentContent;
 
@@ -31,6 +33,8 @@ public partial class MainWindow : Window
 
         currentContent = item.ContentView;
         content.Navigate(currentContent);
+
+        PlayNavigateAnimation();
     }
 
     private void OnChangeContent()
@@ -43,6 +47,14 @@ public partial class MainWindow : Window
             var sideMenuItem = (SideMenuItem)child;
 
             sideMenuItem.IsSelected = false;
+        }
+    }
+
+    private void PlayNavigateAnimation()
+    {
+        if (FindResource("ContentFadeIn") is Storyboard storyboard)
+        {
+            storyboard.Begin();
         }
     }
 }

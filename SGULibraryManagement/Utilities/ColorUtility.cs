@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace SGULibraryManagement.Utilities
 {
-    public class ColorUtilities
+    public class ColorUtility
     {
         public static SolidColorBrush FromArgb(byte a, byte r, byte g, byte b)
         {
