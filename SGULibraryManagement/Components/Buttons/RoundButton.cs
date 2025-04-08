@@ -29,7 +29,13 @@ namespace SGULibraryManagement.Components.Buttons
             DependencyProperty.Register(nameof(HoverBackgroundColor),
                                         typeof(SolidColorBrush),
                                         typeof(RoundButton),
-                                        new PropertyMetadata(Brushes.Black));
+                                        new PropertyMetadata(null));
+
+        public static readonly DependencyProperty HoverForegroundColorProperty =
+            DependencyProperty.Register(nameof(HoverForegroundColor),
+                                        typeof(Brush),
+                                        typeof(RoundButton),
+                                        new PropertyMetadata(null));
 
         public CornerRadius CornerRadius
         {
@@ -41,6 +47,18 @@ namespace SGULibraryManagement.Components.Buttons
         {
             get => (SolidColorBrush)GetValue(HoverBackgroundColorProperty);
             set => SetValue(HoverBackgroundColorProperty, value);
+        }
+
+        public Brush HoverForegroundColor
+        {
+            get => (Brush)GetValue(HoverForegroundColorProperty);
+            set => SetValue(HoverForegroundColorProperty, value);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();    
+            HoverForegroundColor ??= Foreground;
         }
 
         static RoundButton()

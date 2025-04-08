@@ -10,6 +10,7 @@
     <sys:Double x:Key="SideMenuWidth">219</sys:Double>
     <sys:Double x:Key="HeaderHeight">90</sys:Double>
 
+    <converter:PlusConverter x:Key="PlusConverter"></converter:PlusConverter>
     <converter:SubtractConverter x:Key="SubtractConverter"></converter:SubtractConverter>
 
     <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Resources/Fonts/#Font Awesome 6 Free Solid</FontFamily>

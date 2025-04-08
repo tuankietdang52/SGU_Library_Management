@@ -29,6 +29,15 @@ public partial class App : Application
             .ConfigureMySql();
     }
 
+    /// <summary>
+    /// Running a callback in main thread
+    /// </summary>
+    /// <param name="callback"></param>
+    public void InvokeInMainThread(Action callback)
+    {
+        Current.Dispatcher.Invoke(callback);
+    }
+
     private void LoadEnv()
     {
         string current = AppDomain.CurrentDomain.BaseDirectory;

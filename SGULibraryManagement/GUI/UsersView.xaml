@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SGULibraryManagement.GUI"
              xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:tables="clr-namespace:SGULibraryManagement.Components.Tables"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
              mc:Ignorable="d" 
              Style="{StaticResource ContentStyle}">
-    <StackPanel  Margin="0, 10, 0, 0">
+    <StackPanel Margin="0, 10, 0, 0">
         <Canvas Height="70">
             <TextBlock Canvas.Left="10"
                        FontWeight="Bold"
@@ -54,20 +56,24 @@
                                    Margin="0, 0, 20, 0">
                             Search 
                         </TextBlock>
-                        <TextBox Height="30"
-                                 Width="500"
-                                 VerticalContentAlignment="Center">
-                        </TextBox>
+                        <textFields:TextField x:Name="searchField"
+                                              Height="35"
+                                              Width="500"
+                                              TextChanged="OnTextChanged"
+                                              Placeholder="Type something..."
+                                              VerticalContentAlignment="Center">
+                        </textFields:TextField>
                         <Viewbox Width="100"></Viewbox>
                         <TextBlock FontSize="20"
                                    VerticalAlignment="Center"
                                    Margin="0, 0, 20, 0">
                             Search by
                         </TextBlock>
-                        <ComboBox Height="40"
+                        <ComboBox x:Name="searchByComboBox"
+                                  Height="40"
                                   Width="200"
+                                  SelectionChanged="OnSearchByChanged"
                                   VerticalAlignment="Center">
-                            <ComboBoxItem Content="Username"></ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Height="70" 
@@ -80,8 +86,11 @@
                         </TextBlock>
                         <ComboBox Height="40"
                                   Width="200"
-                                  VerticalAlignment="Center">
+                                  VerticalAlignment="Center"
+                                  SelectedIndex="0">
+                            <ComboBoxItem Content="All"></ComboBoxItem>
                             <ComboBoxItem Content="Available"></ComboBoxItem>
+                            <ComboBoxItem Content="Not Available"></ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                 </StackPanel>
@@ -99,7 +108,8 @@
                           HorizontalScrollBarVisibility="Disabled"
                           BorderBrush="Black"
                           BorderThickness="0, 1, 0, 0"
-                          RowHeaderWidth="30">
+                          RowHeaderWidth="30"
+                          ItemsSource="{Binding Users}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}"></DataGridTextColumn>
@@ -150,47 +160,12 @@
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal"
-                                Margin="0, 10, 0, 10">
-                                        <buttons:RoundButton Content="&#xf06e;"
-                                             FontFamily="{DynamicResource FontAwesomeSolid}"
-                                             Background="#00A2E8"
-                                             HoverBackgroundColor="Blue"
-                                             CornerRadius="50"
-                                             FontSize="13"
-                                             Height="35"
-                                             Width="35"
-                                             Foreground="White"
-                                             Margin="0, 0, 10, 0"
-                                             Command="{Binding ViewCommand}">
-
-                                        </buttons:RoundButton>
-                                        <buttons:RoundButton Content="&#xf044;"
-                                             FontFamily="{DynamicResource FontAwesomeSolid}"
-                                             Background="LightGreen"
-                                             HoverBackgroundColor="Green"
-                                             CornerRadius="50"
-                                             FontSize="13"
-                                             Height="35"
-                                             Width="35"
-                                             Foreground="White"
-                                             Margin="0, 0, 10, 0"
-                                             Command="{Binding EditCommand}">
-
-                                        </buttons:RoundButton>
-                                        <buttons:RoundButton Content="&#xf2ed;"
-                                             FontFamily="{DynamicResource FontAwesomeSolid}"
-                                             Background="Red"
-                                             HoverBackgroundColor="DarkRed"
-                                             CornerRadius="50"
-                                             FontSize="13"
-                                             Height="35"
-                                             Width="35"
-                                             Foreground="White"
-                                             Command="{Binding DeleteCommand}">
-
-                                        </buttons:RoundButton>
-                                    </StackPanel>
+                                    <tables:ActionColumn Model="{Binding}"
+                                                         OnViewClick="OnView"
+                                                         OnEditClick="OnEdit"
+                                                         OnDeleteClick="OnDelete">
+                                        
+                                    </tables:ActionColumn>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

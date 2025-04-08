@@ -18,7 +18,8 @@
                                 <DropShadowEffect ShadowDepth="5" BlurRadius="10" Opacity="0.5" Color="Black" />
                             </Border.Effect>
                         </Border>
-                        <Grid Background="{TemplateBinding Background}">
+                        <Grid Background="{TemplateBinding Background}"
+                              MaxWidth="350">
                             <Grid.Resources>
                                 <Style x:Key="menuItemStyle" TargetType="dropdown:DropdownMenuItem">
                                     <Setter Property="Background" Value="White"></Setter>
@@ -48,8 +49,9 @@
                             <TextBlock Grid.Row="0"
                                        Grid.Column="1"
                                        FontSize="20"
+                                       TextWrapping="NoWrap"
                                        Text="{Binding Model.Name, RelativeSource={RelativeSource TemplatedParent}}"
-                                       TextWrapping="Wrap">
+                                       TextTrimming="CharacterEllipsis">
                             </TextBlock>
 
                             <dropdown:DropdownMenu Grid.Row="0"

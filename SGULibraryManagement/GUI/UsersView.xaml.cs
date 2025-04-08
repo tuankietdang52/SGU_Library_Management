@@ -1,5 +1,9 @@
-﻿using SGULibraryManagement.GUI.ViewModels;
+﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.Components.TextFields;
+using SGULibraryManagement.DTO;
+using SGULibraryManagement.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,44 +23,85 @@ namespace SGULibraryManagement.GUI
 {
     public partial class UsersView : UserControl
     {
+        private readonly UserBUS _userBUS = new();
+        private Action<string, UserQueryOption>? searchFunction;
+
+        public ObservableCollection<UserDTO> Users { get; set; } = [];
+
         public UsersView()
         {
             InitializeComponent();
             Fetch();
+            SetupComponent();
         }
 
         private void Fetch()
         {
-            UserViewModel model = new()
+            Users.ResetTo(_userBUS.Users);
+        }
+
+        private void SetupComponent()
+        {
+            DataContext = this;
+            SetupSearch();
+        }
+
+        private void SetupSearch()
+        {
+            searchFunction = (query, searchBy) =>
             {
-                Id = 1,
-                FullName = "SHIBA LAKAKA",
-                Phone = "0321321",
-                Username = "shiba123",
-                Password = "123",
-                IsAvailable = false
+                var list = _userBUS.FilterByQuery(query, searchBy);
+                App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
             };
 
-            UserViewModel model2 = new()
+            searchFunction = searchFunction.Debounce(200);
+
+            searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
+            searchByComboBox.SelectedIndex = 0;
+        }
+
+        private void OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (searchFunction is null) return;
+            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return;
+
+            searchFunction(searchField.Text, queryOption);
+        }
+
+        private void OnSearchByChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return;
+
+            var list = _userBUS.FilterByQuery(searchField.Text, queryOption);
+            App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
+        }
+
+        private void OnView(object sender, object model)
+        {
+
+        }
+
+        private void OnEdit(object sender, object model)
+        {
+
+        }
+
+        private void OnDelete(object sender, object model)
+        {
+            var result = MessageBox.Show("Are you really want to delete this user ?", "Delete user", MessageBoxButton.YesNoCancel);
+
+            switch (result)
             {
-                Id = 1,
-                FullName = "LAKAKA LAKAKA",
-                Phone = "0321321",
-                Username = "lakaka123",
-                Password = "123",
-                IsAvailable = true
-            };
+                case MessageBoxResult.Yes:
+                    MessageBox.Show("Delete Successfully!");
+                    return;
 
-            ObservableCollection<UserViewModel> a = [];
-            a.Add(model);
-            a.Add(model2);
-            a.Add(model2);
-            a.Add(model2);
-            a.Add(model2);
-            a.Add(model2);
-            a.Add(model2);
+                case MessageBoxResult.No:
+                    return;
 
-            userTable.ItemsSource = a;
+                default: 
+                    return;
+            }
         }
     }
 }

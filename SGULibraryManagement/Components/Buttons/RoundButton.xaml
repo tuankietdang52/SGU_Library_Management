@@ -12,13 +12,19 @@
                             Background="{TemplateBinding Background}"
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="10, 10, 10, 10">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ContentPresenter x:Name="content"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="buttonContainer"
                                     Property="Background" 
                                     Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HoverBackgroundColor}">
+                            </Setter>
+                            <Setter TargetName="content"
+                                    Property="TextElement.Foreground"
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HoverForegroundColor}">
                             </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>

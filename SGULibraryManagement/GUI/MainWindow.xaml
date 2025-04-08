@@ -63,9 +63,9 @@
                             Width="{StaticResource SideMenuWidth}"
                             Background="White">
                     <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
-                                   Text="Home"
-                                   Glyph="&#xf015;"
-                                   MouseDown="Navigate">
+                                           Text="Home"
+                                           Glyph="&#xf015;"
+                                           MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
                             <views:HomeView></views:HomeView>
                         </sideMenu:SideMenuItem.ContentView>
