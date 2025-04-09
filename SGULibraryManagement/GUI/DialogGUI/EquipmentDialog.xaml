@@ -4,9 +4,44 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
-             mc:Ignorable="d" 
-             Width="200" Height="200">
-    <Grid>
-            
-    </Grid>
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             xmlns:fileChooser="clr-namespace:SGULibraryManagement.Components.FileChoosers"
+             mc:Ignorable="d"
+             Width="400" 
+             Height="600"
+             Padding="10">
+    <StackPanel>
+        <fileChooser:ImageChooser OnImageChoose="OnImageChoose"></fileChooser:ImageChooser>
+        <Viewbox Height="10"></Viewbox>
+        
+        <TextBlock FontWeight="Bold">Name</TextBlock>
+        <textFields:TextField x:Name="equipmentNameField"
+                              Height="40"
+                              VerticalContentAlignment="Center">
+        </textFields:TextField>
+        <Viewbox Height="10"></Viewbox>
+        
+        <TextBlock FontWeight="Bold">Quantity</TextBlock>
+        <ui:NumberBox x:Name="quantityField"
+                      Minimum="0" 
+                      Height="40">
+        </ui:NumberBox>
+        <Viewbox Height="10"></Viewbox>
+        
+        <TextBlock FontWeight="Bold">Description</TextBlock>
+        <ui:TextBox Height="100" TextWrapping="Wrap"></ui:TextBox>
+        <Viewbox Height="30"></Viewbox>
+        
+        <buttons:RoundButton x:Name="saveButton"
+                             Background="{StaticResource Blue74}"
+                             Height="50"
+                             CornerRadius="10"
+                             Foreground="White"
+                             HoverBackgroundColor="{StaticResource Blue90}"
+                             Content="Create"
+                             Click="OnSave">
+        </buttons:RoundButton>
+    </StackPanel>
 </UserControl>

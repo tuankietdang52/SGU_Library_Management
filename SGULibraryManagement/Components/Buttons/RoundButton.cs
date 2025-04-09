@@ -27,7 +27,7 @@ namespace SGULibraryManagement.Components.Buttons
 
         public static readonly DependencyProperty HoverBackgroundColorProperty =
             DependencyProperty.Register(nameof(HoverBackgroundColor),
-                                        typeof(SolidColorBrush),
+                                        typeof(Brush),
                                         typeof(RoundButton),
                                         new PropertyMetadata(null));
 
@@ -43,9 +43,9 @@ namespace SGULibraryManagement.Components.Buttons
             set => SetValue(CornerRadiusProperty, value);
         }
 
-        public SolidColorBrush HoverBackgroundColor
+        public Brush HoverBackgroundColor
         {
-            get => (SolidColorBrush)GetValue(HoverBackgroundColorProperty);
+            get => (Brush)GetValue(HoverBackgroundColorProperty);
             set => SetValue(HoverBackgroundColorProperty, value);
         }
 
@@ -58,6 +58,7 @@ namespace SGULibraryManagement.Components.Buttons
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();    
+            HoverBackgroundColor ??= Background;
             HoverForegroundColor ??= Foreground;
         }
 

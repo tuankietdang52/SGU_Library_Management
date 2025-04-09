@@ -28,6 +28,7 @@ namespace SGULibraryManagement.GUI
         private bool isOpenFilter = false;
 
         private Action<EquipmentFilter?>? searchDebounce;
+        private Dictionary<long, EquipmentItem> equipmentItems = [];
         private List<DeviceDTO> devices = [];
 
         public EquipmentsView()
@@ -39,13 +40,10 @@ namespace SGULibraryManagement.GUI
 
         private void Fetch()
         {
+            ClearEquipmentItems();
             devices = BUS.GetAll();
-        }
 
-        private void SetEquipmentItems(IEnumerable<DeviceDTO> list)
-        {
-            equipmentsContainer.Children.Clear();
-            foreach (var item in list)
+            foreach (var item in devices)
             {
                 EquipmentItem equipmentItem = new()
                 {
@@ -55,6 +53,31 @@ namespace SGULibraryManagement.GUI
                     BorderThickness = new Thickness(1),
                 };
 
+                equipmentItem.OnEdit += OnEdit;
+                equipmentItem.OnDelete += OnDelete;
+
+                equipmentItems.Add(item.Id, equipmentItem);
+            }
+        }
+
+        private void ClearEquipmentItems()
+        {
+            foreach (var item in equipmentItems.Values)
+            {
+                item.OnEdit -= OnEdit;
+                item.OnDelete -= OnDelete;
+            }
+
+            equipmentItems.Clear();
+        }
+
+        private void SetEquipmentItems(IEnumerable<DeviceDTO> list)
+        {
+            equipmentsContainer.Children.Clear();
+
+            foreach (var item in list)
+            {
+                var equipmentItem = equipmentItems[item.Id];
                 equipmentsContainer.Children.Add(equipmentItem);
             }
         }
@@ -159,8 +182,41 @@ namespace SGULibraryManagement.GUI
 
         private void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new Dialog("Add new equipment", new EquipmentDialog());
+            var dialog = new Dialog("Add new equipment", new EquipmentDialog(EDialogType.Create));
             dialog.ShowDialog();
+
+            Fetch();
+            OnSort(this, null!);
+        }
+
+        private void OnEdit(object sender, DeviceDTO model)
+        {
+            // edit
+        }
+
+        private async void OnDelete(object sender, DeviceDTO model)
+        {
+            SimpleDialog simpleDialog = new()
+            {
+                Title = $"Delete {model.Name}",
+                Content = $"Do you really want to delete equipment Id {model.Id} ?",
+                Width = 400,
+                Height = 200
+            };
+
+            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(simpleDialog, SimpleDialogType.YesNo);
+            switch (result)
+            {
+                case SimpleDialogResult.Yes:
+                    // implement delete
+                    break;
+
+                case SimpleDialogResult.No:
+                    return;
+
+                default:
+                    return;
+            }
         }
 
         private class EquipmentFilter

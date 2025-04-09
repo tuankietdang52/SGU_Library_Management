@@ -42,6 +42,7 @@ namespace SGULibraryManagement.DAO
         public List<DeviceDTO> GetAll(bool isActive)
         {
             string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            Logger.Log($"Query: {query}");
             
             try
             {
@@ -51,7 +52,6 @@ namespace SGULibraryManagement.DAO
                 List<DeviceDTO> result = [];
 
                 using var reader = command.ExecuteReader();
-                Logger.Log($"Query: {query}");
 
                 while (reader.Read())
                 {
@@ -68,10 +68,27 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-
         public DeviceDTO Create(DeviceDTO request)
         {
-            throw new NotImplementedException();
+            string query = $"INSERT INTO {TableName} (name, quantity, img, is_deleted, is_avaible) VALUES " +
+                           $"('{request.Name}', {request.Quantity}, '{request.ImageSource}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                command.ExecuteNonQuery();
+
+                return request;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
         }
 
         public bool Update(long id, DeviceDTO request)

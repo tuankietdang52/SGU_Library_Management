@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SGULibraryManagement.GUI;
+using SGULibraryManagement.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,14 +20,37 @@ namespace SGULibraryManagement.Components.Dialogs
 {
     public partial class Dialog : FluentWindow
     {
-        public Dialog(string title, UserControl content)
+        public Dialog()
+        {
+            InitializeComponent();
+        }
+
+        public Dialog(string title, IDialog content)
         {
             InitializeComponent();
 
-            titleBar.Title = title;
+            if (content is not UserControl userControl)
+            {
+                throw new InvalidOperationException("content is not User Control");
+            }
+
+            SetupDialog(title, userControl);
+
+            content.OnCloseDialog += (sender) => OnCloseDialog(sender, null!);
+            content.PopupHost = popup;
+        }
+        private void SetupDialog(string title, UserControl content)
+        {
+            titleBarTitle.Text = title;
+            Title = title;
             Width = content.Width;
-            Height = content.Height + 30;
+            Height = content.Height + 35;
             dialogContent.Content = content;
+        }
+
+        private void OnCloseDialog(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

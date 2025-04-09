@@ -49,7 +49,7 @@
             <TextBlock Canvas.Left="10"
                        FontWeight="Bold"
                        FontSize="30">
-                        All Equipments
+                        All Equipment
             </TextBlock>
             <button:RoundButton Canvas.Right="30"
                                 Foreground="White"

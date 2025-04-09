@@ -5,6 +5,9 @@
     <Compile Update="Components\Dialogs\Dialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\FileChoosers\ImageChooser.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DialogGUI\EquipmentDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

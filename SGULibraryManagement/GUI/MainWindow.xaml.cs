@@ -1,4 +1,5 @@
-﻿using SGULibraryManagement.Components.SideMenu;
+﻿using SGULibraryManagement.Components.Dialogs;
+using SGULibraryManagement.Components.SideMenu;
 using SGULibraryManagement.Config;
 using SGULibraryManagement.Utilities;
 using System.Threading.Tasks;
@@ -62,16 +63,16 @@ public partial class MainWindow : FluentWindow
         }
     }
 
-    public async Task<SimpleDialogResult> ShowSimpleDialogAsync(object content, string title, SimpleDialogType options, double width, double height)
+    public async Task<SimpleDialogResult> ShowSimpleDialogAsync(SimpleDialog simpleDialog, SimpleDialogType options, ContentPresenter? host = null)
     {
-        ContentDialog dialog = new(dialogHost)
+        ContentDialog dialog = new(host ?? dialogHost)
         {
-            Content = content,
-            Title = title,
-            DialogWidth = width,
-            DialogHeight = height,
-            DialogMaxWidth = width,
-            DialogMaxHeight = height,
+            Content = simpleDialog.Content,
+            Title = simpleDialog.Title,
+            DialogWidth = simpleDialog.Width,
+            DialogHeight = simpleDialog.Height,
+            DialogMaxWidth = simpleDialog.Width,
+            DialogMaxHeight = simpleDialog.Height,
         };
 
         SimpleDialogResult firstChoice, secondChoice;
@@ -80,15 +81,15 @@ public partial class MainWindow : FluentWindow
         {
             case SimpleDialogType.OK:
                 dialog.CloseButtonText = "OK";
-                firstChoice = GUI.SimpleDialogResult.OK;
-                secondChoice = GUI.SimpleDialogResult.OK;
+                firstChoice = SimpleDialogResult.OK;
+                secondChoice = SimpleDialogResult.OK;
                 break;
 
             case SimpleDialogType.OKCancel:
                 dialog.PrimaryButtonText = "OK";
                 dialog.CloseButtonText = "Cancel";
-                firstChoice = GUI.SimpleDialogResult.OK;
-                secondChoice = GUI.SimpleDialogResult.Cancel;
+                firstChoice = SimpleDialogResult.OK;
+                secondChoice = SimpleDialogResult.Cancel;
                 break;
 
             case SimpleDialogType.YesNo:
@@ -111,19 +112,4 @@ public partial class MainWindow : FluentWindow
             _ => SimpleDialogResult.Cancel,
         };
     }
-}
-
-public enum SimpleDialogType
-{
-    OK,
-    OKCancel,
-    YesNo
-}
-
-public enum SimpleDialogResult
-{
-    OK,
-    Cancel,
-    Yes,
-    No
 }

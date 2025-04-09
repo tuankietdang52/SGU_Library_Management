@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:equipment="clr-namespace:SGULibraryManagement.Components.Equipments"
                     xmlns:button="clr-namespace:SGULibraryManagement.Components.Buttons"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                     xmlns:dropdown="clr-namespace:SGULibraryManagement.Components.Dropdown">
     <Style TargetType="equipment:EquipmentItem">
         <Setter Property="Template">
@@ -45,12 +46,13 @@
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
 
-                                <Image Grid.Row="0"
-                                       Grid.Column="0"
-                                       Source="{Binding Model.ImageSource, RelativeSource={RelativeSource TemplatedParent}}"
-                                       Height="100" 
-                                       Width="100">
-                                </Image>
+                                <ui:Image Grid.Row="0"
+                                          Grid.Column="0"
+                                          CornerRadius="10"
+                                          Source="{Binding Model.ImageSource, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Height="100" 
+                                          Width="100">
+                                </ui:Image>
 
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
@@ -78,7 +80,8 @@
                                             </TextBlock>
                                         </dropdown:DropdownSubMenu.Header>
 
-                                        <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
+                                        <dropdown:DropdownMenuItem x:Name="edit"
+                                                                   Style="{StaticResource menuItemStyle}"
                                                                    ItemContent="Edit">
                                             <dropdown:DropdownMenuItem.Icon>
                                                 <TextBlock Text="&#xf044;"
@@ -87,7 +90,8 @@
                                             </dropdown:DropdownMenuItem.Icon>
                                         </dropdown:DropdownMenuItem>
 
-                                        <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
+                                        <dropdown:DropdownMenuItem x:Name="delete"
+                                                                   Style="{StaticResource menuItemStyle}"
                                                                    ItemContent="Delete">
                                             <dropdown:DropdownMenuItem.Icon>
                                                 <TextBlock Text="&#xf1f8;" 

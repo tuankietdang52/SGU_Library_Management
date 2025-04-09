@@ -1,18 +1,19 @@
 <ui:FluentWindow x:Class="SGULibraryManagement.GUI.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SGULibraryManagement"
-        xmlns:views="clr-namespace:SGULibraryManagement.GUI"
-        xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        mc:Ignorable="d"
-        Width="{StaticResource AppWidth}"
-        Height="{StaticResource AppHeight}"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        Title="SGU Library Management">
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:SGULibraryManagement"
+                 xmlns:views="clr-namespace:SGULibraryManagement.GUI"
+                 xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 mc:Ignorable="d"
+                 Width="{StaticResource AppWidth}"
+                 Height="{StaticResource AppHeight}"
+                 WindowStartupLocation="CenterScreen"
+                 Title="SGU Library Management"
+                 Icon="/Resources/Images/Books.png"
+                 ResizeMode="NoResize">
     <ui:FluentWindow.Resources>
         <Storyboard x:Key="ContentFadeIn">
             <DoubleAnimation Storyboard.TargetName="content"
@@ -28,8 +29,15 @@
                     Height="{StaticResource AppHeight}">
             <ui:TitleBar Title="SGU Library Management"
                          Height="30"
+                         Background="{StaticResource AppThemeColor}"
+                         ButtonsForeground="White"
                          ShowMaximize="False"
-                         CanMaximize="False"/>
+                         Foreground="White"
+                         CanMaximize="False">
+                <ui:TitleBar.Icon>
+                    <ui:ImageIcon Source="/Resources/Images/Books.png"></ui:ImageIcon>
+                </ui:TitleBar.Icon>
+            </ui:TitleBar>
             <DockPanel Height="{StaticResource AppHeight}">
                 <Canvas DockPanel.Dock="Top" 
                         Height="{StaticResource HeaderHeight}"
