@@ -2,6 +2,12 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Components\Dialogs\Dialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DialogGUI\EquipmentDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\EquipmentsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9,7 +15,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SettingView.xaml.cs">
-    <SubType>Code</SubType>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ScheduleView.xaml.cs">
       <SubType>Code</SubType>

@@ -8,9 +8,9 @@
         xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
         Width="{StaticResource AppWidth}"
         Height="{StaticResource AppHeight}"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="SGU Library Management">
     <ui:FluentWindow.Resources>
@@ -23,91 +23,94 @@
             </DoubleAnimation>
         </Storyboard>
     </ui:FluentWindow.Resources>
-    <StackPanel Width="{StaticResource AppWidth}"
-                Height="{StaticResource AppHeight}">
-        <ui:TitleBar Title="SGU Library Management"
-                     Height="30"
-                     ShowMaximize="False"
-                     CanMaximize="False"/>
-        <DockPanel Height="{StaticResource AppHeight}">
-            <Canvas DockPanel.Dock="Top" 
-                    Height="{StaticResource HeaderHeight}"
-                    Background="{StaticResource AppThemeColor}">
-                <StackPanel Canvas.Left="20"
-                            Canvas.Top="10"
-                            Orientation="Horizontal">
-                    <Image Source="/Resources/Images/Books.png"
-                           Height="60"
-                           Width="60"
-                           Margin="10, 0">
-                    </Image>
-                    <StackPanel Height="60">
-                        <TextBlock Height="27"
-                                   FontSize="20"
-                                   Foreground="White"
-                                   FontWeight="Bold">
-                            SGU LIBRARY
-                        </TextBlock>
-                        <TextBlock Height="27"
-                                   FontSize="20"
-                                   Foreground="White">
-                            EQUIPMENT MANAGEMENT
-                        </TextBlock>
+    <Grid>
+        <StackPanel Width="{StaticResource AppWidth}"
+                    Height="{StaticResource AppHeight}">
+            <ui:TitleBar Title="SGU Library Management"
+                         Height="30"
+                         ShowMaximize="False"
+                         CanMaximize="False"/>
+            <DockPanel Height="{StaticResource AppHeight}">
+                <Canvas DockPanel.Dock="Top" 
+                        Height="{StaticResource HeaderHeight}"
+                        Background="{StaticResource AppThemeColor}">
+                    <StackPanel Canvas.Left="20"
+                                Canvas.Top="10"
+                                Orientation="Horizontal">
+                        <Image Source="/Resources/Images/Books.png"
+                               Height="60"
+                               Width="60"
+                               Margin="10, 0">
+                        </Image>
+                        <StackPanel Height="60">
+                            <TextBlock Height="27"
+                                       FontSize="20"
+                                       Foreground="White"
+                                       FontWeight="Bold">
+                                   SGU LIBRARY
+                            </TextBlock>
+                            <TextBlock Height="27"
+                                       FontSize="20"
+                                       Foreground="White">
+                                   EQUIPMENT MANAGEMENT
+                            </TextBlock>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </Canvas>
-            <Border BorderBrush="LightGray" 
-                    BorderThickness="1">
-                <StackPanel x:Name="sideMenu"
-                            DockPanel.Dock="Left"
-                            Width="{StaticResource SideMenuWidth}"
-                            Background="White">
-                    <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
-                                           Text="Home"
-                                           Glyph="&#xf015;"
-                                           MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <views:HomeView></views:HomeView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
+                </Canvas>
+                <Border BorderBrush="LightGray" 
+                        BorderThickness="1">
+                    <StackPanel x:Name="sideMenu"
+                                DockPanel.Dock="Left"
+                                Width="{StaticResource SideMenuWidth}"
+                                Background="White">
+                        <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
+                                               Text="Home"
+                                               Glyph="&#xf015;"
+                                               MouseDown="Navigate">
+                            <sideMenu:SideMenuItem.ContentView>
+                                <views:HomeView></views:HomeView>
+                            </sideMenu:SideMenuItem.ContentView>
+                        </sideMenu:SideMenuItem>
 
-                    <sideMenu:SideMenuItem Text="Schedule"
-                                           Glyph="&#xf073;"
-                                           MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <views:ScheduleView></views:ScheduleView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
+                        <sideMenu:SideMenuItem Text="Schedule"
+                                               Glyph="&#xf073;"
+                                               MouseDown="Navigate">
+                            <sideMenu:SideMenuItem.ContentView>
+                                <views:ScheduleView></views:ScheduleView>
+                            </sideMenu:SideMenuItem.ContentView>
+                        </sideMenu:SideMenuItem>
 
-                    <sideMenu:SideMenuItem Text="Equipments"
-                                           Glyph="&#xf5fd;"
-                                           MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <views:EquipmentsView></views:EquipmentsView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
+                        <sideMenu:SideMenuItem Text="Equipments"
+                                               Glyph="&#xf5fd;"
+                                               MouseDown="Navigate">
+                            <sideMenu:SideMenuItem.ContentView>
+                                <views:EquipmentsView></views:EquipmentsView>
+                            </sideMenu:SideMenuItem.ContentView>
+                        </sideMenu:SideMenuItem>
 
-                    <sideMenu:SideMenuItem Text="Users"
-                                           Glyph="&#xf0c0;"
-                                           MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <views:UsersView></views:UsersView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
-                    
-                    <sideMenu:SideMenuItem Text="Settings"
-                                           Glyph="&#xf0ad;"
-                                           MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <views:SettingView></views:SettingView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
-                </StackPanel>
-            </Border>
-            <Frame x:Name="content"
-                   DockPanel.Dock="Right"
-                   NavigationUIVisibility="Hidden">
-            </Frame>
-        </DockPanel>
-    </StackPanel>
+                        <sideMenu:SideMenuItem Text="Users"
+                                               Glyph="&#xf0c0;"
+                                               MouseDown="Navigate">
+                            <sideMenu:SideMenuItem.ContentView>
+                                <views:UsersView></views:UsersView>
+                            </sideMenu:SideMenuItem.ContentView>
+                        </sideMenu:SideMenuItem>
+
+                        <sideMenu:SideMenuItem Text="Settings"
+                                               Glyph="&#xf0ad;"
+                                               MouseDown="Navigate">
+                            <sideMenu:SideMenuItem.ContentView>
+                                <views:SettingView></views:SettingView>
+                            </sideMenu:SideMenuItem.ContentView>
+                        </sideMenu:SideMenuItem>
+                    </StackPanel>
+                </Border>
+                <Frame x:Name="content"
+                       DockPanel.Dock="Right"
+                       NavigationUIVisibility="Hidden">
+                </Frame>
+            </DockPanel>
+        </StackPanel>
+        <ContentPresenter x:Name="dialogHost"></ContentPresenter>
+    </Grid>
 </ui:FluentWindow>

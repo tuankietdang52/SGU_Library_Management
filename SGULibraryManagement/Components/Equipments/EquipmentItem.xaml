@@ -30,7 +30,7 @@
                                     <Style x:Key="menuItemStyle" TargetType="dropdown:DropdownMenuItem">
                                         <Setter Property="Background" Value="White"></Setter>
                                         <Setter Property="Foreground" Value="Black"></Setter>
-                                        <Setter Property="HoverForeground" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
+                                        <Setter Property="HoverForeground" Value="{DynamicResource AppThemeSecondary}"></Setter>
                                         <Setter Property="FontSize" Value="15"></Setter>
                                         <Setter Property="Height" Value="25"></Setter>
                                     </Style>

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="http://schemas.modernwpf.com/2019"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:converter="clr-namespace:SGULibraryManagement.Components.Converter"
                     xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu">
@@ -59,13 +59,13 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource AppThemeSecondary}"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-        <Setter Property="Background" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource AppThemeSecondary}"></Setter>
         <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
         <Setter Property="BorderBrush" Value="Black"></Setter>
         <Setter Property="BorderThickness" Value="1, 0, 0, 1"></Setter>

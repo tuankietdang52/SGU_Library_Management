@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="AppThemeColor">#391F00</SolidColorBrush>
-    <SolidColorBrush x:Key="SideMenuSelectedForeground">#E16A00</SolidColorBrush>
+    <SolidColorBrush x:Key="AppThemeSecondary">#E16A00</SolidColorBrush>
 </ResourceDictionary>

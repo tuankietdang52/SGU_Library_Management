@@ -1,6 +1,8 @@
 ﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.Equipments;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
@@ -52,8 +54,6 @@ namespace SGULibraryManagement.GUI
                     BorderBrush = Brushes.LightGray,
                     BorderThickness = new Thickness(1),
                 };
-
-                Logger.Log($"{item.Name}: {item.IsAvailable}");
 
                 equipmentsContainer.Children.Add(equipmentItem);
             }
@@ -155,6 +155,12 @@ namespace SGULibraryManagement.GUI
                 isOpenFilter = false;
                 close.Begin();
             }
+        }
+
+        private void OnAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Dialog("Add new equipment", new EquipmentDialog());
+            dialog.ShowDialog();
         }
 
         private class EquipmentFilter
