@@ -1,12 +1,15 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:SGULibraryManagement">
+    xmlns:local="clr-namespace:SGULibraryManagement"
+    xmlns:converter="clr-namespace:SGULibraryManagement.Components.Converter">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Components/SideMenu/SideMenuItem.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Buttons/RoundButton.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Components/TextFields/TextField.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Dropdown/DropdownMenu.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Equipments/EquipmentItem.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Components/Tables/ActionColumn.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
