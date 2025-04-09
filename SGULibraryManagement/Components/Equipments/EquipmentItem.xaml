@@ -9,7 +9,7 @@
                 <ControlTemplate TargetType="{x:Type equipment:EquipmentItem}">
                     <Grid>
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderThickness="0, 0, 1, 1"
                                 CornerRadius="10"
                                 Width="350"
                                 Height="240"
@@ -18,109 +18,115 @@
                                 <DropShadowEffect ShadowDepth="5" BlurRadius="10" Opacity="0.5" Color="Black" />
                             </Border.Effect>
                         </Border>
-                        <Grid Background="{TemplateBinding Background}"
-                              MaxWidth="350">
-                            <Grid.Resources>
-                                <Style x:Key="menuItemStyle" TargetType="dropdown:DropdownMenuItem">
-                                    <Setter Property="Background" Value="White"></Setter>
-                                    <Setter Property="Foreground" Value="Black"></Setter>
-                                    <Setter Property="HoverForeground" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
-                                    <Setter Property="FontSize" Value="15"></Setter>
-                                    <Setter Property="Height" Value="25"></Setter>
-                                </Style>
-                            </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="45"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="110"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Width="350"
+                                Height="240"
+                                Padding="10, 10, 10, 10">
+                            <Grid Background="{TemplateBinding Background}"
+                                  MaxWidth="350">
+                                <Grid.Resources>
+                                    <Style x:Key="menuItemStyle" TargetType="dropdown:DropdownMenuItem">
+                                        <Setter Property="Background" Value="White"></Setter>
+                                        <Setter Property="Foreground" Value="Black"></Setter>
+                                        <Setter Property="HoverForeground" Value="{DynamicResource SideMenuSelectedForeground}"></Setter>
+                                        <Setter Property="FontSize" Value="15"></Setter>
+                                        <Setter Property="Height" Value="25"></Setter>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="45"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="110"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
 
-                            <Image Grid.Row="0"
-                                   Grid.Column="0"
-                                   Source="{Binding Model.ImageSource, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Height="100" 
-                                   Width="100">
-                            </Image>
+                                <Image Grid.Row="0"
+                                       Grid.Column="0"
+                                       Source="{Binding Model.ImageSource, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Height="100" 
+                                       Width="100">
+                                </Image>
 
-                            <TextBlock Grid.Row="0"
-                                       Grid.Column="1"
-                                       FontSize="20"
-                                       TextWrapping="NoWrap"
-                                       Text="{Binding Model.Name, RelativeSource={RelativeSource TemplatedParent}}"
-                                       TextTrimming="CharacterEllipsis">
-                            </TextBlock>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           FontSize="20"
+                                           TextWrapping="NoWrap"
+                                           Text="{Binding Model.Name, RelativeSource={RelativeSource TemplatedParent}}"
+                                           TextTrimming="CharacterEllipsis">
+                                </TextBlock>
 
-                            <dropdown:DropdownMenu Grid.Row="0"
-                                                   Grid.Column="2"
-                                                   Width="35"
-                                                   Height="35"
-                                                   Margin="0, 10, 10, 0"
-                                                   Background="Gray"
-                                                   CornerRadius="10"
-                                                   VerticalAlignment="Top">
-                                <dropdown:DropdownSubMenu Width="35"
-                                                          Height="35"
-                                                          CornerRadius="10">
-                                    <dropdown:DropdownSubMenu.Header>
-                                        <TextBlock Text="&#xf0d7;"
-                                                   Foreground="White"
-                                                   FontFamily="{DynamicResource FontAwesomeSolid}">
+                                <dropdown:DropdownMenu Grid.Row="0"
+                                                       Grid.Column="2"
+                                                       Width="35"
+                                                       Height="35"
+                                                       Margin="0, 0, 10, 0"
+                                                       Background="Gray"
+                                                       CornerRadius="10"
+                                                       VerticalAlignment="Top">
+                                    <dropdown:DropdownSubMenu Width="35"
+                                                              Height="35"
+                                                              CornerRadius="10">
+                                        <dropdown:DropdownSubMenu.Header>
+                                            <TextBlock Text="&#xf0d7;"
+                                                       Foreground="White"
+                                                       FontFamily="{DynamicResource FontAwesomeSolid}">
+                                            </TextBlock>
+                                        </dropdown:DropdownSubMenu.Header>
+
+                                        <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
+                                                                   ItemContent="Edit">
+                                            <dropdown:DropdownMenuItem.Icon>
+                                                <TextBlock Text="&#xf044;"
+                                                           FontFamily="{DynamicResource FontAwesomeSolid}">
+                                                </TextBlock>
+                                            </dropdown:DropdownMenuItem.Icon>
+                                        </dropdown:DropdownMenuItem>
+
+                                        <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
+                                                                   ItemContent="Delete">
+                                            <dropdown:DropdownMenuItem.Icon>
+                                                <TextBlock Text="&#xf1f8;" 
+                                                           FontFamily="{DynamicResource FontAwesomeSolid}">
+                                                </TextBlock>
+                                            </dropdown:DropdownMenuItem.Icon>
+                                        </dropdown:DropdownMenuItem>
+                                    </dropdown:DropdownSubMenu>
+                                </dropdown:DropdownMenu>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
+                                    <Viewbox Height="30"></Viewbox>
+                                    <Canvas Height="30">
+                                        <TextBlock Text="Quantity"
+                                                   FontSize="15"
+                                                   Canvas.Left="10">
                                         </TextBlock>
-                                    </dropdown:DropdownSubMenu.Header>
+                                        <TextBlock Text="{Binding Model.Quantity, RelativeSource={RelativeSource TemplatedParent}}"
+                                                   FontSize="15"
+                                                   Canvas.Right="10">
+                                        </TextBlock>
+                                    </Canvas>
+                                    <Canvas Height="30">
+                                        <TextBlock Canvas.Left="10"
+                                                   FontSize="15"
+                                                   Text="Available">
 
-                                    <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
-                                                               ItemContent="Edit">
-                                        <dropdown:DropdownMenuItem.Icon>
-                                            <TextBlock Text="&#xf044;"
-                                                       FontFamily="{DynamicResource FontAwesomeSolid}">
-                                            </TextBlock>
-                                        </dropdown:DropdownMenuItem.Icon>
-                                    </dropdown:DropdownMenuItem>
-
-                                    <dropdown:DropdownMenuItem Style="{StaticResource menuItemStyle}"
-                                                               ItemContent="Delete">
-                                        <dropdown:DropdownMenuItem.Icon>
-                                            <TextBlock Text="&#xf1f8;" 
-                                                       FontFamily="{DynamicResource FontAwesomeSolid}">
-                                            </TextBlock>
-                                        </dropdown:DropdownMenuItem.Icon>
-                                    </dropdown:DropdownMenuItem>
-                                </dropdown:DropdownSubMenu>
-                            </dropdown:DropdownMenu>
-
-                            <StackPanel Grid.Row="1"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="3">
-                                <Viewbox Height="30"></Viewbox>
-                                <Canvas Height="30">
-                                    <TextBlock Text="Quantity"
-                                               FontSize="15"
-                                               Canvas.Left="10">
-
-                                    </TextBlock>
-                                    <TextBlock Text="{Binding Model.Quantity, RelativeSource={RelativeSource TemplatedParent}}"
-                                               FontSize="15"
-                                               Canvas.Right="10">
-                                    </TextBlock>
-                                </Canvas>
-                                <Canvas Height="30">
-                                    <TextBlock Canvas.Left="10"
-                                               FontSize="15"
-                                               Text="Available">
-
-                                    </TextBlock>
-                                    <Ellipse Canvas.Right="10"
-                                             Fill="{TemplateBinding AvailableColor}"
-                                             Width="15"
-                                             Height="15">
-                                    </Ellipse>
-                                </Canvas>
-                            </StackPanel>
-                        </Grid>
+                                        </TextBlock>
+                                        <Ellipse Canvas.Right="10"
+                                                 Fill="{TemplateBinding AvailableColor}"
+                                                 Width="15"
+                                                 Height="15">
+                                        </Ellipse>
+                                    </Canvas>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

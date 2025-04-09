@@ -9,9 +9,9 @@ namespace SGULibraryManagement.DTO
     public class DeviceDTO
     {
         public long Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
-        public string? ImageSource { get; set; }
+        public string ImageSource { get; set; } = string.Empty;
         public bool IsDeleted { get; set; }
         public bool IsAvailable { get; set; }
 

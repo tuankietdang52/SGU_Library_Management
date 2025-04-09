@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
                     xmlns:converter="clr-namespace:SGULibraryManagement.Components.Converter"
-                    xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons">
+                    xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
     <Style TargetType="{x:Type textFields:TextField}">
         <Setter Property="Template">
             <Setter.Value>
@@ -19,17 +20,20 @@
                                      FontSize="{TemplateBinding FontSize}"
                                      FontFamily="{TemplateBinding FontFamily}"
                                      FontWeight="{TemplateBinding FontWeight}"
+                                     Foreground="{TemplateBinding Foreground}"
                                      Text="{TemplateBinding Text}"
                                      Padding="10, 0, 30, 0"
+                                     OverridesDefaultStyle="True"
                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}">
+                            </TextBox>
                             <TextBlock IsHitTestVisible="False"
                                        Text="{TemplateBinding Placeholder}"
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" 
                                        Margin="12, 0, 0, 0"
                                        FontSize="{TemplateBinding FontSize}"
-                                       Foreground="DarkGray">
+                                       Foreground="{TemplateBinding PlaceholderForeground}">
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -46,7 +50,7 @@
                                                  Width="30"
                                                  Content="&#xf00d;"
                                                  HorizontalAlignment="Right"
-                                                 Foreground="DarkGray"
+                                                 Foreground="{TemplateBinding Foreground}"
                                                  HoverForegroundColor="{DynamicResource SideMenuSelectedForeground}"
                                                  FontFamily="{DynamicResource FontAwesomeSolid}">
                                 <buttons:RoundButton.Style>
@@ -61,6 +65,11 @@
                             </buttons:RoundButton>
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsFocused, ElementName=textBox}" Value="true">
+                            <Setter TargetName="textBox" Property="Background" Value="Blue"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

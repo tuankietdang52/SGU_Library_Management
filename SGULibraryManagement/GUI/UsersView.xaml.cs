@@ -24,7 +24,7 @@ namespace SGULibraryManagement.GUI
     public partial class UsersView : UserControl
     {
         private readonly UserBUS _userBUS = new();
-        private Action<string, UserQueryOption>? searchFunction;
+        private Action<UserFilter?>? searchDebounce;
 
         public ObservableCollection<UserDTO> Users { get; set; } = [];
 
@@ -37,71 +37,83 @@ namespace SGULibraryManagement.GUI
 
         private void Fetch()
         {
-            Users.ResetTo(_userBUS.Users);
+            Users.ResetTo(_userBUS.GetAll());
         }
 
         private void SetupComponent()
         {
             DataContext = this;
-            SetupSearch();
+            SetupSearchAndFilter();
         }
 
-        private void SetupSearch()
+        private void SetupSearchAndFilter()
         {
-            searchFunction = (query, searchBy) =>
-            {
-                var list = _userBUS.FilterByQuery(query, searchBy);
-                App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
-            };
-
-            searchFunction = searchFunction.Debounce(200);
+            searchDebounce = ((Action<UserFilter?>)(OnApplyFilter)).Debounce(200);
 
             searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
             searchByComboBox.SelectedIndex = 0;
+
+            statusComboBox.ItemsSource = new List<string>()
+            {
+                "All", 
+                "Available", 
+                "Not Available"
+            };
+            statusComboBox.SelectedIndex = 0;
         }
 
-        private void OnTextChanged(object sender, TextChangedEventArgs e)
+        private UserFilter? GetFilter()
         {
-            if (searchFunction is null) return;
-            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return;
+            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
+            if (statusComboBox.SelectedItem is not string status) return null;
 
-            searchFunction(searchField.Text, queryOption);
+            return new UserFilter()
+            {
+                Query = searchField.Text,
+                UserQueryOption = queryOption,
+                Status = status
+            };
+        }
+
+        private void OnApplyFilter(UserFilter? filter)
+        {
+            if (filter == null) return;
+
+            var result = _userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
+
+            if (filter.Status != "All")
+            {
+                result = _userBUS.FilterByStatus(filter.Status == "Available", result);
+            }
+
+            App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
+        }
+
+        private void OnSearch(object sender, TextChangedEventArgs e)
+        {
+            if (searchDebounce is null) return;
+
+            UserFilter? filter = GetFilter();
+            searchDebounce(filter);
         }
 
         private void OnSearchByChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return;
-
-            var list = _userBUS.FilterByQuery(searchField.Text, queryOption);
-            App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
+            UserFilter? filter = GetFilter();
+            OnApplyFilter(filter);
         }
 
-        private void OnView(object sender, object model)
+        private void OnStatusChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            UserFilter? filter = GetFilter();
+            OnApplyFilter(filter);
         }
 
-        private void OnEdit(object sender, object model)
+        private class UserFilter
         {
-
-        }
-
-        private void OnDelete(object sender, object model)
-        {
-            var result = MessageBox.Show("Are you really want to delete this user ?", "Delete user", MessageBoxButton.YesNoCancel);
-
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Delete Successfully!");
-                    return;
-
-                case MessageBoxResult.No:
-                    return;
-
-                default: 
-                    return;
-            }
+            public string Query { get; set; } = string.Empty;
+            public string Status { get; set; } = "All";
+            public UserQueryOption UserQueryOption { get; set; }
         }
     }
 }

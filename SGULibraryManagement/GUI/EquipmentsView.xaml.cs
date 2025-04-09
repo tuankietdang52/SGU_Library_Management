@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -22,30 +23,145 @@ namespace SGULibraryManagement.GUI
     public partial class EquipmentsView : UserControl
     {
         private readonly DeviceBUS BUS = new();
-        private Paginate<DeviceDTO>? Paginate;
+        private bool isOpenFilter = false;
+
+        private Action<EquipmentFilter?>? searchDebounce;
+        private List<DeviceDTO> devices = [];
 
         public EquipmentsView()
         {
             InitializeComponent();
             Fetch();
+            SetupComponent();
         }
 
         private void Fetch()
         {
-            Paginate = new(BUS.GetAll(), 6);
+            devices = BUS.GetAll();
+        }
 
-            foreach (var item in Paginate.GetSource())
+        private void SetEquipmentItems(IEnumerable<DeviceDTO> list)
+        {
+            equipmentsContainer.Children.Clear();
+            foreach (var item in list)
             {
                 EquipmentItem equipmentItem = new()
                 {
                     Model = item,
                     Margin = new Thickness(0, 0, 15, 15),
-                    BorderBrush = Brushes.Black,
+                    BorderBrush = Brushes.LightGray,
                     BorderThickness = new Thickness(1),
                 };
 
+                Logger.Log($"{item.Name}: {item.IsAvailable}");
+
                 equipmentsContainer.Children.Add(equipmentItem);
             }
+        }
+
+        private void SetupComponent()
+        {
+            SetupSearchAndFilter();
+            sortComboBox.SelectedIndex = 0;
+        }
+
+        private void SetupSearchAndFilter()
+        {
+            searchDebounce = ((Action<EquipmentFilter?>)((filter) =>
+            {
+                OnApplyFilter(filter);
+            })).Debounce(200);
+
+            statusComboBox.ItemsSource = new List<string>()
+            {
+                "All",
+                "Available",
+                "Not Available"
+            };
+            statusComboBox.SelectedIndex = 0;
+        }
+
+        private EquipmentFilter? GetFilter()
+        {
+            if (statusComboBox.SelectedItem is not string status) return null;
+
+            string query = searchField.Text;
+            return new EquipmentFilter()
+            {
+                Query = query,
+                Status = status,
+                Sort = sortComboBox.SelectedIndex,
+            };
+        }
+
+        private void OnApplyFilter(EquipmentFilter? filter)
+        {
+            if (filter is null) return;
+
+            devices = BUS.FilterByQuery(filter.Query);
+
+            if (filter.Status != "All")
+            {
+                devices = BUS.FilterByStatus(filter.Status == "Available", devices);
+            }
+
+            OnApplySort(filter.Sort);
+        }
+
+        private void OnApplySort(int selectedSort = -1)
+        {
+            try
+            {
+                DeviceSort sort = selectedSort == -1 ? (DeviceSort)sortComboBox.SelectedIndex : (DeviceSort)selectedSort;
+                var list = BUS.SortBy(sort, devices);
+
+                App.Instance!.InvokeInMainThread(() => SetEquipmentItems(list));
+            }
+            catch { }
+        }
+
+        private void OnSearch(object sender, TextChangedEventArgs e)
+        {
+            if (searchDebounce is null) return;
+
+            EquipmentFilter? filter = GetFilter();
+            searchDebounce(filter);
+
+            scrollContainer.ScrollToHome();
+        }
+
+        private void OnStatusChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EquipmentFilter? filter = GetFilter();
+            OnApplyFilter(filter);
+            scrollContainer.ScrollToHome();
+        }
+
+        private void OnSort(object sender, SelectionChangedEventArgs e)
+        {
+            OnApplySort();
+            scrollContainer.ScrollToHome();
+        }
+
+        private void OnFilterButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (!isOpenFilter && FindResource("FilterExpand") is Storyboard expand)
+            {
+                isOpenFilter = true;
+                expand.Begin();
+            }
+            else if (FindResource("CloseExpand") is Storyboard close)
+            {
+                isOpenFilter = false;
+                close.Begin();
+            }
+        }
+
+        private class EquipmentFilter
+        {
+            public string Query { get; set; } = string.Empty;
+            public string Status { get; set; } = "All";
+            public int Sort { get; set; }
         }
     }
 }

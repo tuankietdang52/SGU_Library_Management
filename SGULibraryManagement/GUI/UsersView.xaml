@@ -59,19 +59,15 @@
                         <textFields:TextField x:Name="searchField"
                                               Height="35"
                                               Width="500"
-                                              TextChanged="OnTextChanged"
+                                              BorderThickness="1, 1, 0, 1"
+                                              TextChanged="OnSearch"
                                               Placeholder="Type something..."
                                               VerticalContentAlignment="Center">
                         </textFields:TextField>
-                        <Viewbox Width="100"></Viewbox>
-                        <TextBlock FontSize="20"
-                                   VerticalAlignment="Center"
-                                   Margin="0, 0, 20, 0">
-                            Search by
-                        </TextBlock>
                         <ComboBox x:Name="searchByComboBox"
                                   Height="40"
                                   Width="200"
+                                  BorderThickness="0, 1, 1, 1"
                                   SelectionChanged="OnSearchByChanged"
                                   VerticalAlignment="Center">
                         </ComboBox>
@@ -84,13 +80,12 @@
                                    Margin="0, 0, 20, 0">
                             Status
                         </TextBlock>
-                        <ComboBox Height="40"
+                        <ComboBox x:Name="statusComboBox"
+                                  Height="40"
                                   Width="200"
                                   VerticalAlignment="Center"
-                                  SelectedIndex="0">
-                            <ComboBoxItem Content="All"></ComboBoxItem>
-                            <ComboBoxItem Content="Available"></ComboBoxItem>
-                            <ComboBoxItem Content="Not Available"></ComboBoxItem>
+                                  SelectedIndex="0"
+                                  SelectionChanged="OnStatusChanged">
                         </ComboBox>
                     </StackPanel>
                 </StackPanel>
@@ -160,10 +155,7 @@
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <tables:ActionColumn Model="{Binding}"
-                                                         OnViewClick="OnView"
-                                                         OnEditClick="OnEdit"
-                                                         OnDeleteClick="OnDelete">
+                                    <tables:ActionColumn Model="{Binding}">
                                         
                                     </tables:ActionColumn>
                                 </DataTemplate>

@@ -39,6 +39,12 @@ namespace SGULibraryManagement.Components.TextFields
                                        typeof(TextField),
                                        new PropertyMetadata(""));
 
+        public static readonly DependencyProperty PlaceholderForegroundProperty =
+            DependencyProperty.Register(nameof(PlaceholderForeground),
+                                        typeof(Brush),
+                                        typeof(TextField),
+                                        new PropertyMetadata(Brushes.DarkGray));
+
         public string Text
         {
             get => (string)GetValue(TextProperty);
@@ -49,6 +55,12 @@ namespace SGULibraryManagement.Components.TextFields
         {
             get => (string)GetValue(PlaceholderProperty);
             set => SetValue(PlaceholderProperty, value);
+        }
+
+        public Brush PlaceholderForeground
+        {
+            get => (Brush)GetValue(PlaceholderForegroundProperty);
+            set => SetValue(PlaceholderForegroundProperty, value);
         }
 
         public CornerRadius CornerRadius

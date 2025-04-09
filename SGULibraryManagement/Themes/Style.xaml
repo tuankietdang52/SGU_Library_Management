@@ -70,37 +70,4 @@
         <Setter Property="BorderBrush" Value="Black"></Setter>
         <Setter Property="BorderThickness" Value="1, 0, 0, 1"></Setter>
     </Style>
-
-    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="OverridesDefaultStyle" Value="True"></Setter>
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="Foreground" Value="Black"></Setter>
-        <Setter Property="BorderBrush" Value="LightGray"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border x:Name="border" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            Background="{TemplateBinding Background}" 
-                            CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="Black"/>
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="Black"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

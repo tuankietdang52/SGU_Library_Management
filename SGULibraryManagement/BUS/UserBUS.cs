@@ -2,6 +2,7 @@
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,16 @@ namespace SGULibraryManagement.BUS
 {
     public class UserBUS
     {
-        public List<UserDTO> Users { get; private set; } = [];
+        private List<UserDTO> users = [];
 
         public UserBUS()
         {
             Fetch();
+        }
+
+        public List<UserDTO> GetAll()
+        {
+            return users;
         }
 
         private void Fetch()
@@ -41,19 +47,26 @@ namespace SGULibraryManagement.BUS
                 IsAvailable = true
             };
 
-            Users.Add(model);
-            Users.Add(model2);
+            users.Add(model);
+            users.Add(model2);
         }
 
-        public List<UserDTO> FilterByQuery(string query, UserQueryOption queryOption)
+        public List<UserDTO> FilterByQuery(string query, UserQueryOption queryOption, List<UserDTO>? list = null)
         {
+            var users = list ?? this.users;
             return queryOption switch
             {
-                UserQueryOption.Username => [.. Users.Where(user => user.Username.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
-                UserQueryOption.Fullname => [.. Users.Where(user => user.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
-                UserQueryOption.Phone => [.. Users.Where(user => user.Phone.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Username => [.. users.Where(user => user.Username.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Fullname => [.. users.Where(user => user.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Phone => [.. users.Where(user => user.Phone.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 _ => []
             };
+        }
+
+        public List<UserDTO> FilterByStatus(bool isAvailable, List<UserDTO>? list = null)
+        {
+            var users = list ?? this.users;
+            return [.. users.Where(user => user.IsAvailable == isAvailable)];
         }
     }
 
