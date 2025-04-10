@@ -14,9 +14,8 @@ namespace SGULibraryManagement.DTO
         public string Phone { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public long idRole { get; set; }
-        public string nameRole { get; set; } = string.Empty;
-        public string avt { get; set; } = string.Empty;
+        public long IdRole { get; set; }
+        public string Avatar { get; set; } = string.Empty;
         public bool IsDeleted { get; set; } = false;
     }
 }

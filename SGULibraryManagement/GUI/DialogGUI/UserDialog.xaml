@@ -1,29 +1,33 @@
-﻿<Window x:Class="SGULibraryManagement.GUI.Modal.UserModal"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SGULibraryManagement.GUI.Modal"
-        mc:Ignorable="d"
-        Title="UserModal" Height="500" Width="800">
+﻿<UserControl x:Class="SGULibraryManagement.GUI.DialogGUI.UserDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             mc:Ignorable="d"
+             Height="500" Width="800">
     <Grid Margin="12,0,-12,0">
         <TextBlock x:Name="lbTitle" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="24" Margin="283,-1,0,0">
             Thêm thành viên
         </TextBlock>
-        <TextBlock 
+        <TextBlock
                  Height="20"
                  VerticalAlignment="Top"
                  Margin="139,67,548,0" FontFamily="Arial" FontSize="18" Text="Họ và Tên"/>
-        <TextBox x:Name="txtHo" 
-                 Height="35"
-                 VerticalAlignment="Top"
-                 Margin="279,59,352,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="18"/>
+        <textFields:TextField x:Name="txtHo"
+                              Height="35"
+                              VerticalAlignment="Top"
+                              VerticalContentAlignment="Center"
+                              FontSize="15"
+                              Margin="279,59,352,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="18"/>
         <TextBlock 
             Height="20"
             VerticalAlignment="Top"
             Margin="139,122,532,0" FontFamily="Arial" FontSize="18" Text="Số điện thoại"/>
         <TextBox x:Name="txtSdt" 
             Height="35"
+            FontSize="15"    
             VerticalAlignment="Top"
             Margin="279,114,217,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="18"/>
         <TextBlock 
@@ -65,4 +69,4 @@
             Margin="278,344,217,0" FontFamily="Arial" FontSize="18">
         </ComboBox>
     </Grid>
-</Window>
+</UserControl>

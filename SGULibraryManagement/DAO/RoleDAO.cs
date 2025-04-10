@@ -21,9 +21,9 @@ namespace SGULibraryManagement.DAO
         {
             return new RoleDTO()
             {
-                id = reader.GetInt64("id"),
-                name = reader.GetString("name"),
-                isDeleted = reader.GetBoolean("is_deleted"),
+                Id = reader.GetInt64("id"),
+                Name = reader.GetString("name"),
+                IsDeleted = reader.GetBoolean("is_deleted"),
             };
         }
 
