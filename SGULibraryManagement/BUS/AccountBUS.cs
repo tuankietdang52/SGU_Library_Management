@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace SGULibraryManagement.BUS
 {
-    public class UserBUS
+    public class AccountBUS
     {
-        private UserDAO userDAO = new UserDAO();
-        private List<UserDTO> users = [];
+        private AccountDAO userDAO = new ();
+        private List<AccountDTO> users = [];
 
-        public UserBUS()
+        public AccountBUS()
         {
             Fetch();
         }
 
-        public List<UserDTO> GetAll()
+        public List<AccountDTO> GetAll()
         {
             return users = userDAO.GetAll(true);
         }
@@ -28,6 +28,20 @@ namespace SGULibraryManagement.BUS
         private void Fetch()
         {
 
+        }
+
+        public AccountDTO createAccount(AccountDTO account)
+        {
+            return userDAO.Create(account);
+        }
+
+        public bool updateAccount(AccountDTO account)
+        {
+            return userDAO.Update(11, account);
+        }
+        public bool deleteAccount(string username)
+        {
+            return userDAO.DeleteV2(username);
         }
 
         //public List<UserDTO> FilterByQuery(string query, UserQueryOption queryOption, List<UserDTO>? list = null)

@@ -4,7 +4,6 @@ using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,34 +12,33 @@ using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace SGULibraryManagement.DAO
 {
-    public class UserDAO : IDAO<long, UserDTO>
+    public class RoleDAO : IDAO<long, RoleDTO>
     {
         private MySqlConnection Connection => MySqlConnector.Instance?.Connection!;
-        public string TableName { get; } = "thanhvien";
+        public string TableName { get; } = "roles";
 
-        private UserDTO FetchData(MySqlDataReader reader)
+        private RoleDTO FetchData(MySqlDataReader reader)
         {
-            return new UserDTO()
+            return new RoleDTO()
             {
-                Id = reader.GetInt64("MaTV"),
-                HoTen = reader.GetString("HoTen"),
-                Khoa = reader.GetString("Khoa"),
-                Nganh = reader.GetString("Nganh"),
-                Phone = reader.GetString("Phone")
+                id = reader.GetInt64("id"),
+                name = reader.GetString("name"),
+                isDeleted = reader.GetBoolean("is_deleted"),
             };
         }
 
-        public List<UserDTO> GetAll(bool isActive)
+        public List<RoleDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+
             try
             {
                 MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
-                List<UserDTO> result = [];
+                List<RoleDTO> result = [];
 
-                using var reader = command.ExecuteReader();
+                using MySqlDataReader reader = command.ExecuteReader();
                 Logger.Log($"Query: {query}");
 
                 while (reader.Read())
@@ -57,15 +55,15 @@ namespace SGULibraryManagement.DAO
 
             return [];
         }
-        public UserDTO FindById(long id)
+        public RoleDTO FindById(long id)
         {
             return null;
         }
-        public UserDTO Create(UserDTO request)
+        public RoleDTO Create(RoleDTO request)
         {
             return null;
         }
-        public bool Update(long id, UserDTO request)
+        public bool Update(long id, RoleDTO request)
         {
             return false;
         }
@@ -73,6 +71,5 @@ namespace SGULibraryManagement.DAO
         {
             return false;
         }
-
     }
 }

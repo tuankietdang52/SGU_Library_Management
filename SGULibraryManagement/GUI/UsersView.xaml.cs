@@ -24,10 +24,10 @@ namespace SGULibraryManagement.GUI
 {
     public partial class UsersView : UserControl
     {
-        private readonly UserBUS userBUS = new();
+        private readonly AccountBUS userBUS = new();
         private Action<UserFilter?>? searchDebounce;
 
-        public ObservableCollection<UserDTO> Users { get; set; } = [];
+        public ObservableCollection<AccountDTO> Users { get; set; } = [];
 
         public UsersView()
         {
@@ -38,12 +38,14 @@ namespace SGULibraryManagement.GUI
 
         private void addUserAction(object sender, RoutedEventArgs e)
         {
-            UserModal userModal = new UserModal();
+            UserModal userModal = new UserModal("update");
             userModal.ShowDialog();
+
         }
 
         private void Fetch()
         {
+            
             Users.ResetTo(userBUS.GetAll());
         }
 
@@ -62,8 +64,8 @@ namespace SGULibraryManagement.GUI
 
             //statusComboBox.ItemsSource = new List<string>()
             //{
-            //    "All", 
-            //    "Available", 
+            //    "All",
+            //    "Available",
             //    "Not Available"
             //};
             //statusComboBox.SelectedIndex = 0;
