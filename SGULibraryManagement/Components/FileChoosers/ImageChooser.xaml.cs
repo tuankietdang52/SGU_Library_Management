@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+
 
 namespace SGULibraryManagement.Components.FileChoosers
 {
@@ -67,5 +69,32 @@ namespace SGULibraryManagement.Components.FileChoosers
             imageContainer.Source = new BitmapImage(new Uri(fileName));
             OnImageChoose?.Invoke(this, fileName);
         }
+
+        private string filePath = "";
+
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                filePath = value;
+
+                if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+                {
+                    imageContainer.Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute));
+                    imageContainer.Visibility = Visibility.Visible;
+                    nonImageContainer.Visibility = Visibility.Collapsed;
+                    imageChooserContainer.BorderThickness = new Thickness(0);
+                }
+                else
+                {
+                    imageContainer.Source = null;
+                    imageContainer.Visibility = Visibility.Collapsed;
+                    nonImageContainer.Visibility = Visibility.Visible;
+                    imageChooserContainer.BorderThickness = new Thickness(1);
+                }
+            }
+        }
+
     }
 }

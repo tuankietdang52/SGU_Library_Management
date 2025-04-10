@@ -189,10 +189,33 @@ namespace SGULibraryManagement.GUI
             OnSort(this, null!);
         }
 
-        private void OnEdit(object sender, DeviceDTO model)
+        private async void OnEdit(object sender, DeviceDTO model)
         {
-            // edit
+            var dialog = new Dialog("Edit equipment", new EquipmentDialog(EDialogType.Edit, model));
+            dialog.ShowDialog();
+
+            bool isSuccess = true; // hoặc lấy từ dialog
+
+            if (isSuccess)
+            {
+                Fetch();
+                OnApplySort();
+            }
+            else
+            {
+                await MainWindow.Instance!.ShowSimpleDialogAsync(
+                    new SimpleDialog
+                    {
+                        Title = "Error",
+                        Content = "Something went wrong!",
+                        Width = 400,
+                        Height = 200
+                    },
+                    SimpleDialogType.OK
+                );
+            }
         }
+
 
         private async void OnDelete(object sender, DeviceDTO model)
         {
@@ -205,19 +228,32 @@ namespace SGULibraryManagement.GUI
             };
 
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(simpleDialog, SimpleDialogType.YesNo);
-            switch (result)
+
+            if (result == SimpleDialogResult.Yes)
             {
-                case SimpleDialogResult.Yes:
-                    // implement delete
-                    break;
+                bool isSuccess = BUS.Delete(model.Id); // giả sử Delete trả bool
 
-                case SimpleDialogResult.No:
-                    return;
-
-                default:
-                    return;
+                if (isSuccess)
+                {
+                    Fetch();
+                    OnApplySort();
+                }
+                else
+                {
+                    await MainWindow.Instance!.ShowSimpleDialogAsync(
+                        new SimpleDialog
+                        {
+                            Title = "Error",
+                            Content = "Something went wrong!",
+                            Width = 400,
+                            Height = 200
+                        },
+                        SimpleDialogType.OK
+                    );
+                }
             }
         }
+
 
         private class EquipmentFilter
         {

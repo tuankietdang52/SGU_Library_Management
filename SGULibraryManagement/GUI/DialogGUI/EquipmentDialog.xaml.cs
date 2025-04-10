@@ -26,11 +26,23 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         public event OnCloseDialogHandler? OnCloseDialog;
         public ContentPresenter? PopupHost { get; set; }
+        private DeviceDTO? currentModel = null;
 
-        public EquipmentDialog(EDialogType type)
+        public EquipmentDialog(EDialogType type, DeviceDTO? model = null)
         {
             InitializeComponent();
+            currentModel = model;
+
+            if (type == EDialogType.Edit && currentModel != null)
+            {
+                equipmentNameField.Text = currentModel.Name;
+                quantityField.Value = currentModel.Quantity;
+                imageFileName = currentModel.ImageSource;
+                saveButton.Content = "Update";
+                imageChooserControl.FilePath = imageFileName;
+            }
         }
+
 
         private void OnImageChoose(object sender, string filePath)
         {
@@ -39,8 +51,6 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private DeviceDTO? FetchData()
         {
-            // TODO: Copy source to Resources/Images with random name for this request object
-
             try
             {
                 int quantity = (int)quantityField.Value!;
@@ -48,8 +58,9 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
                 return new DeviceDTO()
                 {
+                    Id = currentModel?.Id ?? 0, // giữ lại ID khi update
                     Name = equipmentNameField.Text,
-                    Quantity = (int)quantityField.Value,
+                    Quantity = quantity,
                     ImageSource = imageFileName.Replace("\\", "/"),
                     IsAvailable = isAvailable,
                     IsDeleted = false
@@ -63,24 +74,42 @@ namespace SGULibraryManagement.GUI.DialogGUI
             var model = FetchData();
             if (model == null)
             {
-                await OnSaveFail();
+                OnSaveFail();
                 return;
             }
 
-            var result = BUS.Create(model);
-            if (result != null)
+            bool isUpdate = currentModel != null;
+            bool isSuccess;
+
+            if (isUpdate)
+            {
+                model.Id = currentModel!.Id; // đảm bảo gán lại ID nếu đang update
+                isSuccess = BUS.Update(model.Id, model);
+            }
+            else
+            {
+                var result = BUS.Create(model);
+                isSuccess = result != null;
+            }
+
+            if (isSuccess)
             {
                 OnSaveSuccess();
             }
-            else await OnSaveFail();
+            else
+            {
+                OnSaveFail();
+            }
         }
+
 
         private async void OnSaveSuccess()
         {
+            string message = currentModel != null ? "Update successfully!" : "Create successfully!";
             var dialog = new SimpleDialog()
             {
                 Title = "Success",
-                Content = "Create successfully!",
+                Content = message,
                 Width = 350,
                 Height = 200
             };
@@ -89,7 +118,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             if (result == SimpleDialogResult.OK) OnCloseDialog?.Invoke(this);
         }
 
-        private async Task OnSaveFail()
+        private async void OnSaveFail()
         {
             // adjust the string if this dialog be resused as edit, view dialog
             var dialog = new SimpleDialog()

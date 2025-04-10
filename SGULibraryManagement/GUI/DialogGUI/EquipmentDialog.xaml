@@ -13,7 +13,7 @@
              Height="600"
              Padding="10">
     <StackPanel>
-        <fileChooser:ImageChooser OnImageChoose="OnImageChoose"></fileChooser:ImageChooser>
+        <fileChooser:ImageChooser x:Name="imageChooserControl" OnImageChoose="OnImageChoose" />
         <Viewbox Height="10"></Viewbox>
         
         <TextBlock FontWeight="Bold">Name</TextBlock>
