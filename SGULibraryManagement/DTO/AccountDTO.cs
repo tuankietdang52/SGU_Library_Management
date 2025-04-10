@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace SGULibraryManagement.DTO
 {
-    public class UserDTO
+    public class AccountDTO
     {
-        public long Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string FullName => $"{FirstName} {LastName}";
         public string Phone { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public bool IsAvailable { get; set; }
-        public bool IsDeleted { get; set; }
+        public long idRole { get; set; }
+        public string nameRole { get; set; } = string.Empty;
+        public string avt { get; set; } = string.Empty;
+        public bool IsDeleted { get; set; } = false;
     }
 }
