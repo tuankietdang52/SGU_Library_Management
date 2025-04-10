@@ -18,7 +18,7 @@ namespace SGULibraryManagement.DAO
 
         public DeviceDAO()
         {
-            
+
         }
 
         private DeviceDTO FetchData(MySqlDataReader reader)
