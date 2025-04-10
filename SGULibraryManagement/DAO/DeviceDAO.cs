@@ -18,7 +18,7 @@ namespace SGULibraryManagement.DAO
 
         public DeviceDAO()
         {
-            
+
         }
 
         private DeviceDTO FetchData(MySqlDataReader reader)
@@ -42,7 +42,7 @@ namespace SGULibraryManagement.DAO
         public List<DeviceDTO> GetAll(bool isActive)
         {
             string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
-            
+
             try
             {
                 MySqlCommand command = new(query, Connection);

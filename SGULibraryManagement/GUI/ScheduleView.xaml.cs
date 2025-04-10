@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.DAO;
+using SGULibraryManagement.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +23,25 @@ namespace SGULibraryManagement.GUI
     /// </summary>
     public partial class ScheduleView : UserControl
     {
+        public List<BorrowDevicesDTO> ListBorrow = [];
+        public readonly BorrowDevicesBUS BUS = new();
         public ScheduleView()
         {
             InitializeComponent();
+            Fetch();
+           LoadScheduleTable();
         }
+
+        private void Fetch()
+        {
+            ListBorrow = BUS.GetAll();
+        }
+
+        private void LoadScheduleTable()
+        {
+            ScheduleTable.ItemsSource = ListBorrow;
+        }
+
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

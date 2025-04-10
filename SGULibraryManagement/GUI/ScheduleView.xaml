@@ -6,138 +6,21 @@
              mc:Ignorable="d"
              Style="{StaticResource ContentStyle}"
              >
-    <Grid Background="White" Margin="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Header -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Row="0" Margin="0 0 0 10">
-            <TextBlock Text="Today Schedule" FontSize="22" FontWeight="Bold"/>
-            <Button Content="January 16, 2025" 
-                    HorizontalAlignment="Right"
-                    Background="#F3F3F3" 
-                    Foreground="Gray" 
-                    Padding="10,5"
-                    BorderThickness="0"
-                    Margin="10,0,0,0"/>
-        </StackPanel>
-
-        <!-- Timeline -->
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Time Labels (Row 0) -->
-            <Grid Grid.Row="0" Margin="-81,0,81,445" Grid.RowSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="80"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="1" Text="08:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="2" Text="09:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="3" Text="10:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="4" Text="11:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="5" Text="12:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="6" Text="13:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="7" Text="14:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="8" Text="15:00" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="9" Foreground="Gray" HorizontalAlignment="Center" Text="16:00"/>
-                <TextBlock Grid.Column="10" Foreground="Gray" HorizontalAlignment="Center" Text="17:00"/>
-            </Grid>
-
-            <!-- Schedule Events (Row 1) -->
-            <Canvas Grid.Row="1">
-                <!-- Event 1 (09:30) -->
-
-                <!-- Event 2 (11:00) -->
-                <Border Background="#D9B8FF" Padding="10" CornerRadius="20" Width="160" Canvas.Left="242" Canvas.Top="100" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="La Charmbre Cocktail B..." FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📅 16 Jan, 2025" Foreground="Gray" FontSize="12"/>
-                            <TextBlock Text="🕒 19:30" Foreground="Gray" FontSize="12" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <!-- Event 3 (15:00) -->
-                <Border Background="#B0E0E6" Padding="10" CornerRadius="20" Width="159" Canvas.Left="480" Canvas.Top="60" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="La Charmbre..." FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📅 16 Jan, 2025" Foreground="Gray" FontSize="12"/>
-                            <TextBlock Text="🕒 19:30" Foreground="Gray" FontSize="12" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <!-- Event 4 (10:30) -->
-                <Border Background="#FFA07A" Padding="10" CornerRadius="20" Width="160" Canvas.Left="162" Canvas.Top="196">
-                    <StackPanel>
-                        <TextBlock Text="La Charmbre Cocktail B..." FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📅 16 Jan, 2025" Foreground="Gray" FontSize="12"/>
-                            <TextBlock Text="🕒 19:30" Foreground="Gray" FontSize="12" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <!-- Event 5 (16:30) -->
-                <Border Background="White" BorderBrush="Green" BorderThickness="2" Padding="10" CornerRadius="20" Width="160" Canvas.Left="638" Canvas.Top="223">
-                    <StackPanel>
-                        <TextBlock Text="La Charmbre Cocktail Bar" FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📅 16 Jan, 2025" Foreground="Gray" FontSize="12"/>
-                            <TextBlock Text="🕒 19:30" Foreground="Gray" FontSize="12" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-                <Border Canvas.ZIndex="1000" Background="#FFD966" Padding="10" CornerRadius="20" Width="160" Canvas.Top="34" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="La Charmbre Cocktail B..." FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📅 16 Jan, 2025" Foreground="Gray" FontSize="12"/>
-                            <TextBlock Text="🕒 19:30" Foreground="Gray" FontSize="12" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Canvas>
-
-            <!-- Dashed Time Lines -->
-            <Canvas Grid.Row="1" Panel.ZIndex="-1" >
-                <Canvas.Resources>
-                    <Style TargetType="Line">
-                        <Setter Property="Stroke" Value="Gray"/>
-                        <Setter Property="StrokeDashArray" Value="4,4"/>
-                        <Setter Property="StrokeThickness" Value="1"/>
-                    </Style>
-                </Canvas.Resources>
-
-                <Line X1="80" X2="80" Y1="0" Y2="400" Canvas.Left="0"  />
-                <Line X1="160" X2="160" Y1="0" Y2="400"/>
-                <Line X1="240" X2="240" Y1="0" Y2="400"/>
-                <Line X1="320" X2="320" Y1="0" Y2="400"/>
-                <Line X1="400" X2="400" Y1="0" Y2="400"/>
-                <Line X1="480" X2="480" Y1="0" Y2="400"/>
-                <Line X1="560" X2="560" Y1="0" Y2="400"/>
-                <Line X1="640" X2="640" Y1="0" Y2="400"/>
-                <Line X1="720" X2="720" Y1="0" Y2="400"/>
-                <Line X1="800" X2="800" Y1="0" Y2="400"/>
-            </Canvas>
-        </Grid>
+    <Grid >
+        <DataGrid x:Name="ScheduleTable"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  RowHeight="40"
+                  FontSize="14"
+                  ItemsSource="{Binding}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Thiết bị" Binding="{Binding DeviceId}" Width="*"/>
+                <DataGridTextColumn Header="Người mượn" Binding="{Binding UserName}" Width="*"/>
+                <DataGridTextColumn Header="Ngày mượn" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
+                <DataGridTextColumn Header="Ngày trả" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy}" Width="*"/>
+                <DataGridTextColumn Header="Số lượng" Binding="{Binding Quantity}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
