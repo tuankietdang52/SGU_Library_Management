@@ -18,6 +18,21 @@ namespace SGULibraryManagement.BUS
             return Devices = DAO.GetAll(true);
         }
 
+        public DeviceDTO Create(DeviceDTO request)
+        {
+            return DAO.Create(request);
+        }
+
+        public bool Update(long id, DeviceDTO request)
+        {
+            return DAO.Update(id, request);
+        }
+
+        public bool Delete(long id)
+        {
+            return DAO.Delete(id);
+        }
+
         public List<DeviceDTO> FilterByQuery(string query, List<DeviceDTO>? list = null)
         {
             var devices = list ?? Devices;

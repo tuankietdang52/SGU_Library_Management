@@ -51,7 +51,7 @@
                                                  Content="&#xf00d;"
                                                  HorizontalAlignment="Right"
                                                  Foreground="{TemplateBinding Foreground}"
-                                                 HoverForegroundColor="{DynamicResource SideMenuSelectedForeground}"
+                                                 HoverForegroundColor="{DynamicResource AppThemeSecondary}"
                                                  FontFamily="{DynamicResource FontAwesomeSolid}">
                                 <buttons:RoundButton.Style>
                                     <Style TargetType="{x:Type buttons:RoundButton}">

@@ -42,6 +42,7 @@ namespace SGULibraryManagement.DAO
         public List<DeviceDTO> GetAll(bool isActive)
         {
             string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            Logger.Log($"Query: {query}");
             
             try
             {
@@ -51,7 +52,6 @@ namespace SGULibraryManagement.DAO
                 List<DeviceDTO> result = [];
 
                 using var reader = command.ExecuteReader();
-                Logger.Log($"Query: {query}");
 
                 while (reader.Read())
                 {
@@ -68,20 +68,74 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-
         public DeviceDTO Create(DeviceDTO request)
         {
-            throw new NotImplementedException();
+            string query = $"INSERT INTO {TableName} (name, quantity, img, is_deleted, is_avaible) VALUES " +
+                           $"('{request.Name}', {request.Quantity}, '{request.ImageSource}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                command.ExecuteNonQuery();
+
+                return request;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
         }
 
         public bool Update(long id, DeviceDTO request)
         {
-            throw new NotImplementedException();
+            string query = $"UPDATE {TableName} SET " +
+                           $"name = '{request.Name}', " +
+                           $"quantity = {request.Quantity}, " +
+                           $"img = '{request.ImageSource}', " +
+                           $"is_deleted = {(request.IsDeleted ? 1 : 0)}, " +
+                           $"is_avaible = {(request.IsAvailable ? 1 : 0)} " +
+                           $"WHERE id = {id}";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
         }
+
 
         public bool Delete(long id)
         {
-            throw new NotImplementedException();
+            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = {id}";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
         }
     }
 }

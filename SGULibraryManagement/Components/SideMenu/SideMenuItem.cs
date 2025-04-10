@@ -66,7 +66,7 @@ namespace SGULibraryManagement.Components.SideMenu
 
         private void OnSelected(bool isSelected)
         {
-            if (App.Instance!.Resources["SideMenuSelectedForeground"] is not SolidColorBrush color) return;
+            if (App.Instance!.Resources["AppThemeSecondary"] is not SolidColorBrush color) return;
 
             if (isSelected) Foreground = color;
             else Foreground = Brushes.Black;

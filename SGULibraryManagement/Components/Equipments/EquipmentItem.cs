@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 
 namespace SGULibraryManagement.Components.Equipments
 {
+    public delegate void OnEquipmentActionHandler(object sender, DeviceDTO model);
+
     public class EquipmentItem : ContentControl
     {
         public static readonly DependencyProperty ModelProperty =
@@ -31,6 +33,9 @@ namespace SGULibraryManagement.Components.Equipments
                                       typeof(EquipmentItem),
                                       new PropertyMetadata(null));
 
+        public event OnEquipmentActionHandler? OnEdit;
+        public event OnEquipmentActionHandler? OnDelete;
+
         public DeviceDTO Model
         {
             get => (DeviceDTO)GetValue(ModelProperty);
@@ -44,6 +49,31 @@ namespace SGULibraryManagement.Components.Equipments
         {
             get => (SolidColorBrush)GetValue(AvailableColorProperty);
             set => SetValue(AvailableColorProperty, value);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            if (GetTemplateChild("edit") is not DropdownMenuItem editMenuItem) return;
+            if (GetTemplateChild("delete") is not DropdownMenuItem deleteMenuItem) return;
+
+            editMenuItem.Click += (sender, e) => OnEdit?.Invoke(this, Model);
+            deleteMenuItem.Click += (sender, e) => OnDelete?.Invoke(this, Model);
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (Template.FindName("edit", this) is not DropdownMenuItem editMenuItem) return;
+            if (Template.FindName("delete", this) is not DropdownMenuItem deleteMenuItem) return;
+
+            editMenuItem.Click += (sender, e) => OnEdit?.Invoke(this, Model);
+            deleteMenuItem.Click += (sender, e) => OnDelete?.Invoke(this, Model);
+        }
+
+        public EquipmentItem()
+        {
+            this.Loaded += OnLoaded;
         }
 
         static EquipmentItem()
