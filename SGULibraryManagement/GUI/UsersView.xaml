@@ -21,7 +21,8 @@
                                  Background="Black"
                                  Height="40"
                                  CornerRadius="20"
-                                 HoverBackgroundColor="#2B2B2B">
+                                 HoverBackgroundColor="#2B2B2B"
+                                 Click="addUserAction">
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
