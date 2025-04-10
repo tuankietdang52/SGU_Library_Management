@@ -29,16 +29,18 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private AccountBUS accountBUS = new ();
         private List<RoleDTO> roles = new List<RoleDTO>();
         private string action;
+        private AccountDTO account;
 
         public ContentPresenter? PopupHost { get; set; }
 
         public event OnCloseDialogHandler? OnCloseDialog;
 
-        public UserDialog(string action)
+        public UserDialog(string action, AccountDTO account)
         {
             InitializeComponent();
             loadDataCombobox();
             this.action = action;
+            this.account = account;
             loadForm();
         }
 
@@ -52,12 +54,25 @@ namespace SGULibraryManagement.GUI.DialogGUI
             {
                 lbTitle.Text = "Cập nhật tài khoản";
                 btn.Content = "Cập nhật";
+                loadFormData();
             }
             else // view
             {
                 lbTitle.Text = "Xem thông tin tài khoản";
                 btn.Visibility = Visibility.Hidden;
+                loadFormData();
             }
+        }
+
+        private void loadFormData()
+        {
+            txtTaiKhoan.Text = account.Username;
+            txtMatKhau.Password = account.Password;
+            txtTen.Text = account.FirstName;
+            txtHo.Text = account.LastName;
+            txtSdt.Text = account.Phone;
+            cbxQuyen.SelectedIndex = roles.FindIndex(role => role.Id == account.IdRole);
+            txtTaiKhoan.IsEnabled = false;
         }
 
         private void loadDataCombobox()

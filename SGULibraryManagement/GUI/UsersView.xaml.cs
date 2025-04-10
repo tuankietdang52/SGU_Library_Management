@@ -114,21 +114,22 @@ namespace SGULibraryManagement.GUI
 
         private void ActionColumn_OnEditClick(object sender, object model)
         {
-            Dialog dialog = new("Update user", new UserDialog("update"));
+            Dialog dialog = new("Update user", new UserDialog("update", (AccountDTO)model));
             dialog.ShowDialog();
             Fetch();
         }
 
         private void AddUserAction(object sender, RoutedEventArgs e)
         {
-            Dialog dialog = new("Add new User", new UserDialog("create"));
+            Dialog dialog = new("Add new User", new UserDialog("create", null));
             dialog.ShowDialog();
             Fetch();
+
         }
 
         private void ActionColumn_OnViewClick(object sender, object model)
         {
-            Dialog dialog = new("View user", new UserDialog("view"));
+            Dialog dialog = new("View user", new UserDialog("view", (AccountDTO)model));
             dialog.ShowDialog();
             Fetch();
         }
