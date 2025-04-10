@@ -28,8 +28,8 @@ namespace SGULibraryManagement.DAO
                 FirstName = reader.GetString("first_name"),
                 LastName = reader.GetString("last_name"),
                 Phone = reader.GetString("phone"),
-                idRole = reader.GetInt64("role_id"),
-                avt = reader.GetString("avt"),
+                IdRole = reader.GetInt64("role_id"),
+                Avatar = reader.GetString("avt"),
                 IsDeleted = reader.GetBoolean("is_deleted")
             };
         }
@@ -78,8 +78,8 @@ namespace SGULibraryManagement.DAO
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
                 command.Parameters.AddWithValue("@Phone", request.Phone);
-                command.Parameters.AddWithValue("@Role", request.idRole);
-                command.Parameters.AddWithValue("@Avt", request.avt);
+                command.Parameters.AddWithValue("@Role", request.IdRole);
+                command.Parameters.AddWithValue("@Avt", request.Avatar);
                 command.Parameters.AddWithValue("@IsActive", request.IsDeleted);
 
                 command.Prepare();
@@ -117,8 +117,8 @@ namespace SGULibraryManagement.DAO
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
                 command.Parameters.AddWithValue("@Phone", request.Phone);
-                command.Parameters.AddWithValue("@RoleId", request.idRole);
-                command.Parameters.AddWithValue("@Avt", request.avt);
+                command.Parameters.AddWithValue("@RoleId", request.IdRole);
+                command.Parameters.AddWithValue("@Avt", request.Avatar);
                 command.Parameters.AddWithValue("@Is_Deleted", request.IsDeleted);
                 command.Parameters.AddWithValue("@Username", request.Username); 
 

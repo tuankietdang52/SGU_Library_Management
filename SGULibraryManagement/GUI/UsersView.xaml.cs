@@ -1,7 +1,8 @@
 ﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.TextFields;
 using SGULibraryManagement.DTO;
-using SGULibraryManagement.GUI.Modal;
+using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections;
@@ -36,16 +37,8 @@ namespace SGULibraryManagement.GUI
             SetupComponent();
         }
 
-        private void addUserAction(object sender, RoutedEventArgs e)
-        {
-            UserModal userModal = new UserModal("update");
-            userModal.ShowDialog();
-
-        }
-
         private void Fetch()
         {
-            
             Users.ResetTo(userBUS.GetAll());
         }
 
@@ -57,18 +50,18 @@ namespace SGULibraryManagement.GUI
 
         private void SetupSearchAndFilter()
         {
-            //searchDebounce = ((Action<UserFilter?>)(OnApplyFilter)).Debounce(200);
+            searchDebounce = ((Action<UserFilter?>)(OnApplyFilter)).Debounce(200);
 
-            //searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
-            //searchByComboBox.SelectedIndex = 0;
+            searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
+            searchByComboBox.SelectedIndex = 0;
 
-            //statusComboBox.ItemsSource = new List<string>()
-            //{
-            //    "All",
-            //    "Available",
-            //    "Not Available"
-            //};
-            //statusComboBox.SelectedIndex = 0;
+            statusComboBox.ItemsSource = new List<string>()
+            {
+                "All",
+                "Available",
+                "Not Available"
+            };
+            statusComboBox.SelectedIndex = 0;
         }
 
         private UserFilter? GetFilter()
@@ -119,11 +112,53 @@ namespace SGULibraryManagement.GUI
             OnApplyFilter(filter);
         }
 
+        private void ActionColumn_OnEditClick(object sender, object model)
+        {
+            Dialog dialog = new("Update user", new UserDialog("update"));
+            dialog.ShowDialog();
+            Fetch();
+        }
+
+        private void AddUserAction(object sender, RoutedEventArgs e)
+        {
+            Dialog dialog = new("Add new User", new UserDialog("create"));
+            dialog.ShowDialog();
+            Fetch();
+        }
+
+        private void ActionColumn_OnViewClick(object sender, object model)
+        {
+            Dialog dialog = new("View user", new UserDialog("view"));
+            dialog.ShowDialog();
+            Fetch();
+        }
+
+        private async void ActionColumn_OnDeleteClick(object sender, object model)
+        {
+            if (model is not AccountDTO user) return;
+
+            SimpleDialog dialog = new()
+            {
+                Content = "Are you really want to delete this user ?",
+                Title = "Delete",
+                Width = 400,
+                Height = 200
+            };
+
+            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+            if (result == SimpleDialogResult.OK)
+            {
+                userBUS.DeleteAccount(user.Username);
+            }
+            else return;
+            Fetch();
+        }
+
         private class UserFilter
         {
-            //public string Query { get; set; } = string.Empty;
-            //public string Status { get; set; } = "All";
-            //public UserQueryOption UserQueryOption { get; set; }
+            public string Query { get; set; } = string.Empty;
+            public string Status { get; set; } = "All";
+            public UserQueryOption UserQueryOption { get; set; }
         }
     }
 }

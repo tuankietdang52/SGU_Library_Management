@@ -22,7 +22,7 @@
                                  Height="40"
                                  CornerRadius="20"
                                  HoverBackgroundColor="#2B2B2B"
-                                 Click="addUserAction">
+                                 Click="AddUserAction">
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
@@ -110,11 +110,48 @@
                         <DataGridTextColumn Header="Tài khoản" Binding="{Binding Username}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Họ Tên" Binding="{Binding FullName}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Số điện thoại" Binding="{Binding Phone}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Vai trò" Binding="{Binding Role}"></DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Vai trò">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="10"
+                                            Padding="5"
+                                            Margin="0, 10, 0, 10"
+                                            BorderThickness="1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IdRole}" Value="1">
+                                                        <Setter Property="Background" Value="Red"></Setter>
+                                                        <Setter Property="Width" Value="70"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="White">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IdRole}" Value="1">
+                                                            <Setter Property="TextBlock.Text" Value="Admin"></Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <tables:ActionColumn Model="{Binding}">
+                                    <tables:ActionColumn Model="{Binding}"
+                                                         OnEditClick="ActionColumn_OnEditClick"
+                                                         OnViewClick="ActionColumn_OnViewClick"
+                                                         OnDeleteClick="ActionColumn_OnDeleteClick">
                                         
                                     </tables:ActionColumn>
                                 </DataTemplate>

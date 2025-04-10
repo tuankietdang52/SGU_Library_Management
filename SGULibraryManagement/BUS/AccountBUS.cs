@@ -17,7 +17,7 @@ namespace SGULibraryManagement.BUS
 
         public AccountBUS()
         {
-            Fetch();
+
         }
 
         public List<AccountDTO> GetAll()
@@ -25,48 +25,37 @@ namespace SGULibraryManagement.BUS
             return users = userDAO.GetAll(true);
         }
 
-        private void Fetch()
-        {
-
-        }
-
-        public AccountDTO createAccount(AccountDTO account)
+        public AccountDTO CreateAccount(AccountDTO account)
         {
             return userDAO.Create(account);
         }
 
-        public bool updateAccount(AccountDTO account)
+        public bool UpdateAccount(AccountDTO account)
         {
             return userDAO.Update(11, account);
         }
-        public bool deleteAccount(string username)
+        public bool DeleteAccount(string username)
         {
             return userDAO.DeleteV2(username);
         }
 
-        //public List<UserDTO> FilterByQuery(string query, UserQueryOption queryOption, List<UserDTO>? list = null)
-        //{
-        //    var users = list ?? this.users;
-        //    return queryOption switch
-        //    {
-        //        UserQueryOption.Username => [.. users.Where(user => user.Username.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
-        //        UserQueryOption.Fullname => [.. users.Where(user => user.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
-        //        UserQueryOption.Phone => [.. users.Where(user => user.Phone.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
-        //        _ => []
-        //    };
-        //}
-
-        //public List<UserDTO> FilterByStatus(bool isAvailable, List<UserDTO>? list = null)
-        //{
-        //    var users = list ?? this.users;
-        //    return [.. users.Where(user => user.IsAvailable == isAvailable)];
-        //}
+        public List<AccountDTO> FilterByQuery(string query, UserQueryOption queryOption, List<AccountDTO>? list = null)
+        {
+            var users = list ?? this.users;
+            return queryOption switch
+            {
+                UserQueryOption.Username => [.. users.Where(user => user.Username.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Fullname => [.. users.Where(user => user.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Phone => [.. users.Where(user => user.Phone.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                _ => []
+            };
+        }
     }
 
-    //public enum UserQueryOption
-    //{
-    //    Username,
-    //    Fullname,
-    //    Phone
-    //}
+    public enum UserQueryOption
+    {
+        Username,
+        Fullname,
+        Phone
+    }
 }

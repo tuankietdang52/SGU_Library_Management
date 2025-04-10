@@ -17,7 +17,7 @@
     <Compile Update="GUI\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\Modal\UserModal.xaml.cs">
+    <Compile Update="GUI\DialogGUI\UserDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SettingView.xaml.cs">

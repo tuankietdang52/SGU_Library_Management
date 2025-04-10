@@ -12,7 +12,7 @@ namespace SGULibraryManagement.Components.Dialogs
 
     public interface IDialog
     {
-        public event OnCloseDialogHandler OnCloseDialog;
+        public event OnCloseDialogHandler? OnCloseDialog;
         public ContentPresenter? PopupHost { get; set; }
     }
 }
