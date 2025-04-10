@@ -1,6 +1,7 @@
 ﻿using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.TextFields;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.GUI.Modal;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections;
@@ -23,10 +24,10 @@ namespace SGULibraryManagement.GUI
 {
     public partial class UsersView : UserControl
     {
-        private readonly UserBUS _userBUS = new();
+        private readonly AccountBUS userBUS = new();
         private Action<UserFilter?>? searchDebounce;
 
-        public ObservableCollection<UserDTO> Users { get; set; } = [];
+        public ObservableCollection<AccountDTO> Users { get; set; } = [];
 
         public UsersView()
         {
@@ -35,9 +36,17 @@ namespace SGULibraryManagement.GUI
             SetupComponent();
         }
 
+        private void addUserAction(object sender, RoutedEventArgs e)
+        {
+            UserModal userModal = new UserModal("update");
+            userModal.ShowDialog();
+
+        }
+
         private void Fetch()
         {
-            Users.ResetTo(_userBUS.GetAll());
+            
+            Users.ResetTo(userBUS.GetAll());
         }
 
         private void SetupComponent()
@@ -48,45 +57,46 @@ namespace SGULibraryManagement.GUI
 
         private void SetupSearchAndFilter()
         {
-            searchDebounce = ((Action<UserFilter?>)(OnApplyFilter)).Debounce(200);
+            //searchDebounce = ((Action<UserFilter?>)(OnApplyFilter)).Debounce(200);
 
-            searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
-            searchByComboBox.SelectedIndex = 0;
+            //searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
+            //searchByComboBox.SelectedIndex = 0;
 
-            statusComboBox.ItemsSource = new List<string>()
-            {
-                "All", 
-                "Available", 
-                "Not Available"
-            };
-            statusComboBox.SelectedIndex = 0;
+            //statusComboBox.ItemsSource = new List<string>()
+            //{
+            //    "All",
+            //    "Available",
+            //    "Not Available"
+            //};
+            //statusComboBox.SelectedIndex = 0;
         }
 
         private UserFilter? GetFilter()
         {
-            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
-            if (statusComboBox.SelectedItem is not string status) return null;
+            //if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
+            //if (statusComboBox.SelectedItem is not string status) return null;
 
-            return new UserFilter()
-            {
-                Query = searchField.Text,
-                UserQueryOption = queryOption,
-                Status = status
-            };
+            //return new UserFilter()
+            //{
+            //Query = searchField.Text,
+            //    UserQueryOption = queryOption,
+            //    Status = status
+            //};
+            return null;
         }
 
         private void OnApplyFilter(UserFilter? filter)
         {
-            if (filter == null) return;
+            //if (filter == null) return;
 
-            var result = _userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
+            //var result = _userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
 
-            if (filter.Status != "All")
-            {
-                result = _userBUS.FilterByStatus(filter.Status == "Available", result);
-            }
+            //if (filter.Status != "All")
+            //{
+            //    result = _userBUS.FilterByStatus(filter.Status == "Available", result);
+            //}
 
-            App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
+            //App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
         }
 
         private void OnSearch(object sender, TextChangedEventArgs e)
@@ -111,9 +121,9 @@ namespace SGULibraryManagement.GUI
 
         private class UserFilter
         {
-            public string Query { get; set; } = string.Empty;
-            public string Status { get; set; } = "All";
-            public UserQueryOption UserQueryOption { get; set; }
+            //public string Query { get; set; } = string.Empty;
+            //public string Status { get; set; } = "All";
+            //public UserQueryOption UserQueryOption { get; set; }
         }
     }
 }

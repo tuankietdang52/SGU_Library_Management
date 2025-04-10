@@ -1,6 +1,8 @@
 ﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.Equipments;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,7 @@ namespace SGULibraryManagement.GUI
         private bool isOpenFilter = false;
 
         private Action<EquipmentFilter?>? searchDebounce;
+        private Dictionary<long, EquipmentItem> equipmentItems = [];
         private List<DeviceDTO> devices = [];
 
         public EquipmentsView()
@@ -37,13 +40,10 @@ namespace SGULibraryManagement.GUI
 
         private void Fetch()
         {
+            ClearEquipmentItems();
             devices = BUS.GetAll();
-        }
 
-        private void SetEquipmentItems(IEnumerable<DeviceDTO> list)
-        {
-            equipmentsContainer.Children.Clear();
-            foreach (var item in list)
+            foreach (var item in devices)
             {
                 EquipmentItem equipmentItem = new()
                 {
@@ -53,8 +53,31 @@ namespace SGULibraryManagement.GUI
                     BorderThickness = new Thickness(1),
                 };
 
-                Logger.Log($"{item.Name}: {item.IsAvailable}");
+                equipmentItem.OnEdit += OnEdit;
+                equipmentItem.OnDelete += OnDelete;
 
+                equipmentItems.Add(item.Id, equipmentItem);
+            }
+        }
+
+        private void ClearEquipmentItems()
+        {
+            foreach (var item in equipmentItems.Values)
+            {
+                item.OnEdit -= OnEdit;
+                item.OnDelete -= OnDelete;
+            }
+
+            equipmentItems.Clear();
+        }
+
+        private void SetEquipmentItems(IEnumerable<DeviceDTO> list)
+        {
+            equipmentsContainer.Children.Clear();
+
+            foreach (var item in list)
+            {
+                var equipmentItem = equipmentItems[item.Id];
                 equipmentsContainer.Children.Add(equipmentItem);
             }
         }
@@ -156,6 +179,81 @@ namespace SGULibraryManagement.GUI
                 close.Begin();
             }
         }
+
+        private void OnAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Dialog("Add new equipment", new EquipmentDialog(EDialogType.Create));
+            dialog.ShowDialog();
+
+            Fetch();
+            OnSort(this, null!);
+        }
+
+        private async void OnEdit(object sender, DeviceDTO model)
+        {
+            var dialog = new Dialog("Edit equipment", new EquipmentDialog(EDialogType.Edit, model));
+            dialog.ShowDialog();
+
+            bool isSuccess = true; // hoặc lấy từ dialog
+
+            if (isSuccess)
+            {
+                Fetch();
+                OnApplySort();
+            }
+            else
+            {
+                await MainWindow.Instance!.ShowSimpleDialogAsync(
+                    new SimpleDialog
+                    {
+                        Title = "Error",
+                        Content = "Something went wrong!",
+                        Width = 400,
+                        Height = 200
+                    },
+                    SimpleDialogType.OK
+                );
+            }
+        }
+
+
+        private async void OnDelete(object sender, DeviceDTO model)
+        {
+            SimpleDialog simpleDialog = new()
+            {
+                Title = $"Delete {model.Name}",
+                Content = $"Do you really want to delete equipment Id {model.Id} ?",
+                Width = 400,
+                Height = 200
+            };
+
+            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(simpleDialog, SimpleDialogType.YesNo);
+
+            if (result == SimpleDialogResult.Yes)
+            {
+                bool isSuccess = BUS.Delete(model.Id); // giả sử Delete trả bool
+
+                if (isSuccess)
+                {
+                    Fetch();
+                    OnApplySort();
+                }
+                else
+                {
+                    await MainWindow.Instance!.ShowSimpleDialogAsync(
+                        new SimpleDialog
+                        {
+                            Title = "Error",
+                            Content = "Something went wrong!",
+                            Width = 400,
+                            Height = 200
+                        },
+                        SimpleDialogType.OK
+                    );
+                }
+            }
+        }
+
 
         private class EquipmentFilter
         {
