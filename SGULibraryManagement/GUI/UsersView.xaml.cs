@@ -3,6 +3,7 @@ using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.TextFields;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.DialogGUI;
+using SGULibraryManagement.GUI.ViewModels;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections;
@@ -26,9 +27,11 @@ namespace SGULibraryManagement.GUI
     public partial class UsersView : UserControl
     {
         private readonly AccountBUS userBUS = new();
+        private readonly RoleBUS roleBUS = new();
+
         private Action<UserFilter?>? searchDebounce;
 
-        public ObservableCollection<AccountDTO> Users { get; set; } = [];
+        public ObservableCollection<AccountViewModel> Users { get; set; } = [];
 
         public UsersView()
         {
@@ -39,7 +42,7 @@ namespace SGULibraryManagement.GUI
 
         private void Fetch()
         {
-            Users.ResetTo(userBUS.GetAll());
+            Users.ResetTo(userBUS.GetAllWithRole());
         }
 
         private void SetupComponent()
@@ -55,41 +58,42 @@ namespace SGULibraryManagement.GUI
             searchByComboBox.ItemsSource = Enum.GetValues<UserQueryOption>();
             searchByComboBox.SelectedIndex = 0;
 
-            statusComboBox.ItemsSource = new List<string>()
-            {
-                "All",
-                "Available",
-                "Not Available"
-            };
-            statusComboBox.SelectedIndex = 0;
+            List<RoleDTO> roles = [new RoleDTO() {
+                Id = -1,
+                Name = "All",
+                IsDeleted = false,
+            }];
+            roles.AddRange(roleBUS.GetAll());
+
+            roleComboBox.ItemsSource = roles;
+            roleComboBox.SelectedIndex = 0;
         }
 
         private UserFilter? GetFilter()
         {
-            //if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
-            //if (statusComboBox.SelectedItem is not string status) return null;
+            if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
+            if (roleComboBox.SelectedItem is not RoleDTO role) return null;
 
-            //return new UserFilter()
-            //{
-            //Query = searchField.Text,
-            //    UserQueryOption = queryOption,
-            //    Status = status
-            //};
-            return null;
+            return new UserFilter()
+            {
+                Query = searchField.Text,
+                UserQueryOption = queryOption,
+                Role = role
+            };
         }
 
         private void OnApplyFilter(UserFilter? filter)
         {
-            //if (filter == null) return;
+            if (filter == null) return;
 
-            //var result = _userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
+            var result = userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
 
-            //if (filter.Status != "All")
-            //{
-            //    result = _userBUS.FilterByStatus(filter.Status == "Available", result);
-            //}
+            if (filter.Role is not null && filter.Role.Id != -1)
+            {
+                result = userBUS.FilterByRole(filter.Role, result);
+            }
 
-            //App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
+            App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
         }
 
         private void OnSearch(object sender, TextChangedEventArgs e)
@@ -106,13 +110,13 @@ namespace SGULibraryManagement.GUI
             OnApplyFilter(filter);
         }
 
-        private void OnStatusChanged(object sender, SelectionChangedEventArgs e)
+        private void OnRoleChanged(object sender, SelectionChangedEventArgs e)
         {
             UserFilter? filter = GetFilter();
             OnApplyFilter(filter);
         }
 
-        private void ActionColumn_OnEditClick(object sender, object model)
+        private void OnEditClick(object sender, object model)
         {
             Dialog dialog = new("Update user", new UserDialog("update"));
             dialog.ShowDialog();
@@ -126,26 +130,26 @@ namespace SGULibraryManagement.GUI
             Fetch();
         }
 
-        private void ActionColumn_OnViewClick(object sender, object model)
+        private void OnViewClick(object sender, object model)
         {
             Dialog dialog = new("View user", new UserDialog("view"));
             dialog.ShowDialog();
             Fetch();
         }
 
-        private async void ActionColumn_OnDeleteClick(object sender, object model)
+        private async void OnDeleteClick(object sender, object model)
         {
             if (model is not AccountDTO user) return;
 
             SimpleDialog dialog = new()
             {
-                Content = "Are you really want to delete this user ?",
-                Title = "Delete",
+                Content = $"Are you really want to delete {user.FullName} ?",
+                Title = $"Delete {user.FullName}",
                 Width = 400,
                 Height = 200
             };
 
-            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo);
             if (result == SimpleDialogResult.OK)
             {
                 userBUS.DeleteAccount(user.Username);
@@ -157,7 +161,7 @@ namespace SGULibraryManagement.GUI
         private class UserFilter
         {
             public string Query { get; set; } = string.Empty;
-            public string Status { get; set; } = "All";
+            public RoleDTO? Role { get; set; }
             public UserQueryOption UserQueryOption { get; set; }
         }
     }
