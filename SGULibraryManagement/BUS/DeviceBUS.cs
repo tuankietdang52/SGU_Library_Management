@@ -11,11 +11,11 @@ namespace SGULibraryManagement.BUS
     public class DeviceBUS
     {
         private readonly DeviceDAO DAO = new();
-        public List<DeviceDTO> Devices { get; private set; } = [];
+        private List<DeviceDTO> devices = [];
 
         public List<DeviceDTO> GetAll()
         {
-            return Devices = DAO.GetAll(true);
+            return devices = DAO.GetAll(true);
         }
 
         public DeviceDTO Create(DeviceDTO request)
@@ -33,19 +33,19 @@ namespace SGULibraryManagement.BUS
             return DAO.Delete(id);
         }
 
-        public List<DeviceDTO> FilterByQuery(string query, List<DeviceDTO>? list = null)
+        public List<DeviceDTO> FilterByQuery(string query, IEnumerable<DeviceDTO>? collection = null)
         {
-            var devices = list ?? Devices;
-            return [.. devices.Where(device => device.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase))];
+            var list = collection ?? devices;
+            return [.. list.Where(device => device.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase))];
         }
 
-        public List<DeviceDTO> FilterByStatus(bool isAvailable, List<DeviceDTO>? list = null)
+        public List<DeviceDTO> FilterByStatus(bool isAvailable, IEnumerable<DeviceDTO>? collection = null)
         {
-            var devices = list ?? Devices;
-            return [.. devices.Where(device => device.IsAvailable == isAvailable)];
+            var list = collection ?? devices;
+            return [.. list.Where(device => device.IsAvailable == isAvailable)];
         }
 
-        public List<DeviceDTO> SortBy(DeviceSort sort, List<DeviceDTO> list)
+        public List<DeviceDTO> SortBy(DeviceSort sort, IEnumerable<DeviceDTO> list)
         {
             return sort switch
             {
