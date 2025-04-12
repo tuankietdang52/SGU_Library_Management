@@ -6,23 +6,47 @@
              xmlns:local="clr-namespace:SGULibraryManagement.GUI"
              mc:Ignorable="d" d:DesignWidth="800" Height="530">
     <Grid>
-        <Canvas Margin="10, 10, 10, 10" VerticalAlignment="Top">
-            <TextBlock FontFamily="Arial" FontSize="32" Height="38" Text="Thông tin tài khoản" HorizontalAlignment="Left" VerticalAlignment="Center" Width="278" Canvas.Top="10" Canvas.Left="20"/>
-            <TextBlock FontFamily="Arial" FontSize="18" Text="Họ" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="119" RenderTransformOrigin="-1.8,-2.45" Canvas.Left="240"/>
-            <TextBox x:Name="txtHo" Width="200" FontSize="18" Canvas.Left="240" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBlock FontFamily="Arial" FontSize="18" Text="Tên" Canvas.Top="119" RenderTransformOrigin="-1.8,-2.45" Canvas.Left="490" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="txtTen" Width="200" FontSize="18" Canvas.Left="490" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBlock FontFamily="Arial" FontSize="18" Text="Email" Canvas.Top="323" RenderTransformOrigin="-1.8,-2.45" Canvas.Left="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBox x:Name="txtEmail" Width="200" FontSize="18" Canvas.Left="30" Canvas.Top="349" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Button x:Name="btnSave" Content="Lưu" Canvas.Left="240" Canvas.Top="200" VerticalAlignment="Top" FontFamily="Arial" FontSize="18" Width="100" Height="50" HorizontalAlignment="Center" Background="#33FF0000"/>
-            <TextBlock Canvas.Left="240" TextWrapping="Wrap" Text="Thông tin chung" Canvas.Top="90" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Arial" FontSize="18"/>
-            <TextBlock Canvas.Left="30" TextWrapping="Wrap" Text="Bảo mật" Canvas.Top="284" FontFamily="Arial" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBlock FontFamily="Arial" FontSize="18" Text="Mật khẩu" Canvas.Top="323" RenderTransformOrigin="-1.8,-2.45" Canvas.Left="270" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtPassword" Width="200" FontSize="18" Canvas.Left="270" Canvas.Top="349" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBlock FontFamily="Arial" FontSize="18" Text="Số điện thoại" Canvas.Top="323" RenderTransformOrigin="-1.8,-2.45" Canvas.Left="506" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtPhone" Width="200" FontSize="18" Canvas.Left="506" Canvas.Top="349" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button x:Name="btnEmail" Content="Đổi email" Canvas.Left="30" Canvas.Top="410" Width="100" Height="50" FontFamily="Arial" FontSize="18" Click="Button_Click" VerticalAlignment="Top" Background="#330010FF"/>
-            <Button x:Name="btnEmail_Copy" Content="Đổi mật khẩu" Canvas.Left="275" Canvas.Top="410" Width="145" Height="50" FontFamily="Arial" FontSize="18" Click="Button_Click" Background="#330010FF"/>
+        <Canvas Margin="10" VerticalAlignment="Top">
+
+          
+            <TextBlock FontFamily="Arial" FontSize="32" Text="Thông tin tài khoản"
+                   Canvas.Left="250" Canvas.Top="10" />
+
+          
+            <TextBlock FontFamily="Arial" FontSize="18" Text="Họ"
+                   Canvas.Left="150" Canvas.Top="80" />
+            <TextBox x:Name="txtHo" Width="200" FontSize="18"
+                 Canvas.Left="150" Canvas.Top="110" />
+
+        
+            <TextBlock FontFamily="Arial" FontSize="18" Text="Tên"
+                   Canvas.Left="400" Canvas.Top="80" />
+            <TextBox x:Name="txtTen" Width="200" FontSize="18"
+                 Canvas.Left="400" Canvas.Top="110" />
+
+         
+            <TextBlock FontFamily="Arial" FontSize="18" Text="Email"
+                   Canvas.Left="150" Canvas.Top="160" />
+            <TextBox x:Name="txtEmail" Width="450" FontSize="18"
+                 Canvas.Left="150" Canvas.Top="190" />
+
+        
+            <TextBlock FontFamily="Arial" FontSize="18" Text="Mật khẩu"
+                   Canvas.Left="150" Canvas.Top="240" />
+            <TextBox x:Name="txtPassword" Width="450" FontSize="18"
+                 Canvas.Left="150" Canvas.Top="270" />
+
+        
+            <TextBlock FontFamily="Arial" FontSize="18" Text="Số điện thoại"
+                   Canvas.Left="150" Canvas.Top="320" />
+            <TextBox x:Name="txtPhone" Width="450" FontSize="18"
+                 Canvas.Left="150" Canvas.Top="350" />
+
+     
+            <Button x:Name="btnSave" Content="Lưu" Width="100" Height="50"
+                FontFamily="Arial" FontSize="18" Background="#33FF0000"
+                Canvas.Left="300" Canvas.Top="420" Click="btnSave_Click"/>
+
         </Canvas>
     </Grid>
 </UserControl>

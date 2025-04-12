@@ -24,7 +24,10 @@ namespace SGULibraryManagement.BUS
         {
             return users = userDAO.GetAll(true);
         }
-
+        public AccountDTO? FindByUsername(string username)
+        {
+            return userDAO.FindByUsername(username);
+        }
         public AccountDTO CreateAccount(AccountDTO account)
         {
             return userDAO.Create(account);
