@@ -137,6 +137,30 @@ namespace SGULibraryManagement.DAO
 
             return false;
         }
+        public AccountDTO? FindByUsername(string username)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE username = @Username AND is_deleted = 0";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Username", username);
+                command.Prepare();
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return FetchData(reader);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+
+            return null;
+        }
         public bool Delete(long id)
         {
             return false;
