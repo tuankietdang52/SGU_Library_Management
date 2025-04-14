@@ -58,6 +58,35 @@ namespace SGULibraryManagement.DAO
 
             return [];
         }
+
+        public List<BorrowDevicesDTO> FindByDeviceId(long deviceId)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE device_id = {deviceId}";
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using var reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
         public BorrowDevicesDTO FindById(long id)
         {
             return null;

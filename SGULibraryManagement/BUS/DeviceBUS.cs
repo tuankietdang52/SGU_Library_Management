@@ -1,5 +1,6 @@
 ﻿using SGULibraryManagement.DAO;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,12 @@ namespace SGULibraryManagement.BUS
     {
         private readonly DeviceDAO DAO = new();
         private List<DeviceDTO> devices = [];
+        public Dictionary<long, int> DeviceBorrowQuantity;
+
+        public DeviceBUS()
+        {
+            DeviceBorrowQuantity = DAO.GetAllWithBorrowQuantity().ToDictionary(pair => pair.First.Id, pair => pair.Last);
+        }
 
         public List<DeviceDTO> GetAll()
         {

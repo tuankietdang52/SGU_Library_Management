@@ -81,6 +81,11 @@ namespace SGULibraryManagement.Components.TextFields
                 Text = textBox.Text;
                 TextChanged?.Invoke(sender, e);
             };
+            textBox.PreviewMouseDown += (sender, e) =>
+            {
+                textBox.Focus();
+                textBox.CaretIndex = textBox.Text.Length;
+            };
 
             clearButton.Click += (sender, e) =>
             {

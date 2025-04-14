@@ -8,13 +8,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SGULibraryManagement.BUS
 {
     public class AccountBUS
     {
-        private AccountDAO userDAO = new ();
-        private RoleBUS roleBUS = new();
+        private readonly AccountDAO userDAO = new ();
+        private readonly RoleBUS roleBUS = new();
 
         private List<AccountViewModel> users = [];
         private Dictionary<long, RoleDTO> roles = [];
@@ -34,16 +35,29 @@ namespace SGULibraryManagement.BUS
             roles = roleBUS.GetAll().ToDictionary(role => role.Id);
             var list = GetAll();
 
-            return users = [.. list.Select(user => new AccountViewModel()
-            {
-                Account = user,
-                Role = roles[user.IdRole]
+            return users = [.. list.Select(user => {
+                var role = roles[user.IdRole];
+                SolidColorBrush roleBg;
+
+                if (!Enum.TryParse(role.Name, out ERole eRole)) {
+                    roleBg = Brushes.Green;
+                }
+                else roleBg = roleBUS.RoleColors[eRole];
+
+                return new AccountViewModel()
+                {
+                    Account = user,
+                    Role = roles[user.IdRole],
+                    RoleBackgroundColor = roleBg
+                };
             })];
         }
+
         public AccountDTO? FindByUsername(string username)
         {
             return userDAO.FindByUsername(username);
         }
+
         public AccountDTO CreateAccount(AccountDTO account)
         {
             return userDAO.Create(account);

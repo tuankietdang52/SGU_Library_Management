@@ -68,6 +68,38 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
+        public List<Pair<DeviceDTO, int>> GetAllWithBorrowQuantity()
+        {
+            string query = "SELECT COUNT(device_id) AS borrow_quantity, devicess.* " +
+                           "FROM borrow_devices INNER JOIN devicess ON devicess.id = borrow_devices.device_id " +
+                           "GROUP BY device_id";
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                List<Pair<DeviceDTO, int>> result = [];
+
+                using var reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    int borrowQuantity = reader.GetInt32("borrow_quantity");
+                    result.Add(new(FetchData(reader), borrowQuantity));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
         public DeviceDTO Create(DeviceDTO request)
         {
             string query = $"INSERT INTO {TableName} (name, quantity, img, is_deleted, is_avaible) VALUES " +

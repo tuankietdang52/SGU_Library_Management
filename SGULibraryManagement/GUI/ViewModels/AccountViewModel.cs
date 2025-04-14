@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SGULibraryManagement.GUI.ViewModels
 {
@@ -11,5 +12,6 @@ namespace SGULibraryManagement.GUI.ViewModels
     {
         public required AccountDTO Account { get; set; }
         public required RoleDTO Role { get; set; }
+        public required SolidColorBrush RoleBackgroundColor { get; set; }
     }
 }

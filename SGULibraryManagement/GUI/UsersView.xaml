@@ -48,50 +48,44 @@
                 BorderBrush="Black"
                 CornerRadius="10, 10, 0, 0">
             <StackPanel>
-                <StackPanel Height="180">
-                    <StackPanel Height="70" 
-                                Orientation="Horizontal"
-                                Margin="20, 0">
-                        <TextBlock FontSize="20"
-                                   VerticalAlignment="Center"
-                                   Margin="0, 0, 20, 0">
-                            Search 
-                        </TextBlock>
-                        <textFields:TextField x:Name="searchField"
-                                              Height="35"
-                                              Width="500"
-                                              BorderThickness="1, 1, 0, 1"
-                                              TextChanged="OnSearch"
-                                              Placeholder="Type something..."
-                                              VerticalContentAlignment="Center">
-                        </textFields:TextField>
-                        <ComboBox x:Name="searchByComboBox"
-                                  Height="40"
-                                  Width="200"
-                                  BorderThickness="0, 1, 1, 1"
-                                  SelectionChanged="OnSearchByChanged"
-                                  VerticalAlignment="Center">
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Height="70" 
-                                Orientation="Horizontal"
-                                Margin="20, 0">
-                        <TextBlock FontSize="20"
-                                   VerticalAlignment="Center"
-                                   Margin="0, 0, 20, 0">
-                            Role
-                        </TextBlock>
-                        <ComboBox x:Name="roleComboBox"
-                                  Height="40"
-                                  Width="200"
-                                  VerticalAlignment="Center"
-                                  DisplayMemberPath="Name"
-                                  SelectedIndex="0"
-                                  SelectionChanged="OnRoleChanged">
-                        </ComboBox>
-                    </StackPanel>
+                <StackPanel Height="70"
+                            Orientation="Horizontal"
+                            Margin="20, 0">
+                    <TextBlock FontSize="20"
+                               VerticalAlignment="Center"
+                               Margin="0, 0, 20, 0">
+                        Search
+                    </TextBlock>
+                    <textFields:TextField x:Name="searchField"
+                                          Height="35"
+                                          Width="500"
+                                          BorderThickness="1, 1, 0, 1"
+                                          TextChanged="OnSearch"
+                                          Placeholder="Type something..."
+                                          VerticalContentAlignment="Center">
+                    </textFields:TextField>
+                    <ComboBox x:Name="searchByComboBox"
+                              Height="40"
+                              Width="200"
+                              BorderThickness="0, 1, 1, 1"
+                              SelectionChanged="OnSearchByChanged"
+                              VerticalAlignment="Center">
+                    </ComboBox>
+                    <Viewbox Width="50"></Viewbox>
+                    <TextBlock FontSize="20"
+                               VerticalAlignment="Center"
+                               Margin="0, 0, 20, 0">
+                            Role:
+                    </TextBlock>
+                    <ComboBox x:Name="roleComboBox"
+                              Height="40"
+                              Width="200"
+                              VerticalAlignment="Center"
+                              DisplayMemberPath="Name"
+                              SelectedIndex="0"
+                              SelectionChanged="OnRoleChanged">
+                    </ComboBox>
                 </StackPanel>
-
                 <DataGrid x:Name="userTable" 
                           Width="{Binding Source={StaticResource AppContentWidth}, 
                                           Converter={StaticResource SubtractConverter}, 
@@ -117,31 +111,12 @@
                                     <Border CornerRadius="10"
                                             Padding="5"
                                             Margin="0, 10, 0, 10"
-                                            Background="Red"
+                                            Background="{Binding RoleBackgroundColor}"
                                             BorderThickness="1">
-                                        <!--<Border.Style>
-                                            <Style TargetType="Border">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IdRole}" Value="1">
-                                                        <Setter Property="Background" Value="Red"></Setter>
-                                                        <Setter Property="Width" Value="70"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>-->
                                         <TextBlock VerticalAlignment="Center"
                                                    HorizontalAlignment="Center"
                                                    Text="{Binding Role.Name}"
                                                    Foreground="White">
-                                            <!--<TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Role.Name}" Value="1">
-                                                            <Setter Property="TextBlock.Text" Value="Admin"></Setter>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>-->
                                         </TextBlock>
                                     </Border>
                                 </DataTemplate>
@@ -155,7 +130,6 @@
                                                          OnEditClick="OnEditClick"
                                                          OnViewClick="OnViewClick"
                                                          OnDeleteClick="OnDeleteClick">
-                                        
                                     </tables:ActionColumn>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.LoadingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             mc:Ignorable="d" 
+             Height="{StaticResource AppHeight}"
+             Width="{StaticResource AppWidth}">
+    <UserControl.Resources>
+        <Storyboard x:Key="LoadingFadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             Storyboard.TargetName="loadingContainer"
+                             From="0"
+                             To="1"
+                             Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="LoadingFadeOut">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             Storyboard.TargetName="loadingContainer"
+                             From="1"
+                             To="0"
+                             Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    
+    <Grid x:Name="loadingContainer"
+          Background="{StaticResource LoadingBackground}"
+          Opacity="0">
+        <Image Source="/Resources/Images/Books.png"
+               Width="100"
+               Height="100"
+               RenderOptions.BitmapScalingMode="HighQuality">
+        </Image>
+    </Grid>
+</UserControl>

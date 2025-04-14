@@ -1,6 +1,8 @@
 ﻿using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.SideMenu;
 using SGULibraryManagement.Config;
+using SGULibraryManagement.DTO;
+using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,51 +18,65 @@ namespace SGULibraryManagement.GUI;
 /// </summary>
 public partial class MainWindow : FluentWindow
 {
-    private UserControl? currentContent;
     public static MainWindow? Instance { get; private set; }
 
     public MainWindow()
     {
         InitializeComponent();
-        Navigate(SideMenuHomeItem, null!);
-
         Instance ??= this;
+
+        ShowLogin();
     }
 
-    private void Navigate(object sender, MouseButtonEventArgs e)
+    private void ShowLogin()
     {
-        SideMenuItem item = (SideMenuItem)sender;
+        var loginView = new LoginView();
+        loginView.LoginSuccess += OnLoginSuccess;
+        loginView.Name = "loginView";
 
-        if (currentContent == item.ContentView) return;
-
-        OnChangeContent();
-        item.IsSelected = true;
-
-        currentContent = item.ContentView;
-        content.Navigate(currentContent);
-
-        PlayNavigateAnimation();
+        windowContent.Content = loginView;
     }
 
-    private void OnChangeContent()
+    public async void Logout()
     {
-        var list = sideMenu.Children;
-
-        foreach (var child in list)
+        ShowLoadingView(() =>
         {
-            if (child is not SideMenuItem) continue;
-            var sideMenuItem = (SideMenuItem)child;
-
-            sideMenuItem.IsSelected = false;
-        }
+            ShowLogin();
+            AccountManager.CurrentUser = null;
+        });
+        await Task.Delay(1000);
+        HideLoadingView();
     }
 
-    private void PlayNavigateAnimation()
+    private async void OnLoginSuccess(object sender, AccountDTO account)
     {
-        if (FindResource("ContentFadeIn") is Storyboard storyboard)
+        AccountManager.CurrentUser = account;
+        MainView view = new();
+
+        ShowLoadingView(() => windowContent.Content = view);
+        await Task.Delay(1000);
+        HideLoadingView();
+    }
+
+    public void ShowLoadingView(Action? loadingTask = null)
+    {
+        if (loadingTask is not null)
         {
-            storyboard.Begin();
+            void LoadingTask(object? sender, EventArgs e)
+            {
+                loadingTask();
+                loadingView.ShowCompleted -= LoadingTask;
+            }
+
+            loadingView.ShowCompleted += LoadingTask;
         }
+
+        loadingView.Show();
+    }
+
+    public void HideLoadingView()
+    {
+        loadingView.Hide();
     }
 
     public async Task<SimpleDialogResult> ShowSimpleDialogAsync(SimpleDialog simpleDialog, SimpleDialogType options, ContentPresenter? host = null)
@@ -81,6 +97,7 @@ public partial class MainWindow : FluentWindow
         {
             case SimpleDialogType.OK:
                 dialog.CloseButtonText = "OK";
+                dialog.CloseButtonAppearance = ControlAppearance.Primary;
                 firstChoice = SimpleDialogResult.OK;
                 secondChoice = SimpleDialogResult.OK;
                 break;

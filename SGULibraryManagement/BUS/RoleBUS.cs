@@ -5,17 +5,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SGULibraryManagement.BUS
 {
     public class RoleBUS
     {
-        private RoleDAO RoleDAO = new();
+        private readonly RoleDAO RoleDAO = new();
         public List<RoleDTO> Roles { get; private set; } = [];
+
+        public Dictionary<ERole, SolidColorBrush> RoleColors { get; set; } = [];
+
+        public RoleBUS()
+        {
+            InitializeRoleColors();
+        }
+
+        private void InitializeRoleColors()
+        {
+            var app = App.Instance!;
+            if (app.Resources["ErrorColor"] is not SolidColorBrush adminColor)
+            {
+                adminColor = Brushes.Red;
+            }
+            if (app.Resources["Turquoise91"] is not SolidColorBrush userColor)
+            {
+                userColor = Brushes.Blue;
+            }
+
+            RoleColors = new() {
+                { ERole.Admin, adminColor },
+                { ERole.User, userColor }
+            };
+        }
+
         public List<RoleDTO> GetAll()
         {
             return Roles = RoleDAO.GetAll(true);
         }
+    }
 
+    public enum ERole
+    {
+        Admin,
+        User
     }
 }

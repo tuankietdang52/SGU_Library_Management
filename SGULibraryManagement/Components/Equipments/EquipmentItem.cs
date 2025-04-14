@@ -27,6 +27,12 @@ namespace SGULibraryManagement.Components.Equipments
                                       typeof(EquipmentItem),
                                       new PropertyMetadata(null));
 
+        public static readonly DependencyProperty RemainQuantityProperty =
+         DependencyProperty.Register(nameof(RemainQuantity),
+                                     typeof(int),
+                                     typeof(EquipmentItem),
+                                     new PropertyMetadata(0));
+
         public static readonly DependencyProperty AvailableColorProperty =
           DependencyProperty.Register(nameof(AvailableColor),
                                       typeof(SolidColorBrush),
@@ -43,6 +49,12 @@ namespace SGULibraryManagement.Components.Equipments
                 SetValue(ModelProperty, value);
                 AvailableColor = value.IsAvailable ? Brushes.Green : Brushes.Red;
             }
+        }
+
+        public int RemainQuantity
+        {
+            get => (int)GetValue(RemainQuantityProperty);
+            set => SetValue(RemainQuantityProperty, value);
         }
 
         public SolidColorBrush AvailableColor

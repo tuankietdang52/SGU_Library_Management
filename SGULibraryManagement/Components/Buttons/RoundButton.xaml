@@ -13,8 +13,10 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="10, 10, 10, 10">
                         <ContentPresenter x:Name="content"
+                                          TextElement.FontSize="{TemplateBinding FontSize}"
                                           HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center" />
+                                          VerticalAlignment="Center">
+                        </ContentPresenter>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">

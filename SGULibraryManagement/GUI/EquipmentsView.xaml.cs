@@ -45,12 +45,15 @@ namespace SGULibraryManagement.GUI
 
             foreach (var item in devices)
             {
+                if (!BUS.DeviceBorrowQuantity.TryGetValue(item.Id, out int borrowQuantity)) borrowQuantity = 0;
+
                 EquipmentItem equipmentItem = new()
                 {
                     Model = item,
                     Margin = new Thickness(0, 0, 15, 15),
                     BorderBrush = Brushes.LightGray,
                     BorderThickness = new Thickness(1),
+                    RemainQuantity = item.Quantity - borrowQuantity
                 };
 
                 equipmentItem.OnEdit += OnEdit;

@@ -3,78 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
              xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
              mc:Ignorable="d"
              Height="500" Width="800">
     <Grid Margin="12,0,-12,0">
-        <TextBlock x:Name="lbTitle" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="24" Margin="283,-1,0,0">
+        <TextBlock x:Name="lbTitle" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="283,-1,0,0">
             Thêm thành viên
         </TextBlock>
         <TextBlock
                  Height="20"
                  VerticalAlignment="Top"
-                 Margin="139,67,548,0" FontFamily="Arial" FontSize="18" Text="Họ và Tên"/>
+                 Margin="139,67,548,0" FontSize="18" Text="Họ và Tên"/>
         <textFields:TextField x:Name="txtHo"
                               Height="35"
                               VerticalAlignment="Top"
                               VerticalContentAlignment="Center"
-                              Margin="279,59,352,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="15"
+                              Margin="279,59,352,0" TextBlock.FontSize="15"
                               Placeholder="Nguyen Nhat"/>
         <TextBlock 
             Height="20"
             VerticalAlignment="Top"
-            Margin="139,122,532,0" FontFamily="Arial" FontSize="18" Text="Số điện thoại"/>
+            Margin="139,122,532,0" FontSize="18" Text="Số điện thoại"/>
         <textFields:TextField x:Name="txtSdt" 
             Height="35"
             FontSize="15"    
             VerticalContentAlignment="Center"                  
             VerticalAlignment="Top"
-            Margin="279,114,217,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="15"
+            Margin="279,114,217,0" TextBlock.FontSize="15"
             Placeholder="039999999"/>
         <TextBlock 
             Height="20"
             VerticalAlignment="Top"
-            Margin="139,177,543,0" FontFamily="Arial" FontSize="18" Text="Email"/>
+            Margin="139,177,543,0" FontSize="18" Text="Email"/>
         <textFields:TextField x:Name="txtEmail" 
             Height="35"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Placeholder="abc@gmail.com"
-            Margin="279,169,217,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="15"/>
+            Margin="279,169,217,0" TextBlock.FontSize="15"/>
         <TextBlock 
             Height="20"
             VerticalAlignment="Top"
-            Margin="137,233,545,0" FontFamily="Arial" FontSize="18" Text="Tài khoản"/>
+            Margin="137,233,545,0" FontSize="18" Text="Tài khoản"/>
         <textFields:TextField x:Name="txtTaiKhoan" 
             Height="35"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Placeholder="admin123"
-            Margin="278,224,217,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="15"/>
+            Margin="278,224,217,0" TextBlock.FontSize="15"/>
         <TextBlock 
             Height="20"
             VerticalAlignment="Top"
-            Margin="139,292,543,0" FontFamily="Arial" FontSize="18" Text="Mật khẩu"></TextBlock>
-        <PasswordBox x:Name="txtMatKhau" 
+            Margin="139,292,543,0" FontSize="18" Text="Mật khẩu"></TextBlock>
+        <ui:PasswordBox x:Name="txtMatKhau" 
             Height="35"
             VerticalAlignment="Top"
-            Margin="278,284,217,0" FontFamily="Arial" FontSize="18"></PasswordBox>
-        <Button x:Name="btn" Content="Thêm" Margin="457,409,0,0" VerticalAlignment="Top" Width="110" Height="42" FontFamily="Arial" FontSize="20" FontWeight="Bold" Click="btn_Click"></Button>
+            Margin="278,284,217,0" FontSize="18"></ui:PasswordBox>
+        <Button x:Name="btn" Content="Thêm" Margin="457,409,0,0" VerticalAlignment="Top" Width="110" Height="42" FontSize="20" FontWeight="Bold" Click="btn_Click"></Button>
         <textFields:TextField x:Name="txtTen" 
             Height="35"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Placeholder="Quang"
-            Margin="453,59,218,0" TextBlock.FontFamily="Arial" TextBlock.FontSize="15"/>
+            Margin="453,59,218,0" TextBlock.FontSize="15"/>
         <TextBlock 
             Height="20"
             VerticalAlignment="Top"
-            Margin="138,353,544,0" FontFamily="Arial" FontSize="18" Text="Vai trò"/>
+            Margin="138,353,544,0" FontSize="18" Text="Vai trò"/>
         <ComboBox x:Name="cbxQuyen" 
             Height="35"
             VerticalAlignment="Top"
-            Margin="278,344,217,0" FontFamily="Arial" FontSize="18">
+            Margin="278,344,217,0" FontSize="18">
         </ComboBox>
     </Grid>
 </UserControl>

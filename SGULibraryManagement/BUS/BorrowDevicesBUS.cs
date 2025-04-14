@@ -17,5 +17,10 @@ namespace SGULibraryManagement.BUS
         {
             return dao.GetAll(true);
         }
+
+        public List<BorrowDevicesDTO> FindByDevice(DeviceDTO device)
+        {
+            return dao.FindByDeviceId(device.Id);
+        }
     }
 }

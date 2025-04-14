@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="Resources\Images\avatae.png" />
     <None Remove="Resources\Images\Books.png" />
+    <None Remove="Resources\Images\loginBg.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,9 @@
     </Resource>
     <Resource Include="Resources\Images\avatae.png" />
     <Resource Include="Resources\Images\Books.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\loginBg.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

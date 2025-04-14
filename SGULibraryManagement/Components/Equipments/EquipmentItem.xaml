@@ -111,10 +111,17 @@
                                                    FontSize="15"
                                                    Canvas.Left="10">
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Model.Quantity, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   FontSize="15"
-                                                   Canvas.Right="10">
-                                        </TextBlock>
+                                        <StackPanel Canvas.Right="10" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding RemainQuantity, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       FontSize="15">
+                                            </TextBlock>
+                                            <TextBlock Text="/"
+                                                       FontSize="15">
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Model.Quantity, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       FontSize="15">
+                                            </TextBlock>
+                                        </StackPanel>
                                     </Canvas>
                                     <Canvas Height="30">
                                         <TextBlock Canvas.Left="10"

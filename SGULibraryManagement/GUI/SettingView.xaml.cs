@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SGULibraryManagement.BUS;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.Helper;
 
 namespace SGULibraryManagement.GUI
 {
@@ -25,15 +26,12 @@ namespace SGULibraryManagement.GUI
         private readonly AccountBUS accountBUS = new();
         private AccountDTO? currentUser;
 
-        public SettingView() : this("quang")
-        {
-        }
-
-        public SettingView(string username)
+        public SettingView()
         {
             InitializeComponent();
-            LoadData(username);
+            LoadData();
         }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (currentUser == null)
@@ -64,9 +62,9 @@ namespace SGULibraryManagement.GUI
         {
 
         }
-        private void LoadData(string username)
+        private void LoadData()
         {
-            currentUser = accountBUS.FindByUsername(username);
+            currentUser = AccountManager.CurrentUser;
 
             if (currentUser != null)
             {

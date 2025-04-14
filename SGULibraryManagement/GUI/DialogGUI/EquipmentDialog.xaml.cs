@@ -69,7 +69,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             catch { return null; }
         }
 
-        private async void OnSave(object sender, RoutedEventArgs e)
+        private void OnSave(object sender, RoutedEventArgs e)
         {
             var model = FetchData();
             if (model == null)

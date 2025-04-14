@@ -8,6 +8,7 @@
                  xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
                  WindowStartupLocation="CenterScreen"
                  Icon="/Resources/Images/Books.png"
+                 FontFamily="Calibri Light"
                  ResizeMode="NoResize"
                  Height="200"
                  Width="200">
