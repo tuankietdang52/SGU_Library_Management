@@ -71,7 +71,8 @@
                             </ui:PasswordBox>
                             <Viewbox Height="50"></Viewbox>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <buttons:RoundButton Width="120" 
+                                <buttons:RoundButton x:Name="loginButton"
+                                                     Width="120" 
                                                      Height="40"
                                                      Foreground="White"
                                                      CornerRadius="20"

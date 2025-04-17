@@ -10,38 +10,104 @@
              xmlns:fileChooser="clr-namespace:SGULibraryManagement.Components.FileChoosers"
              mc:Ignorable="d"
              Width="400" 
-             Height="600"
+             Height="650"
              Padding="10">
-    <StackPanel>
-        <fileChooser:ImageChooser x:Name="imageChooserControl" OnImageChoose="OnImageChoose" />
-        <Viewbox Height="10"></Viewbox>
-        
-        <TextBlock FontWeight="Bold">Name</TextBlock>
-        <textFields:TextField x:Name="equipmentNameField"
-                              Height="40"
-                              VerticalContentAlignment="Center">
-        </textFields:TextField>
-        <Viewbox Height="10"></Viewbox>
-        
-        <TextBlock FontWeight="Bold">Quantity</TextBlock>
-        <ui:NumberBox x:Name="quantityField"
-                      Minimum="0" 
-                      Height="40">
-        </ui:NumberBox>
-        <Viewbox Height="10"></Viewbox>
-        
-        <TextBlock FontWeight="Bold">Description</TextBlock>
-        <ui:TextBox Height="100" TextWrapping="Wrap"></ui:TextBox>
-        <Viewbox Height="30"></Viewbox>
-        
-        <buttons:RoundButton x:Name="saveButton"
-                             Background="{StaticResource Blue74}"
-                             Height="50"
-                             CornerRadius="10"
-                             Foreground="White"
-                             HoverBackgroundColor="{StaticResource Blue90}"
-                             Content="Create"
-                             Click="OnSave">
-        </buttons:RoundButton>
-    </StackPanel>
+    <Grid>
+        <StackPanel x:Name="editableDialog">
+            <fileChooser:ImageChooser x:Name="imageChooserControl" OnImageChoose="OnImageChoose" />
+            <Viewbox Height="10"></Viewbox>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold"
+                           VerticalAlignment="Center">
+                    Status
+                </TextBlock>
+                <Viewbox Width="10"></Viewbox>
+                <ComboBox x:Name="statusCb"
+                          Height="40"
+                          Width="150">
+                </ComboBox>
+            </StackPanel>
+            <Viewbox Height="10"></Viewbox>
+
+            <TextBlock FontWeight="Bold">Name</TextBlock>
+            <textFields:TextField x:Name="equipmentNameField"
+                                  Height="40"
+                                  VerticalContentAlignment="Center">
+            </textFields:TextField>
+            <Viewbox Height="10"></Viewbox>
+
+            <TextBlock FontWeight="Bold">Quantity</TextBlock>
+            <ui:NumberBox x:Name="quantityField"
+                          Minimum="0" 
+                          Height="40">
+            </ui:NumberBox>
+            <Viewbox Height="10"></Viewbox>
+
+            <TextBlock FontWeight="Bold">Description</TextBlock>
+            <ui:TextBox x:Name="descriptionField"
+                        Height="100"
+                        TextWrapping="Wrap">
+            </ui:TextBox>
+            <Viewbox Height="30"></Viewbox>
+
+            <buttons:RoundButton x:Name="saveButton"
+                                 Background="{StaticResource Blue74}"
+                                 Height="50"
+                                 CornerRadius="10"
+                                 Foreground="White"
+                                 HoverBackgroundColor="{StaticResource Blue90}"
+                                 Content="Create"
+                                 Click="OnSave">
+            </buttons:RoundButton>
+        </StackPanel>
+        <StackPanel x:Name="nonEditableDialog"
+                    Visibility="Collapsed">
+            <ui:Image x:Name="image"
+                      Height="200"
+                      Width="200"
+                      CornerRadius="10"
+                      BorderBrush="Black"
+                      BorderThickness="1">
+            </ui:Image>
+            <Viewbox Height="10"></Viewbox>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold"
+                           VerticalAlignment="Center">
+                    Status
+                </TextBlock>
+                <Viewbox Width="10"></Viewbox>
+                <textFields:TextLabel x:Name="statusLabel"
+                                      Height="30"
+                                      CornerRadius="8"
+                                      BorderThickness="1"
+                                      Foreground="White">
+                </textFields:TextLabel>
+            </StackPanel>
+            <Viewbox Height="10"></Viewbox>
+            <TextBlock FontWeight="Bold">Name</TextBlock>
+            <TextBox x:Name="equipmentNameTB"
+                     Height="40"
+                     IsEnabled="False"
+                     Foreground="Black">
+            </TextBox>
+            <Viewbox Height="10"></Viewbox>
+
+            <TextBlock FontWeight="Bold">Quantity</TextBlock>
+            <TextBox x:Name="quantityTB"
+                       Height="40"
+                       IsEnabled="False"
+                       Foreground="Black">
+            </TextBox>
+            <Viewbox Height="10"></Viewbox>
+
+            <TextBlock FontWeight="Bold">Description</TextBlock>
+            <TextBox x:Name="descriptionTB"
+                     IsEnabled="False"
+                     Foreground="Black"
+                     Height="100"
+                     TextWrapping="Wrap">
+            </TextBox>
+        </StackPanel>
+    </Grid>
 </UserControl>

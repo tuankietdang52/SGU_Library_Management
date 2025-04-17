@@ -116,16 +116,9 @@ namespace SGULibraryManagement.GUI
             OnApplyFilter(filter);
         }
 
-        private void OnEditClick(object sender, object model)
-        {
-            Dialog dialog = new("Update user", new UserDialog("update", (AccountDTO)model));
-            dialog.ShowDialog();
-            Fetch();
-        }
-
         private void AddUserAction(object sender, RoutedEventArgs e)
         {
-            Dialog dialog = new("Add new User", new UserDialog("create", null));
+            Dialog dialog = new("Add new User", new UserDialog());
             dialog.ShowDialog();
             Fetch();
 
@@ -133,7 +126,14 @@ namespace SGULibraryManagement.GUI
 
         private void OnViewClick(object sender, object model)
         {
-            Dialog dialog = new("View user", new UserDialog("view", (AccountDTO)model));
+            Dialog dialog = new("View user", new UserDialog(EDialogType.View, (AccountDTO)model));
+            dialog.ShowDialog();
+            Fetch();
+        }
+
+        private void OnEditClick(object sender, object model)
+        {
+            Dialog dialog = new("Update user", new UserDialog(EDialogType.Edit, (AccountDTO)model));
             dialog.ShowDialog();
             Fetch();
         }
@@ -151,11 +151,12 @@ namespace SGULibraryManagement.GUI
             };
 
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo);
-            if (result == SimpleDialogResult.OK)
+            if (result == SimpleDialogResult.Yes)
             {
-                userBUS.DeleteAccount(user.Username);
+                userBUS.DeleteAccount(user.Id);
             }
             else return;
+
             Fetch();
         }
 

@@ -14,7 +14,7 @@ namespace SGULibraryManagement.DAO
     {
         private MySqlConnection Connection => MySqlConnector.Instance?.Connection!;
 
-        public string TableName { get; } = "devicess";
+        public string TableName { get; } = "devices";
 
         public DeviceDAO()
         {
@@ -29,14 +29,32 @@ namespace SGULibraryManagement.DAO
                 Name = reader.GetString("name"),
                 Quantity = reader.GetInt32("quantity"),
                 ImageSource = reader.GetString("img"),
+                Description = reader.GetString("description"),
                 IsDeleted = reader.GetBoolean("is_deleted"),
-                IsAvailable = reader.GetBoolean("is_avaible")
+                IsAvailable = reader.GetBoolean("is_available")
             };
         }
 
         public DeviceDTO FindById(long id)
         {
-            throw new NotImplementedException();
+            string query = $"SELECT * FROM {TableName} WHERE id = {id}";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                using var reader = command.ExecuteReader();
+
+                if (reader.Read()) return FetchData(reader);
+                else return null!;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
         }
 
         public List<DeviceDTO> GetAll(bool isActive)
@@ -46,7 +64,7 @@ namespace SGULibraryManagement.DAO
             
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
                 List<DeviceDTO> result = [];
@@ -70,13 +88,13 @@ namespace SGULibraryManagement.DAO
 
         public List<Pair<DeviceDTO, int>> GetAllWithBorrowQuantity()
         {
-            string query = "SELECT COUNT(device_id) AS borrow_quantity, devicess.* " +
-                           "FROM borrow_devices INNER JOIN devicess ON devicess.id = borrow_devices.device_id " +
+            string query = $"SELECT COUNT(device_id) AS borrow_quantity, {TableName}.* " +
+                           $"FROM borrow_devices INNER JOIN {TableName} ON {TableName}.id = borrow_devices.device_id " +
                            "GROUP BY device_id";
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
                 List<Pair<DeviceDTO, int>> result = [];
@@ -102,13 +120,15 @@ namespace SGULibraryManagement.DAO
 
         public DeviceDTO Create(DeviceDTO request)
         {
-            string query = $"INSERT INTO {TableName} (name, quantity, img, is_deleted, is_avaible) VALUES " +
-                           $"('{request.Name}', {request.Quantity}, '{request.ImageSource}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+            string query = $@"INSERT INTO {TableName} (name, quantity, img, description, is_deleted, is_available) VALUES 
+('{request.Name}', {request.Quantity}, '{request.ImageSource}', 
+'{request.Description}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+
             Logger.Log($"Query: {query}");
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
                 command.ExecuteNonQuery();
@@ -129,14 +149,15 @@ namespace SGULibraryManagement.DAO
                            $"name = '{request.Name}', " +
                            $"quantity = {request.Quantity}, " +
                            $"img = '{request.ImageSource}', " +
+                           $"description = '{request.Description}', " +
                            $"is_deleted = {(request.IsDeleted ? 1 : 0)}, " +
-                           $"is_avaible = {(request.IsAvailable ? 1 : 0)} " +
+                           $"is_available = {(request.IsAvailable ? 1 : 0)} " +
                            $"WHERE id = {id}";
             Logger.Log($"Query: {query}");
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();
@@ -157,7 +178,7 @@ namespace SGULibraryManagement.DAO
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();

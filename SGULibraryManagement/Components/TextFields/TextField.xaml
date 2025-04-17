@@ -22,6 +22,7 @@
                                      FontWeight="{TemplateBinding FontWeight}"
                                      Foreground="{TemplateBinding Foreground}"
                                      Text="{TemplateBinding Text}"
+                                     IsEnabled="{TemplateBinding IsEnabled}"
                                      Padding="10, 0, 30, 0"
                                      OverridesDefaultStyle="True"
                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -58,6 +59,9 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Text, ElementName=textBox}" Value="">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEnabled, ElementName=textBox}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"></Setter>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

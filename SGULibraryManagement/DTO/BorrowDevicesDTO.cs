@@ -9,7 +9,7 @@ namespace SGULibraryManagement.DTO
     public class BorrowDevicesDTO
     {
         public long Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        public long UserId { get; set; }
         public long DeviceId { get; set; }
         public DateTime CreateAt {  get; set; }
         public int Quantity { get; set; }

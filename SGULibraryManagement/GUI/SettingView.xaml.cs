@@ -45,9 +45,8 @@ namespace SGULibraryManagement.GUI
             currentUser.LastName = txtTen.Text.Trim();
             currentUser.Password = txtPassword.Text.Trim();
             currentUser.Phone = txtPhone.Text.Trim();
-            
 
-            bool success = accountBUS.UpdateAccount(currentUser);
+            bool success = accountBUS.UpdateAccount(currentUser.Id, currentUser);
 
             if (success)
             {

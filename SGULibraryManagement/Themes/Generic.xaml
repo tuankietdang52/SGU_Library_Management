@@ -9,6 +9,7 @@
         <ResourceDictionary Source="/Components/Buttons/RoundButton.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Buttons/TextButton.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/TextFields/TextField.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Components/TextFields/TextLabel.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Dropdown/DropdownMenu.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Equipments/EquipmentItem.xaml"></ResourceDictionary>
         <ResourceDictionary Source="/Components/Tables/ActionColumn.xaml"></ResourceDictionary>

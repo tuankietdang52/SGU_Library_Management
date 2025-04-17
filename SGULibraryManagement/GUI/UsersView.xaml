@@ -102,23 +102,21 @@
                           RowHeaderWidth="30"
                           ItemsSource="{Binding Users}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Tài khoản" Binding="{Binding Account.Username}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Họ Tên" Binding="{Binding Account.FullName}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Số điện thoại" Binding="{Binding Account.Phone}"></DataGridTextColumn>
-                        <DataGridTemplateColumn Header="Vai trò">
+                        <DataGridTextColumn Header="Id" Width="100" Binding="{Binding Account.Id}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Username" Binding="{Binding Account.Username}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Fullname" Binding="{Binding Account.FullName}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Phone" Binding="{Binding Account.Phone}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Account.Email}"></DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Role">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border CornerRadius="10"
-                                            Padding="5"
-                                            Margin="0, 10, 0, 10"
-                                            Background="{Binding RoleBackgroundColor}"
-                                            BorderThickness="1">
-                                        <TextBlock VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   Text="{Binding Role.Name}"
-                                                   Foreground="White">
-                                        </TextBlock>
-                                    </Border>
+                                    <textFields:TextLabel CornerRadius="8"
+                                                          BorderThickness="1"
+                                                          Background="{Binding RoleBackgroundColor}"
+                                                          Margin="0, 10"
+                                                          Text="{Binding Role.Name}"
+                                                          Foreground="White">
+                                    </textFields:TextLabel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

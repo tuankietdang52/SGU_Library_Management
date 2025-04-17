@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -69,6 +70,11 @@ namespace SGULibraryManagement.Components.TextFields
             set => SetValue(CornerRadiusProperty, value);
         }
 
+        public bool AcceptNumberOnly { get; set; } = false;
+        public bool IsEmailField { get; set; } = false;
+
+        private Brush? initBorderBrush;
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -76,21 +82,52 @@ namespace SGULibraryManagement.Components.TextFields
             if (GetTemplateChild("clearButton") is not RoundButton clearButton) return;
             if (GetTemplateChild("textBox") is not TextBox textBox) return;
 
+            initBorderBrush = BorderBrush;
+            SetupTextBox(textBox);
+
+            clearButton.Click += (sender, e) =>
+            {
+                textBox.Clear();
+            };
+        }
+
+        private void SetupTextBox(TextBox textBox)
+        {
             textBox.TextChanged += (sender, e) =>
             {
                 Text = textBox.Text;
                 TextChanged?.Invoke(sender, e);
             };
+
             textBox.PreviewMouseDown += (sender, e) =>
             {
                 textBox.Focus();
                 textBox.CaretIndex = textBox.Text.Length;
             };
 
-            clearButton.Click += (sender, e) =>
+            textBox.PreviewTextInput += (sender, e) =>
             {
-                textBox.Clear();
+                if (AcceptNumberOnly) ApplyNumberOnlyFormat(sender, e);
             };
+
+            textBox.LostFocus += (sender, e) =>
+            {
+                if (IsEmailField) CheckEmailFormat(textBox);
+            };
+        }
+
+        private void ApplyNumberOnlyFormat(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Regex.IsMatch(e.Text, @"^[0-9]+$");
+        }
+
+        private void CheckEmailFormat(TextBox textBox)
+        {
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            bool isValid = Regex.IsMatch(textBox.Text, pattern);
+
+            if (!isValid) textBox.BorderBrush = Brushes.Red;
+            else textBox.BorderBrush = initBorderBrush;
         }
 
         static TextField()

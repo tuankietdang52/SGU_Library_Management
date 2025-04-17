@@ -163,6 +163,26 @@
                                               SelectionChanged="OnSort">
                                         <ComboBoxItem>
                                             <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Id</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf062;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Id</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf063;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center">Name</TextBlock>
                                                 <Viewbox Width="5"></Viewbox>
                                                 <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"

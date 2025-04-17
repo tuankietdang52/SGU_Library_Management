@@ -30,6 +30,11 @@ namespace SGULibraryManagement.BUS
             return userDAO.GetAll(true);
         }
 
+        public AccountDTO FindById(long id)
+        {
+            return userDAO.FindById(id);
+        }
+
         public List<AccountViewModel> GetAllWithRole()
         {
             roles = roleBUS.GetAll().ToDictionary(role => role.Id);
@@ -63,13 +68,14 @@ namespace SGULibraryManagement.BUS
             return userDAO.Create(account);
         }
 
-        public bool UpdateAccount(AccountDTO account)
+        public bool UpdateAccount(long id, AccountDTO account)
         {
-            return userDAO.Update(11, account);
+            return userDAO.Update(id, account);
         }
-        public bool DeleteAccount(string username)
+
+        public bool DeleteAccount(long id)
         {
-            return userDAO.DeleteV2(username);
+            return userDAO.Delete(id);
         }
 
         public List<AccountViewModel> FilterByQuery(string query, UserQueryOption queryOption, IEnumerable<AccountViewModel>? collection = null)
@@ -80,6 +86,7 @@ namespace SGULibraryManagement.BUS
                 UserQueryOption.Username => [.. list.Where(user => user.Account.Username.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 UserQueryOption.Fullname => [.. list.Where(user => user.Account.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 UserQueryOption.Phone => [.. list.Where(user => user.Account.Phone.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Email => [.. list.Where(user => user.Account.Email.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 _ => []
             };
         }
@@ -95,6 +102,7 @@ namespace SGULibraryManagement.BUS
     {
         Username,
         Fullname,
-        Phone
+        Phone,
+        Email
     }
 }

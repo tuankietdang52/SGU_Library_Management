@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using SGULibraryManagement.Components.Dialogs;
+using SGULibraryManagement.GUI;
 
 
 namespace SGULibraryManagement.Components.FileChoosers
@@ -23,7 +25,41 @@ namespace SGULibraryManagement.Components.FileChoosers
     public partial class ImageChooser : UserControl
     {
         public event OnImageChooseHandler? OnImageChoose;
+        public ContentPresenter? PopupHost { get; set; }
 
+        public CornerRadius CornerRadius
+        {
+            get => imageChooserContainer.CornerRadius;
+            set {
+                imageChooserContainer.CornerRadius = value;
+                imageContainer.CornerRadius = value;
+            }
+        }
+
+        private string filePath = "";
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                filePath = value;
+
+                if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+                {
+                    imageContainer.Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute));
+                    imageContainer.Visibility = Visibility.Visible;
+                    nonImageContainer.Visibility = Visibility.Collapsed;
+                    imageChooserContainer.BorderThickness = new Thickness(0);
+                }
+                else
+                {
+                    imageContainer.Source = null;
+                    imageContainer.Visibility = Visibility.Collapsed;
+                    nonImageContainer.Visibility = Visibility.Visible;
+                    imageChooserContainer.BorderThickness = new Thickness(1);
+                }
+            }
+        }
         public ImageChooser()
         {
             InitializeComponent();
@@ -62,39 +98,39 @@ namespace SGULibraryManagement.Components.FileChoosers
 
         private void ChangeImage(string fileName)
         {
+            var source = new BitmapImage(new Uri(fileName));
+
+            if (source.Width != source.Height)
+            {
+                OnAlert();
+                return;
+            }
+
             imageContainer.Visibility = Visibility.Visible;
             nonImageContainer.Visibility = Visibility.Collapsed;
             imageChooserContainer.BorderThickness = new Thickness(0);
 
-            imageContainer.Source = new BitmapImage(new Uri(fileName));
+            imageContainer.Source = source;
             OnImageChoose?.Invoke(this, fileName);
         }
 
-        private string filePath = "";
-
-        public string FilePath
+        private async void OnAlert()
         {
-            get => filePath;
-            set
+            if (PopupHost is null)
             {
-                filePath = value;
-
-                if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
-                {
-                    imageContainer.Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute));
-                    imageContainer.Visibility = Visibility.Visible;
-                    nonImageContainer.Visibility = Visibility.Collapsed;
-                    imageChooserContainer.BorderThickness = new Thickness(0);
-                }
-                else
-                {
-                    imageContainer.Source = null;
-                    imageContainer.Visibility = Visibility.Collapsed;
-                    nonImageContainer.Visibility = Visibility.Visible;
-                    imageChooserContainer.BorderThickness = new Thickness(1);
-                }
+                MessageBox.Show("Please choose square image", "Load Failed", MessageBoxButton.OK);
+                return;
             }
-        }
 
+            SimpleDialog dialog = new()
+            {
+                Title = "Load failed",
+                Content = "Please choose square image",
+                Width = 300,
+                Height = 200
+            };
+
+            await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK, PopupHost);
+        }
     }
 }

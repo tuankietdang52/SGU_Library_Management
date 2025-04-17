@@ -15,6 +15,8 @@ namespace SGULibraryManagement.DTO
         public bool IsDeleted { get; set; }
         public bool IsAvailable { get; set; }
 
+        public string Description { get; set; } = string.Empty;
+
         public DeviceDTO()
         {
 

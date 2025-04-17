@@ -25,57 +25,101 @@ namespace SGULibraryManagement.GUI.DialogGUI
     /// </summary>
     public partial class UserDialog : UserControl, IDialog
     {
-        private RoleBUS roleBUS = new ();
-        private AccountBUS accountBUS = new ();
-        private List<RoleDTO> roles = new List<RoleDTO>();
-        private string action;
-        private AccountDTO account;
+        private readonly RoleBUS roleBUS = new();
+        private readonly AccountBUS accountBUS = new();
+        private List<RoleDTO> roles = [];
 
-        public ContentPresenter? PopupHost { get; set; }
+        private readonly EDialogType dialogType;
+        private readonly AccountDTO? model;
+
+        private ContentPresenter? popupHost;
+        public ContentPresenter? PopupHost {
+            get => popupHost;
+            set {
+                popupHost = value;
+                imageChooser.PopupHost = value;
+            }
+        }
+
+        private string imageFilePath = string.Empty;
 
         public event OnCloseDialogHandler? OnCloseDialog;
 
-        public UserDialog(string action, AccountDTO account)
+        public UserDialog()
         {
             InitializeComponent();
-            loadDataCombobox();
-            this.action = action;
-            this.account = account;
-            loadForm();
+
+            dialogType = EDialogType.Create;
+            LoadDataCombobox();
         }
 
-        private void loadForm()
+        public UserDialog(EDialogType type, AccountDTO model) : this()
         {
-            if (action.Equals("create"))
+            if (type == EDialogType.Create) return;
+       
+            dialogType = type;
+            this.model = model;
+
+            AdjustForm();
+            LoadFormData();
+        }
+
+        private void AdjustForm()
+        {
+            if (model is null) return;
+
+            if (dialogType == EDialogType.Edit)
             {
-                lbTitle.Text = "Thêm tài khoản";
-            }
-            else if (action.Equals("update"))
-            {
-                lbTitle.Text = "Cập nhật tài khoản";
-                btn.Content = "Cập nhật";
-                loadFormData();
+                lbTitle.Text = $"Update User Id {model.Id}";
+                btn.Content = "Save";
             }
             else // view
             {
-                lbTitle.Text = "Xem thông tin tài khoản";
+                lbTitle.Text = $"View User With Id {model.Id} Detail";
                 btn.Visibility = Visibility.Hidden;
-                loadFormData();
+                DisableForm();
             }
         }
 
-        private void loadFormData()
+        private void LoadFormData()
         {
-            txtTaiKhoan.Text = account.Username;
-            txtMatKhau.Password = account.Password;
-            txtTen.Text = account.FirstName;
-            txtHo.Text = account.LastName;
-            txtSdt.Text = account.Phone;
-            cbxQuyen.SelectedIndex = roles.FindIndex(role => role.Id == account.IdRole);
-            txtTaiKhoan.IsEnabled = false;
+            if (model is null) return;
+
+            txtTaiKhoan.Text = model.Username;
+            txtMatKhau.Password = model.Password;
+            passwordTB.Text = model.Password;
+            txtTen.Text = model.FirstName;
+            txtHo.Text = model.LastName;
+            txtSdt.Text = model.Phone;
+            txtEmail.Text = model.Email;
+            cbxQuyen.SelectedIndex = roles.FindIndex(role => role.Id == model.IdRole);
+            imageChooser.FilePath = model.Avatar;
         }
 
-        private void loadDataCombobox()
+        private void DisableForm()
+        {
+            txtTaiKhoan.IsEnabled = false;
+            txtMatKhau.Visibility = Visibility.Collapsed;
+            passwordTB.Visibility = Visibility.Visible;
+            txtTen.IsEnabled = false;
+            txtHo.IsEnabled = false;
+            txtSdt.IsEnabled = false;
+            txtEmail.IsEnabled = false;
+            cbxQuyen.IsEnabled = false;
+            cbxQuyen.Foreground = Brushes.Black;
+
+            btn.Visibility = Visibility.Collapsed;
+            imageChooser.Visibility = Visibility.Collapsed;
+
+            try
+            {
+                image.Source = new BitmapImage(new Uri(model!.Avatar));
+            }
+            catch { }
+            image.Visibility = Visibility.Visible;
+        }
+
+        private void LoadDataCombobox()
         {
             cbxQuyen.Items.Clear();
             roles = roleBUS.GetAll();
@@ -86,26 +130,20 @@ namespace SGULibraryManagement.GUI.DialogGUI
             
         }
 
-        private void btn_Click(object sender, RoutedEventArgs e)
+        private void OnChooseImage(object sender, string filePath)
         {
-            if (action.Equals("create"))
-            {
-                createUser();
-            }
-            else if (action.Equals("update"))
-            {
-                //updateUser();
-            }
-            
-            else // view
-            {
-
-            }
+            imageFilePath = filePath;
         }
 
-        private AccountDTO getData()
+        private void btn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtTaiKhoan.Text) || string.IsNullOrEmpty(txtMatKhau.Password) || string.IsNullOrEmpty(txtTen.Text) || string.IsNullOrEmpty(txtHo.Text) || string.IsNullOrEmpty(txtSdt.Text))
+            if (dialogType == EDialogType.Create) CreateUser();
+            else if (dialogType == EDialogType.Edit) UpdateUser();
+        }
+
+        private AccountDTO GetData()
+        {
+            if (string.IsNullOrEmpty(txtTaiKhoan.Text) || string.IsNullOrEmpty(txtMatKhau.Password) || string.IsNullOrEmpty(txtTen.Text) || string.IsNullOrEmpty(txtHo.Text) || string.IsNullOrEmpty(txtSdt.Text) || string.IsNullOrEmpty(txtEmail.Text))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin");
                 return null!;
@@ -117,26 +155,46 @@ namespace SGULibraryManagement.GUI.DialogGUI
                 FirstName = txtTen.Text,
                 LastName = txtHo.Text,
                 Phone = txtSdt.Text,
-                IdRole = roles[cbxQuyen.SelectedIndex].Id
+                Email = txtEmail.Text,
+                IdRole = roles[cbxQuyen.SelectedIndex].Id,
+                Avatar = imageFilePath.Replace("\\", "/"),
+                IsDeleted = false
             };
         }
 
-        private void createUser()
+        private void CreateUser()
         {
-            AccountDTO account = getData();
-            if (account == null)
-            {
-                return;
-            }
+            AccountDTO account = GetData();
+            if (account == null) return;
+
+
             AccountDTO result = accountBUS.CreateAccount(account);
             if (result != null)
             {
-                MessageBox.Show("Thêm tài khoản thành công");
+                MessageBox.Show("Create Successful!");
                 OnCloseDialog?.Invoke(this);
             }
             else
             {
-                MessageBox.Show("Thêm tài khoản thất bại");
+                MessageBox.Show("Create Failed");
+            }
+        }
+
+        private void UpdateUser()
+        {
+            AccountDTO modelData = GetData();
+            if (modelData == null) return;
+
+            modelData.Id = model!.Id;
+
+            if (accountBUS.UpdateAccount(modelData.Id, modelData))
+            {
+                MessageBox.Show("Update Successful!");
+                OnCloseDialog?.Invoke(this);
+            }
+            else
+            {
+                MessageBox.Show("Update Failed");
             }
         }
     }

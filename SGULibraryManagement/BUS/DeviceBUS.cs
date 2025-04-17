@@ -25,6 +25,11 @@ namespace SGULibraryManagement.BUS
             return devices = DAO.GetAll(true);
         }
 
+        public DeviceDTO FindById(long id)
+        {
+            return DAO.FindById(id);
+        } 
+
         public DeviceDTO Create(DeviceDTO request)
         {
             return DAO.Create(request);
@@ -56,6 +61,8 @@ namespace SGULibraryManagement.BUS
         {
             return sort switch
             {
+                DeviceSort.IdAscending => [.. list.OrderBy(device => device.Id)],
+                DeviceSort.IdDescending => [.. list.OrderByDescending(device => device.Id)],
                 DeviceSort.NameAscending => [.. list.OrderBy(device => device.Name)],
                 DeviceSort.NameDescending => [.. list.OrderByDescending(device => device.Name)],
                 DeviceSort.QuantityAscending => [.. list.OrderBy(device => device.Quantity)],
@@ -67,9 +74,11 @@ namespace SGULibraryManagement.BUS
 
     public enum DeviceSort
     {
-        NameAscending = 0,
-        NameDescending = 1,
-        QuantityAscending = 2,
-        QuantityDescending = 3
+        IdAscending = 0,
+        IdDescending = 1,
+        NameAscending = 2,
+        NameDescending = 3,
+        QuantityAscending = 4,
+        QuantityDescending = 5
     }
 }

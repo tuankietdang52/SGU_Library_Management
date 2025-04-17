@@ -24,21 +24,27 @@ namespace SGULibraryManagement.GUI
     public partial class LoginView : UserControl
     {
         private readonly AccountBUS accountBUS = new();
-        private readonly Dictionary<string, AccountDTO> accounts;
+        private Dictionary<string, AccountDTO>? accounts;
 
         public event OnLoginSuccessHandler? LoginSuccess;
 
         public LoginView()
         {
             InitializeComponent();
+            Fetch();
+        }
+
+        private void Fetch()
+        {
             accounts = accountBUS.GetAll().ToDictionary(account => account.Username);
         }
 
         private Result ValidateAccount(string username, string password)
         {
+            Fetch();
             string failMessage = "Wrong username or password";
 
-            if (!accounts.TryGetValue(username, out var account)) return new Result(false, failMessage);
+            if (!accounts!.TryGetValue(username, out var account)) return new Result(false, failMessage);
 
             if (username.Equals(account.Username) && password.Equals(account.Password))
             {
@@ -55,7 +61,7 @@ namespace SGULibraryManagement.GUI
 
             var result = ValidateAccount(username, password);
 
-            if (result.Value) OnLoginSuccess(accounts[username]);
+            if (result.Value) OnLoginSuccess(accounts![username]);
             else OnLoginFail(result);
         }
 
@@ -74,6 +80,7 @@ namespace SGULibraryManagement.GUI
 
         private void OnLoginSuccess(AccountDTO account)
         {
+            loginButton.IsEnabled = false;
             LoginSuccess?.Invoke(this, account);
         }
     }

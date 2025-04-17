@@ -79,9 +79,21 @@
                                                        FontFamily="{DynamicResource FontAwesomeSolid}">
                                             </TextBlock>
                                         </dropdown:DropdownSubMenu.Header>
-
+                                        
+                                        <dropdown:DropdownMenuItem x:Name="view"
+                                                                   Style="{StaticResource menuItemStyle}"
+                                                                   Padding="10, 0"
+                                                                   ItemContent="View">
+                                            <dropdown:DropdownMenuItem.Icon>
+                                                <TextBlock Text="&#xf06e;"
+                                                           FontFamily="{DynamicResource FontAwesomeSolid}">
+                                                </TextBlock>
+                                            </dropdown:DropdownMenuItem.Icon>
+                                        </dropdown:DropdownMenuItem>
+                                        
                                         <dropdown:DropdownMenuItem x:Name="edit"
                                                                    Style="{StaticResource menuItemStyle}"
+                                                                   Padding="10, 0"
                                                                    ItemContent="Edit">
                                             <dropdown:DropdownMenuItem.Icon>
                                                 <TextBlock Text="&#xf044;"
@@ -92,6 +104,7 @@
 
                                         <dropdown:DropdownMenuItem x:Name="delete"
                                                                    Style="{StaticResource menuItemStyle}"
+                                                                   Padding="10, 0"
                                                                    ItemContent="Delete">
                                             <dropdown:DropdownMenuItem.Icon>
                                                 <TextBlock Text="&#xf1f8;" 
@@ -106,6 +119,16 @@
                                             Grid.Column="0"
                                             Grid.ColumnSpan="3">
                                     <Viewbox Height="30"></Viewbox>
+                                    <Canvas Height="30">
+                                        <TextBlock Canvas.Left="10"
+                                                   FontSize="15"
+                                                   Text="Id">
+                                        </TextBlock>
+                                        <TextBlock Canvas.Right="10"
+                                                   FontSize="15"
+                                                   Text="{Binding Model.Id, RelativeSource={RelativeSource TemplatedParent}}">
+                                        </TextBlock>
+                                    </Canvas>
                                     <Canvas Height="30">
                                         <TextBlock Text="Quantity"
                                                    FontSize="15"
