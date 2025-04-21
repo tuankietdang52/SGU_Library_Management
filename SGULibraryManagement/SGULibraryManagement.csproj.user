@@ -11,13 +11,19 @@
     <Compile Update="GUI\DialogGUI\EquipmentDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\EquipmentsView.xaml.cs">
+    <Compile Update="GUI\DialogGUI\LockAccountDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\HomeView.xaml.cs">
+    <Compile Update="GUI\Contents\EquipmentsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\Contents\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DialogGUI\UserDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DialogGUI\ViolationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\LoadingView.xaml.cs">
@@ -35,12 +41,15 @@
     <Compile Update="GUI\ScheduleView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\Contents\ViolationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="GUI\ScheduleView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Compile Update="GUI\UsersView.xaml.cs">
+    <Compile Update="GUI\Contents\UsersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

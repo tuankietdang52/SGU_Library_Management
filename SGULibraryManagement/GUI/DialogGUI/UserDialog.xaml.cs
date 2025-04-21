@@ -27,10 +27,14 @@ namespace SGULibraryManagement.GUI.DialogGUI
     {
         private readonly RoleBUS roleBUS = new();
         private readonly AccountBUS accountBUS = new();
+        private readonly ViolationBUS violationBUS = new();
+        private readonly AccountViolationBUS accountViolationBUS = new();
+
         private List<RoleDTO> roles = [];
 
         private readonly EDialogType dialogType;
-        private readonly AccountDTO? model;
+        private AccountDTO? model;
+        private AccountViolationDTO? accountViolation;
 
         private ContentPresenter? popupHost;
         public ContentPresenter? PopupHost {
@@ -42,7 +46,6 @@ namespace SGULibraryManagement.GUI.DialogGUI
         }
 
         private string imageFilePath = string.Empty;
-
         public event OnCloseDialogHandler? OnCloseDialog;
 
         public UserDialog()
@@ -59,6 +62,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
        
             dialogType = type;
             this.model = model;
+            accountViolationBUS.IsAccountLocked(model, out accountViolation);
 
             AdjustForm();
             LoadFormData();
@@ -72,6 +76,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             {
                 lbTitle.Text = $"Update User Id {model.Id}";
                 btn.Content = "Save";
+                lockButton.Visibility = Visibility.Visible;
             }
             else // view
             {
@@ -81,9 +86,28 @@ namespace SGULibraryManagement.GUI.DialogGUI
             }
         }
 
+        private void ShowViolation()
+        {
+            var violation = violationBUS.FindById(accountViolation!.ViolationId);
+            if (violation is null) return;
+
+            violationDescriptionContainer.Visibility = Visibility.Visible;
+            violationDescription.Text = $"This account is currently lock for {violation.Name}";
+            Height = 650;
+        }
+
+        private void HideViolation()
+        {
+            violationDescriptionContainer.Visibility = Visibility.Collapsed;
+            Height = 600;
+        }
+
         private void LoadFormData()
         {
             if (model is null) return;
+
+            if (accountViolation is not null) ShowViolation();
+            else HideViolation();
 
             txtTaiKhoan.Text = model.Username;
             txtMatKhau.Password = model.Password;
@@ -196,6 +220,31 @@ namespace SGULibraryManagement.GUI.DialogGUI
             {
                 MessageBox.Show("Update Failed");
             }
+        }
+
+        private void OnLockUserClick(object sender, RoutedEventArgs e)
+        {
+            if (model is null) return;
+
+            if (accountViolation is not null) OnShowUpdateLockDialog(accountViolation);
+            else OnShowLockDialog();
+
+            //refetch model
+            model = accountBUS.FindById(model.Id);
+            accountViolationBUS.IsAccountLocked(model, out accountViolation);
+            LoadFormData();
+        }
+
+        private void OnShowLockDialog()
+        {
+            Dialog dialog = new("Lock account", new LockAccountDialog(model!));
+            dialog.ShowDialog();
+        }
+
+        private void OnShowUpdateLockDialog(AccountViolationDTO accountViolation)
+        {
+            Dialog dialog = new("Lock account", new LockAccountDialog(model!, accountViolation));
+            dialog.ShowDialog();
         }
     }
 }

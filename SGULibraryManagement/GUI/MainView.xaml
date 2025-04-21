@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SGULibraryManagement.GUI"
              xmlns:views="clr-namespace:SGULibraryManagement.GUI"
              xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
+             xmlns:contents="clr-namespace:SGULibraryManagement.GUI.Contents"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
              Width="{StaticResource AppWidth}"
@@ -63,7 +64,7 @@
                                            Glyph="&#xf015;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
-                            <views:HomeView></views:HomeView>
+                            <contents:HomeView></contents:HomeView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
@@ -79,7 +80,7 @@
                                            Glyph="&#xf5fd;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
-                            <views:EquipmentsView></views:EquipmentsView>
+                            <contents:EquipmentsView></contents:EquipmentsView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
@@ -87,7 +88,15 @@
                                            Glyph="&#xf0c0;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
-                            <views:UsersView></views:UsersView>
+                            <contents:UsersView></contents:UsersView>
+                        </sideMenu:SideMenuItem.ContentView>
+                    </sideMenu:SideMenuItem>
+
+                    <sideMenu:SideMenuItem Text="Violation Rules"
+                                           Glyph="&#xf24e;"
+                                           MouseDown="Navigate">
+                        <sideMenu:SideMenuItem.ContentView>
+                            <contents:ViolationView></contents:ViolationView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 

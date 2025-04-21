@@ -7,9 +7,10 @@
              xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
              xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
              xmlns:fileChoosers="clr-namespace:SGULibraryManagement.Components.FileChoosers"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
              mc:Ignorable="d"
-             Height="800" Width="800">
-    <StackPanel>
+             Height="600" Width="800">
+    <StackPanel Margin="0, 20, 0, 0">
         <TextBlock x:Name="lbTitle" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24">
             Add new User
         </TextBlock>
@@ -19,7 +20,7 @@
                 <ColumnDefinition Width="400"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0"
-                  Margin="0, 10, 0, 0">
+                        Margin="0, 10, 0, 0">
                 <Grid>
                     <fileChoosers:ImageChooser x:Name="imageChooser"
                                                BorderThickness="1"
@@ -138,15 +139,50 @@
                           FontSize="18">
                 </ComboBox>
                 <Viewbox Height="20"></Viewbox>
-                <Button x:Name="btn" 
-                        Content="Create" 
-                        HorizontalAlignment="Right"
-                        Width="110" 
-                        Height="42"
-                        FontSize="20" 
-                        FontWeight="Bold" 
-                        Click="btn_Click">
-                </Button>
+                <StackPanel x:Name="violationDescriptionContainer"
+                            Orientation="Horizontal"
+                            Visibility="Collapsed">
+                    <TextBlock Text="&#xf023;"
+                               Foreground="{StaticResource ErrorColor}"
+                               FontFamily="{DynamicResource FontAwesomeSolid}"
+                               FontSize="18">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock x:Name="violationDescription"
+                               FontSize="18"
+                               Foreground="{StaticResource ErrorColor}"
+                               TextWrapping="Wrap">
+                    </TextBlock>
+                </StackPanel>
+                <Viewbox Height="20"></Viewbox>
+                <Grid>
+                    <buttons:RoundButton x:Name="lockButton"
+                                         Background="Red"
+                                         HoverBackgroundColor="{StaticResource ErrorColor}"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                         FontSize="20"
+                                         Height="42"
+                                         CornerRadius="10"
+                                         Content="Lock Option"
+                                         HorizontalAlignment="Left"
+                                         Click="OnLockUserClick"
+                                         Visibility="Collapsed">
+                    </buttons:RoundButton>
+                    <buttons:RoundButton x:Name="btn"
+                                         Content="Create"
+                                         CornerRadius="10"
+                                         Width="110" 
+                                         Height="42"
+                                         FontSize="20"
+                                         HorizontalAlignment="Right"
+                                         Foreground="White"
+                                         Background="{StaticResource Blue74}"
+                                         HoverBackgroundColor="{StaticResource Blue90}"
+                                         FontWeight="Bold" 
+                                         Click="btn_Click">
+                    </buttons:RoundButton>
+                </Grid>
             </StackPanel>
         </Grid>
     </StackPanel>

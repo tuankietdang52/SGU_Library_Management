@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SGULibraryManagement.GUI
+namespace SGULibraryManagement.GUI.Contents
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

@@ -12,7 +12,8 @@
                         <converter:PlusConverter x:Key="PlusConverter"></converter:PlusConverter>
                     </ControlTemplate.Resources>
 
-                    <Border>
+                    <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <Grid>
                             <TextBox x:Name="textBox"
                                      Width="{TemplateBinding Width}"
@@ -53,7 +54,8 @@
                                                  HorizontalAlignment="Right"
                                                  Foreground="{TemplateBinding Foreground}"
                                                  HoverForegroundColor="{DynamicResource AppThemeSecondary}"
-                                                 FontFamily="{DynamicResource FontAwesomeSolid}">
+                                                 FontFamily="{DynamicResource FontAwesomeSolid}"
+                                                 IsTabStop="False">
                                 <buttons:RoundButton.Style>
                                     <Style TargetType="{x:Type buttons:RoundButton}">
                                         <Style.Triggers>

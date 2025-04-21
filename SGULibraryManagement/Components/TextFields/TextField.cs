@@ -75,6 +75,12 @@ namespace SGULibraryManagement.Components.TextFields
 
         private Brush? initBorderBrush;
 
+        public new bool Focus()
+        {
+            if (GetTemplateChild("textBox") is not TextBox textBox) return false;
+            return textBox.Focus();
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();

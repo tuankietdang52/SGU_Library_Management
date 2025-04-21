@@ -22,9 +22,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SGULibraryManagement.GUI
+namespace SGULibraryManagement.GUI.Contents
 {
-    public partial class UsersView : UserControl
+    public partial class UsersView : UserControl, IContent
     {
         private readonly AccountBUS userBUS = new();
         private readonly RoleBUS roleBUS = new();
@@ -40,7 +40,7 @@ namespace SGULibraryManagement.GUI
             SetupComponent();
         }
 
-        private void Fetch()
+        public void Fetch()
         {
             Users.ResetTo(userBUS.GetAllWithRole());
         }
@@ -153,7 +153,7 @@ namespace SGULibraryManagement.GUI
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo);
             if (result == SimpleDialogResult.Yes)
             {
-                userBUS.DeleteAccount(user.Id);
+                userBUS.DeleteAccount(user);
             }
             else return;
 

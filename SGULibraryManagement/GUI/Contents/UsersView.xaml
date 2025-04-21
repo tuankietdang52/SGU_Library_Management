@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SGULibraryManagement.GUI.UsersView"
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.UsersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -46,7 +46,7 @@
                 Height="530"
                 BorderThickness="1"
                 BorderBrush="Black"
-                CornerRadius="10, 10, 0, 0">
+                CornerRadius="10">
             <StackPanel>
                 <StackPanel Height="70"
                             Orientation="Horizontal"
@@ -90,7 +90,7 @@
                           Width="{Binding Source={StaticResource AppContentWidth}, 
                                           Converter={StaticResource SubtractConverter}, 
                                           ConverterParameter=50}"
-                          Height="350"
+                          Height="460"
                           ColumnWidth="*"
                           AutoGenerateColumns="False"
                           CanUserResizeRows="False"

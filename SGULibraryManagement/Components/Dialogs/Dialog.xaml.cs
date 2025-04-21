@@ -43,8 +43,15 @@ namespace SGULibraryManagement.Components.Dialogs
         {
             titleBarTitle.Text = title;
             Title = title;
+            
+            MinWidth = content.Width;
+            MaxWidth = content.Width;
+            MinHeight = content.Height + 35;
+            MaxHeight = content.Height + 35;
+
             Width = content.Width;
             Height = content.Height + 35;
+
             dialogContent.Content = content;
         }
 

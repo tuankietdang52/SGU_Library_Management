@@ -24,6 +24,8 @@ namespace SGULibraryManagement.GUI
     public partial class LoginView : UserControl
     {
         private readonly AccountBUS accountBUS = new();
+        private readonly AccountViolationBUS accountViolationBUS = new();
+
         private Dictionary<string, AccountDTO>? accounts;
 
         public event OnLoginSuccessHandler? LoginSuccess;
@@ -39,19 +41,27 @@ namespace SGULibraryManagement.GUI
             accounts = accountBUS.GetAll().ToDictionary(account => account.Username);
         }
 
+        private bool IsLocked(AccountDTO account)
+        {
+            return accountViolationBUS.IsAccountLocked(account, out var _);
+        }
+
         private Result ValidateAccount(string username, string password)
         {
             Fetch();
-            string failMessage = "Wrong username or password";
+            string wrongMessage = "Wrong username or password";
 
-            if (!accounts!.TryGetValue(username, out var account)) return new Result(false, failMessage);
+            if (!accounts!.TryGetValue(username, out var account)) return new Result(false, wrongMessage);
 
             if (username.Equals(account.Username) && password.Equals(account.Password))
             {
+                if (account.IdRole != 1) return new Result(false, "This account is not admin");
+                if (IsLocked(account)) return new Result(false, "This account is locked");
+
                 return new Result(true, "");
             }
 
-            return new Result(false, failMessage);
+            return new Result(false, wrongMessage);
         }
 
         private void OnLoginClick(object sender, RoutedEventArgs e)
@@ -76,6 +86,7 @@ namespace SGULibraryManagement.GUI
             };
 
             await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+            passwordField.Focus();
         }
 
         private void OnLoginSuccess(AccountDTO account)

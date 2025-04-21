@@ -56,7 +56,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AppThemeSecondary}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource TableItemSelected}"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

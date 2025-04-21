@@ -9,9 +9,7 @@
                  WindowStartupLocation="CenterScreen"
                  Icon="/Resources/Images/Books.png"
                  FontFamily="Calibri Light"
-                 ResizeMode="NoResize"
-                 Height="200"
-                 Width="200">
+                 ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"></RowDefinition>

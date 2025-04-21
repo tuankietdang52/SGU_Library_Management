@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.Ocsp;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
@@ -10,32 +11,23 @@ using System.Threading.Tasks;
 
 namespace SGULibraryManagement.DAO
 {
-    public class DeviceDAO : IDAO<long, DeviceDTO>
+    public class ViolationDAO : IDAO<long, ViolationDTO>
     {
-        private MySqlConnection Connection => MySqlConnector.Instance?.Connection!;
+        public string TableName => "violations";
+        private MySqlConnection Connection => MySqlConnector.Instance!.Connection!;
 
-        public string TableName { get; } = "devices";
-
-        public DeviceDAO()
+        private ViolationDTO FetchData(MySqlDataReader reader)
         {
-
-        }
-
-        private DeviceDTO FetchData(MySqlDataReader reader)
-        {
-            return new DeviceDTO()
+            return new ViolationDTO()
             {
                 Id = reader.GetInt64("id"),
                 Name = reader.GetString("name"),
-                Quantity = reader.GetInt32("quantity"),
-                ImageSource = reader.GetString("img"),
                 Description = reader.GetString("description"),
-                IsDeleted = reader.GetBoolean("is_deleted"),
-                IsAvailable = reader.GetBoolean("is_available")
+                IsDeleted = reader.GetBoolean("is_deleted")
             };
         }
 
-        public DeviceDTO FindById(long id)
+        public ViolationDTO FindById(long id)
         {
             string query = $"SELECT * FROM {TableName} WHERE id = {id}";
             Logger.Log($"Query: {query}");
@@ -58,17 +50,17 @@ namespace SGULibraryManagement.DAO
             return null!;
         }
 
-        public List<DeviceDTO> GetAll(bool isActive)
+        public List<ViolationDTO> GetAll(bool isActive)
         {
             string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
             Logger.Log($"Query: {query}");
-            
+
             try
             {
                 using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
-                List<DeviceDTO> result = [];
+                List<ViolationDTO> result = [];
 
                 using var reader = command.ExecuteReader();
 
@@ -87,26 +79,26 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-        public List<Pair<DeviceDTO, int>> GetAllWithBorrowQuantity()
+        public List<Pair<ViolationDTO, int>> GetAllWithViolationCount()
         {
-            string query = $"SELECT COUNT(device_id) AS borrow_quantity, {TableName}.* " +
-                           $"FROM borrow_devices INNER JOIN {TableName} ON {TableName}.id = borrow_devices.device_id " +
-                           "GROUP BY device_id";
+            string query = $@"SELECT COUNT(user_id) as violation_count, violations.*
+                              FROM account_violation
+                              INNER JOIN {TableName} ON violations.id = violation_id AND account_violation.is_deleted = 0
+                              GROUP BY violation_id";
+
+            Logger.Log(query);
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
-                List<Pair<DeviceDTO, int>> result = [];
-
+                List<Pair<ViolationDTO, int>> result = [];
                 using var reader = command.ExecuteReader();
-                Logger.Log($"Query: {query}");
 
                 while (reader.Read())
                 {
-                    int borrowQuantity = reader.GetInt32("borrow_quantity");
-                    result.Add(new(FetchData(reader), borrowQuantity));
+                    result.Add(new(FetchData(reader), reader.GetInt32("violation_count")));
                 }
 
                 return result;
@@ -119,11 +111,10 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-        public DeviceDTO Create(DeviceDTO request)
+        public ViolationDTO Create(ViolationDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (name, quantity, img, description, is_deleted, is_available) VALUES 
-('{request.Name}', {request.Quantity}, '{request.ImageSource}', 
-'{request.Description}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+            string query = $"INSERT INTO {TableName} (name, description, is_deleted) " +
+                           $"VALUES ('{request.Name}', '{request.Description}', {(request.IsDeleted ? 1 : 0)})";
 
             Logger.Log($"Query: {query}");
 
@@ -144,16 +135,14 @@ namespace SGULibraryManagement.DAO
             return null!;
         }
 
-        public bool Update(long id, DeviceDTO request)
+        public bool Update(long id, ViolationDTO request)
         {
-            string query = $"UPDATE {TableName} SET " +
-                           $"name = '{request.Name}', " +
-                           $"quantity = {request.Quantity}, " +
-                           $"img = '{request.ImageSource}', " +
-                           $"description = '{request.Description}', " +
-                           $"is_deleted = {(request.IsDeleted ? 1 : 0)}, " +
-                           $"is_available = {(request.IsAvailable ? 1 : 0)} " +
-                           $"WHERE id = {id}";
+            string query = $@"UPDATE {TableName} 
+                              SET name = '{request.Name}',
+                                  description = '{request.Description}',
+                                  is_deleted = {(request.IsDeleted ? 1 : 0)}
+                              WHERE id = {request.Id}";
+
             Logger.Log($"Query: {query}");
 
             try
@@ -170,7 +159,6 @@ namespace SGULibraryManagement.DAO
                 return false;
             }
         }
-
 
         public bool Delete(long id)
         {

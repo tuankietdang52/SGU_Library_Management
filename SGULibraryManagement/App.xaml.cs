@@ -26,6 +26,7 @@ public partial class App : Application
         LoadEnv();
 
         this.ConfigureSize()
+            .ConfigureColor()
             .ConfigureMySql();
     }
 

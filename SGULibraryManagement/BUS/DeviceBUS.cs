@@ -40,9 +40,9 @@ namespace SGULibraryManagement.BUS
             return DAO.Update(id, request);
         }
 
-        public bool Delete(long id)
+        public bool Delete(DeviceDTO device)
         {
-            return DAO.Delete(id);
+            return DAO.Delete(device.Id);
         }
 
         public List<DeviceDTO> FilterByQuery(string query, IEnumerable<DeviceDTO>? collection = null)

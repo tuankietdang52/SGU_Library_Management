@@ -9,9 +9,9 @@
              xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
              xmlns:fileChooser="clr-namespace:SGULibraryManagement.Components.FileChoosers"
              mc:Ignorable="d"
-             Width="400" 
-             Height="650"
-             Padding="10">
+             Width="450" 
+             Height="670"
+             Padding="15">
     <Grid>
         <StackPanel x:Name="editableDialog">
             <fileChooser:ImageChooser x:Name="imageChooserControl" OnImageChoose="OnImageChoose" />
@@ -52,10 +52,10 @@
             <Viewbox Height="30"></Viewbox>
 
             <buttons:RoundButton x:Name="saveButton"
-                                 Background="{StaticResource Blue74}"
                                  Height="50"
                                  CornerRadius="10"
                                  Foreground="White"
+                                 Background="{StaticResource Blue74}"
                                  HoverBackgroundColor="{StaticResource Blue90}"
                                  Content="Create"
                                  Click="OnSave">

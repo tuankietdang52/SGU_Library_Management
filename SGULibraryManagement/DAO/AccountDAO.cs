@@ -63,6 +63,7 @@ namespace SGULibraryManagement.DAO
 
             return [];
         }
+
         public AccountDTO FindById(long id)
         {
             string query = $"SELECT * FROM {TableName} WHERE id = {id}";
@@ -118,7 +119,7 @@ namespace SGULibraryManagement.DAO
             {
                 Logger.LogError(ex.Message);
             }
-            return null;
+            return null!;
         }
 
         public bool Update(long id, AccountDTO request)

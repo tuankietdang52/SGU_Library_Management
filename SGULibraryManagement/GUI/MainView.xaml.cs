@@ -1,4 +1,5 @@
 ﻿using SGULibraryManagement.Components.SideMenu;
+using SGULibraryManagement.GUI.Contents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,19 @@ namespace SGULibraryManagement.GUI
     {
         private UserControl? currentContent;
 
+        private static MainView? mainView;
+        public static MainView Instance
+        {
+            get => mainView ?? new MainView();
+            set => mainView = value;
+        }
+
         public MainView()
         {
             InitializeComponent();
             Navigate(SideMenuHomeItem, null!);
+
+            Instance = this;
         }
 
         private void Navigate(object sender, MouseButtonEventArgs e)
@@ -41,6 +51,25 @@ namespace SGULibraryManagement.GUI
             content.Navigate(currentContent);
 
             PlayNavigateAnimation();
+        }
+
+        /// <summary>
+        /// Refetch all content view in types, if types is null, refetch all
+        /// </summary>
+        /// <param name="types"></param>
+        public void FetchAll(List<Type>? types = null)
+        {
+            var list = sideMenu.Children;
+            List<string> typeNames = types != null ? [.. types.Select(type => type.Name)] : [];
+
+            foreach (var child in list)
+            {
+                if (child is not IContent) continue;
+                var content = (IContent)child;
+
+                if (typeNames.Count == 0) content.Fetch();
+                else if (typeNames.Contains(child.GetType().Name)) content.Fetch();
+            }
         }
 
         private void OnChangeContent()

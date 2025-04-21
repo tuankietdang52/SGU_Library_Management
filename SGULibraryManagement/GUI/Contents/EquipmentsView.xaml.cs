@@ -20,9 +20,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SGULibraryManagement.GUI
+namespace SGULibraryManagement.GUI.Contents
 {
-    public partial class EquipmentsView : UserControl
+    public partial class EquipmentsView : UserControl, IContent
     {
         private readonly DeviceBUS BUS = new();
         private bool isOpenFilter = false;
@@ -38,7 +38,7 @@ namespace SGULibraryManagement.GUI
             SetupComponent();
         }
 
-        private void Fetch()
+        public void Fetch()
         {
             ClearEquipmentItems();
             devices = BUS.GetAll();
@@ -226,7 +226,7 @@ namespace SGULibraryManagement.GUI
 
             if (result == SimpleDialogResult.Yes)
             {
-                bool isSuccess = BUS.Delete(model.Id); // giả sử Delete trả bool
+                bool isSuccess = BUS.Delete(model); // giả sử Delete trả bool
 
                 if (isSuccess)
                 {

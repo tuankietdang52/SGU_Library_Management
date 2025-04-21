@@ -73,9 +73,9 @@ namespace SGULibraryManagement.BUS
             return userDAO.Update(id, account);
         }
 
-        public bool DeleteAccount(long id)
+        public bool DeleteAccount(AccountDTO account)
         {
-            return userDAO.Delete(id);
+            return userDAO.Delete(account.Id);
         }
 
         public List<AccountViewModel> FilterByQuery(string query, UserQueryOption queryOption, IEnumerable<AccountViewModel>? collection = null)
