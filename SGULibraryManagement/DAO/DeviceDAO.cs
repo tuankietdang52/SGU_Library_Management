@@ -37,12 +37,13 @@ namespace SGULibraryManagement.DAO
 
         public DeviceDTO FindById(long id)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = {id}";
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
                 using var reader = command.ExecuteReader();
@@ -60,12 +61,13 @@ namespace SGULibraryManagement.DAO
 
         public List<DeviceDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
             Logger.Log($"Query: {query}");
             
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
                 command.Prepare();
 
                 List<DeviceDTO> result = [];
@@ -119,17 +121,26 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
+        private void AddData(MySqlCommand command, DeviceDTO request)
+        {
+            command.Parameters.AddWithValue("@Name", request.Name);
+            command.Parameters.AddWithValue("@Quantity", request.Quantity);
+            command.Parameters.AddWithValue("@Img", request.ImageSource);
+            command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
+            command.Parameters.AddWithValue("@IsAvailable", request.IsAvailable);
+        }
+
         public DeviceDTO Create(DeviceDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (name, quantity, img, description, is_deleted, is_available) VALUES 
-('{request.Name}', {request.Quantity}, '{request.ImageSource}', 
-'{request.Description}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+            string query = $@"INSERT INTO {TableName} (name, quantity, img, description, is_deleted, is_available) 
+                              VALUES (@Name, @Quantity, @Img, @Description, @IsDeleted, @IsAvailable)";
 
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
                 command.Prepare();
 
                 command.ExecuteNonQuery();
@@ -146,19 +157,22 @@ namespace SGULibraryManagement.DAO
 
         public bool Update(long id, DeviceDTO request)
         {
-            string query = $"UPDATE {TableName} SET " +
-                           $"name = '{request.Name}', " +
-                           $"quantity = {request.Quantity}, " +
-                           $"img = '{request.ImageSource}', " +
-                           $"description = '{request.Description}', " +
-                           $"is_deleted = {(request.IsDeleted ? 1 : 0)}, " +
-                           $"is_available = {(request.IsAvailable ? 1 : 0)} " +
-                           $"WHERE id = {id}";
+            string query = $@"UPDATE {TableName} SET 
+                           name = @Name,
+                           quantity = @Quantity,
+                           img = @Img,
+                           description = @Description,
+                           is_deleted = @IsDeleted,
+                           is_available = @IsAvailable
+                           WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
+                command.Parameters.AddWithValue("@Id", id);
+
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();
@@ -174,12 +188,13 @@ namespace SGULibraryManagement.DAO
 
         public bool Delete(long id)
         {
-            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = {id}";
+            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();

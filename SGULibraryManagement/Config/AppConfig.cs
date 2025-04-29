@@ -33,6 +33,9 @@ namespace SGULibraryManagement.Config
         public static App ConfigureColor(this App app)
         {
             app.Resources["TableItemSelected"] = ColorUtility.FromArgb(143, 225, 106, 0);
+            app.Resources["LockedBackground"] = ColorUtility.FromArgb(128, 255, 0, 0);
+            app.Resources["ActiveBackground"] = ColorUtility.FromArgb(128, 0, 255, 0);
+
             return app;
         }
     }

@@ -20,7 +20,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontWeight="Bold"
                            VerticalAlignment="Center">
-                    Status
+                    Status: 
                 </TextBlock>
                 <Viewbox Width="10"></Viewbox>
                 <ComboBox x:Name="statusCb"
@@ -74,7 +74,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontWeight="Bold"
                            VerticalAlignment="Center">
-                    Status
+                    Status: 
                 </TextBlock>
                 <Viewbox Width="10"></Viewbox>
                 <textFields:TextLabel x:Name="statusLabel"

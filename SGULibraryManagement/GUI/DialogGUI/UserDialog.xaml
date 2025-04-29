@@ -150,6 +150,11 @@
                     <Viewbox Width="5"></Viewbox>
                     <TextBlock x:Name="violationDescription"
                                FontSize="18"
+                               Height="50"
+                               Width="{Binding ActualWidth, 
+                                               RelativeSource={RelativeSource AncestorType=StackPanel, AncestorLevel=2},
+                                               Converter={StaticResource SubtractConverter},
+                                               ConverterParameter=30}"
                                Foreground="{StaticResource ErrorColor}"
                                TextWrapping="Wrap">
                     </TextBlock>
@@ -183,6 +188,36 @@
                                          Click="btn_Click">
                     </buttons:RoundButton>
                 </Grid>
+                <StackPanel x:Name="historyOptionContainer"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Visibility="Collapsed">
+                    <buttons:RoundButton x:Name="borrowHistory"
+                                         Background="{StaticResource Blue74}"
+                                         HoverBackgroundColor="{StaticResource Blue90}"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                         FontSize="20"
+                                         Height="42"
+                                         CornerRadius="10"
+                                         Content="Borrow History"
+                                         HorizontalAlignment="Left"
+                                         Click="OnShowBorrowHistory">
+                    </buttons:RoundButton>
+                    <Viewbox Width="40"></Viewbox>
+                    <buttons:RoundButton x:Name="violationHistory"
+                                         Background="Red"
+                                         HoverBackgroundColor="{StaticResource ErrorColor}"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                         FontSize="20"
+                                         Height="42"
+                                         CornerRadius="10"
+                                         Content="Violation History"
+                                         HorizontalAlignment="Left"
+                                         Click="OnShowViolationHistory">
+                    </buttons:RoundButton>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </StackPanel>

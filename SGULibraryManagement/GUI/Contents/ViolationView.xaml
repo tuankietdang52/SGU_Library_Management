@@ -77,8 +77,16 @@
                           HorizontalScrollBarVisibility="Disabled"
                           BorderBrush="Black"
                           BorderThickness="0, 1, 0, 0"
+                          HeadersVisibility="Column"
+                          ColumnHeaderHeight="40"
                           RowHeaderWidth="30"
                           ItemsSource="{Binding Violations}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Width="100" Binding="{Binding Violation.Id}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Name" Binding="{Binding Violation.Name}"></DataGridTextColumn>

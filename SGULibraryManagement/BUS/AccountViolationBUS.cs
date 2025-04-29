@@ -22,6 +22,16 @@ namespace SGULibraryManagement.BUS
             return DAO.FindById(id);
         }
 
+        public List<AccountViolationDTO> FindByAccount(AccountDTO account)
+        {
+            return DAO.FindByAccountId(account.Id);
+        }
+
+        public List<AccountViolationDTO> FindByViolation(ViolationDTO violation)
+        {
+            return DAO.FindByViolationId(violation.Id);
+        }
+
         public List<AccountViolationDTO> GetAll()
         {
             return DAO.GetAll(true);
@@ -52,6 +62,11 @@ namespace SGULibraryManagement.BUS
         public bool IsRuleViolatedByUser(ViolationDTO violation)
         {
             return DAO.IsRuleViolatedByUser(violation.Id);
+        }
+
+        public List<AccountViolationDTO> GetAllLockedUsers()
+        {
+            return DAO.GetAllLockedUsers();
         }
     }
 }

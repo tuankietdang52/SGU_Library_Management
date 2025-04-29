@@ -11,11 +11,12 @@ namespace SGULibraryManagement.DTO
         public long Id { get; set; }
         public long UserId { get; set; }
         public long DeviceId { get; set; }
-        public DateTime CreateAt {  get; set; }
+        public DateTime DateCreate {  get; set; }
         public int Quantity { get; set; }
         public DateTime DateBorrow { get; set; }
         public DateTime DateReturn { get; set; }
-        public Boolean IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsReturn { get; set; }
         public BorrowDevicesDTO() { }
     }
 }

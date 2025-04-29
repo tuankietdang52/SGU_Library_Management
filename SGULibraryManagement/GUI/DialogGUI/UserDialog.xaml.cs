@@ -82,6 +82,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             {
                 lbTitle.Text = $"View User With Id {model.Id} Detail";
                 btn.Visibility = Visibility.Hidden;
+                historyOptionContainer.Visibility = Visibility.Visible;
                 DisableForm();
             }
         }
@@ -92,7 +93,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             if (violation is null) return;
 
             violationDescriptionContainer.Visibility = Visibility.Visible;
-            violationDescription.Text = $"This account is currently lock for {violation.Name}";
+            violationDescription.Text = $"This account is currently lock for {violation.Name} at {accountViolation.DateCreate}";
             Height = 650;
         }
 
@@ -244,6 +245,22 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private void OnShowUpdateLockDialog(AccountViolationDTO accountViolation)
         {
             Dialog dialog = new("Lock account", new LockAccountDialog(model!, accountViolation));
+            dialog.ShowDialog();
+        }
+
+        private void OnShowViolationHistory(object sender, RoutedEventArgs e)
+        {
+            if (model is null) return;
+
+            Dialog dialog = new($"{model.FullName} Violation History", new ViolationHistoryDialog(model));
+            dialog.ShowDialog();
+        }
+
+        private void OnShowBorrowHistory(object sender, RoutedEventArgs e)
+        {
+            if (model is null) return;
+
+            Dialog dialog = new($"{model.FullName} Borrow Device History", new BorrowDeviceHistoryDialog(model));
             dialog.ShowDialog();
         }
     }

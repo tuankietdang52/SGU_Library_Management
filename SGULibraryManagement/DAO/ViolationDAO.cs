@@ -29,12 +29,13 @@ namespace SGULibraryManagement.DAO
 
         public ViolationDTO FindById(long id)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = {id}";
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
                 using var reader = command.ExecuteReader();
@@ -52,12 +53,13 @@ namespace SGULibraryManagement.DAO
 
         public List<ViolationDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
                 command.Prepare();
 
                 List<ViolationDTO> result = [];
@@ -111,16 +113,24 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
+        private void AddData(MySqlCommand command, ViolationDTO request)
+        {
+            command.Parameters.AddWithValue("@Name", request.Name);
+            command.Parameters.AddWithValue("@Description", request.Description);
+            command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
+        }
+
         public ViolationDTO Create(ViolationDTO request)
         {
             string query = $"INSERT INTO {TableName} (name, description, is_deleted) " +
-                           $"VALUES ('{request.Name}', '{request.Description}', {(request.IsDeleted ? 1 : 0)})";
+                           $"VALUES (@Name, @Description, @IsDeleted)";
 
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
                 command.Prepare();
 
                 command.ExecuteNonQuery();
@@ -138,16 +148,19 @@ namespace SGULibraryManagement.DAO
         public bool Update(long id, ViolationDTO request)
         {
             string query = $@"UPDATE {TableName} 
-                              SET name = '{request.Name}',
-                                  description = '{request.Description}',
-                                  is_deleted = {(request.IsDeleted ? 1 : 0)}
-                              WHERE id = {request.Id}";
+                              SET name = @Name,
+                                  description = @Description,
+                                  is_deleted = @IsDeleted
+                              WHERE id = @Id";
 
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
+                command.Parameters.AddWithValue("@Id", id);
+
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();
@@ -162,12 +175,13 @@ namespace SGULibraryManagement.DAO
 
         public bool Delete(long id)
         {
-            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = {id}";
+            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();

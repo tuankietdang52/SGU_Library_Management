@@ -15,7 +15,9 @@
             <RowDefinition Height="35"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Canvas Grid.Row="0" Background="{StaticResource AppThemeSecondary}">
+        <Canvas Grid.Row="0" 
+                Background="{StaticResource AppThemeSecondary}"
+                MouseDown="OnStatusBarMouseDown">
             <Grid Canvas.Left="10" Height="35">
                 <TextBlock x:Name="titleBarTitle"
                            Height="20"

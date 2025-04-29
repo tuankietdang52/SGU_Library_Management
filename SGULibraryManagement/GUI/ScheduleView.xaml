@@ -14,6 +14,12 @@
                   RowHeight="40"
                   FontSize="14"
                   ItemsSource="{Binding}">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thiết bị" Binding="{Binding DeviceId}" Width="*"/>
                 <DataGridTextColumn Header="Người mượn" Binding="{Binding UserName}" Width="*"/>

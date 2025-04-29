@@ -23,6 +23,11 @@ namespace SGULibraryManagement.BUS
             return dao.FindById(id);
         }
 
+        public List<BorrowDevicesDTO> FindByAccount(AccountDTO account)
+        {
+            return dao.FindByAccountId(account.Id);
+        }
+
         public List<BorrowDevicesDTO> FindByDevice(DeviceDTO device)
         {
             return dao.FindByDeviceId(device.Id);

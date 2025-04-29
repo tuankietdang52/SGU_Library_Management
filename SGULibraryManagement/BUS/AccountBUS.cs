@@ -14,11 +14,13 @@ namespace SGULibraryManagement.BUS
 {
     public class AccountBUS
     {
-        private readonly AccountDAO userDAO = new ();
+        private readonly AccountDAO userDAO = new();
+        private readonly AccountViolationBUS accountViolationBUS = new();
         private readonly RoleBUS roleBUS = new();
 
         private List<AccountViewModel> users = [];
         private Dictionary<long, RoleDTO> roles = [];
+        private HashSet<long>? lockedUser;
 
         public AccountBUS()
         {
@@ -38,12 +40,14 @@ namespace SGULibraryManagement.BUS
         public List<AccountViewModel> GetAllWithRole()
         {
             roles = roleBUS.GetAll().ToDictionary(role => role.Id);
+            lockedUser = [.. accountViolationBUS.GetAllLockedUsers().Select(item => item.UserId)];
+
             var list = GetAll();
 
             return users = [.. list.Select(user => {
                 var role = roles[user.IdRole];
                 SolidColorBrush roleBg;
-
+                
                 if (!Enum.TryParse(role.Name, out ERole eRole)) {
                     roleBg = Brushes.Green;
                 }
@@ -53,7 +57,8 @@ namespace SGULibraryManagement.BUS
                 {
                     Account = user,
                     Role = roles[user.IdRole],
-                    RoleBackgroundColor = roleBg
+                    RoleBackgroundColor = roleBg,
+                    BgColor = !lockedUser.Contains(user.Id) ? Brushes.Transparent : (SolidColorBrush)App.Instance!.Resources["LockedBackground"]
                 };
             })];
         }
@@ -91,10 +96,21 @@ namespace SGULibraryManagement.BUS
             };
         }
 
-        public List<AccountViewModel> FilterByRole(RoleDTO role, IEnumerable<AccountViewModel>? collection)
+        public List<AccountViewModel> FilterByRole(RoleDTO role, IEnumerable<AccountViewModel>? collection = null)
         {
             var list = collection ?? users;
             return [.. list.Where(user => user.Role.Id == role.Id)];
+        }
+
+        public List<AccountViewModel> FilterByLockStatus(string status, IEnumerable<AccountViewModel>? collection = null)
+        {
+            var list = collection ?? users;
+            if (status == "All") return [.. list];
+
+            lockedUser ??= [.. accountViolationBUS.GetAllLockedUsers().Select(item => item.UserId)];
+            bool isLocked = status == "Locked";
+
+            return [.. list.Where(user => isLocked ? lockedUser.Contains(user.Account.Id) : !lockedUser.Contains(user.Account.Id))];
         }
     }
 

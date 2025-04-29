@@ -67,18 +67,23 @@ namespace SGULibraryManagement.GUI.Contents
 
             roleComboBox.ItemsSource = roles;
             roleComboBox.SelectedIndex = 0;
+
+            statusComboBox.ItemsSource = new List<string>() { "All", "Locked", "Normal" };
+            statusComboBox.SelectedIndex = 0;
         }
 
         private UserFilter? GetFilter()
         {
             if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
             if (roleComboBox.SelectedItem is not RoleDTO role) return null;
+            if (statusComboBox.SelectedItem is not string status) return null;
 
             return new UserFilter()
             {
                 Query = searchField.Text,
                 UserQueryOption = queryOption,
-                Role = role
+                Role = role,
+                Status = status
             };
         }
 
@@ -93,6 +98,7 @@ namespace SGULibraryManagement.GUI.Contents
                 result = userBUS.FilterByRole(filter.Role, result);
             }
 
+            result = userBUS.FilterByLockStatus(filter.Status, result);
             App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
         }
 
@@ -110,7 +116,7 @@ namespace SGULibraryManagement.GUI.Contents
             OnApplyFilter(filter);
         }
 
-        private void OnRoleChanged(object sender, SelectionChangedEventArgs e)
+        private void OnFilterCbChanged(object sender, SelectionChangedEventArgs e)
         {
             UserFilter? filter = GetFilter();
             OnApplyFilter(filter);
@@ -165,6 +171,7 @@ namespace SGULibraryManagement.GUI.Contents
             public string Query { get; set; } = string.Empty;
             public RoleDTO? Role { get; set; }
             public UserQueryOption UserQueryOption { get; set; }
+            public string Status { get; set; } = "All";
         }
     }
 }

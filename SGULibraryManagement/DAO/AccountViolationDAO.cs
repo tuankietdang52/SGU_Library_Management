@@ -30,12 +30,13 @@ namespace SGULibraryManagement.DAO
 
         public AccountViolationDTO FindById(long id)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = {id}";
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
                 using var reader = command.ExecuteReader();
@@ -51,10 +52,210 @@ namespace SGULibraryManagement.DAO
             return null!;
         }
 
+        public List<AccountViolationDTO> FindByAccountId(long accountId)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE user_id = @UserId";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@UserId", accountId);
+                command.Prepare();
+
+                List<AccountViolationDTO> result = [];
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        public List<AccountViolationDTO> FindByViolationId(long violationId)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE violation_id = @ViolationId";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@ViolationId", violationId);
+                command.Prepare();
+
+                List<AccountViolationDTO> result = [];
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
         public List<AccountViolationDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
+            Logger.Log($"Query: {query}");
 
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
+
+                command.Prepare();
+
+                List<AccountViolationDTO> result = [];
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        private void AddData(MySqlCommand command, AccountViolationDTO request)
+        {
+            command.Parameters.AddWithValue("@UserId", request.UserId);
+            command.Parameters.AddWithValue("@ViolationId", request.ViolationId);
+            command.Parameters.AddWithValue("@DateCreate", request.DateCreate);
+            command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
+        }
+
+        public AccountViolationDTO Create(AccountViolationDTO request)
+        {
+            string query = $@"INSERT INTO {TableName} (user_id, violation_id, create_at, is_deleted) 
+                              VALUES (@UserId, @ViolationId, @DateCreate, @IsDeleted)";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
+
+                command.Prepare();
+                int row = command.ExecuteNonQuery();
+
+                return row > 0 ? request : null!;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
+        }
+
+        public bool Update(long id, AccountViolationDTO request)
+        {
+            string query = $@"UPDATE {TableName} 
+                              SET user_id = @UserId, 
+                                  violation_id = @ViolationId, 
+                                  create_at = @DateCreate, 
+                                  is_deleted = @IsDeleted
+                              WHERE id = @Id";
+
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
+                command.Parameters.AddWithValue("@Id", id);
+
+                command.Prepare();
+                int row = command.ExecuteNonQuery();
+
+                return row > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return false;
+        }
+
+        public bool Delete(long id)
+        {
+            string query = $@"UPDATE {TableName}
+                              SET is_deleted = 1
+                              WHERE id = @Id";
+
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
+                command.Prepare();
+
+                int row = command.ExecuteNonQuery();
+                return row > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return false;
+        }
+
+        public AccountViolationDTO? IsAccountLocked(long accountId)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE user_id = @AccountId AND is_deleted = 0";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@AccountId", accountId);
+                command.Prepare();
+
+                using var reader = command.ExecuteReader();
+                if (reader.Read()) return FetchData(reader);
+                else return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null;
+        }
+
+        public List<AccountViolationDTO> GetAllLockedUsers()
+        {
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = 0";
             Logger.Log($"Query: {query}");
 
             try
@@ -79,107 +280,6 @@ namespace SGULibraryManagement.DAO
             }
 
             return [];
-        }
-
-        public AccountViolationDTO Create(AccountViolationDTO request)
-        {
-            string query = $@"INSERT INTO {TableName} (user_id, violation_id, create_at, is_deleted) 
-                              VALUES ({request.UserId}, {request.ViolationId}, @DateCreate, @IsDeleted)";
-            Logger.Log($"Query: {query}");
-
-            try
-            {
-                using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@DateCreate", request.DateCreate);
-                command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
-
-                command.Prepare();
-                int row = command.ExecuteNonQuery();
-
-                return row > 0 ? request : null!;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.StackTrace!);
-            }
-
-            return null!;
-        }
-
-        public bool Update(long id, AccountViolationDTO request)
-        {
-            string query = $@"UPDATE {TableName} 
-                              SET user_id = {request.UserId}, 
-                                  violation_id = {request.ViolationId}, 
-                                  create_at = @DateCreate, 
-                                  is_deleted = @IsDeleted
-                              WHERE id = {request.Id}";
-
-            Logger.Log($"Query: {query}");
-
-            try
-            {
-                using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@DateCreate", request.DateCreate);
-                command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
-
-                command.Prepare();
-                int row = command.ExecuteNonQuery();
-
-                return row > 0;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.StackTrace!);
-            }
-
-            return false;
-        }
-
-        public bool Delete(long id)
-        {
-            string query = $@"UPDATE {TableName}
-                              SET is_deleted = 1
-                              WHERE id = {id}";
-
-            Logger.Log($"Query: {query}");
-
-            try
-            {
-                using MySqlCommand command = new(query, Connection);
-                command.Prepare();
-
-                int row = command.ExecuteNonQuery();
-                return row > 0;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.StackTrace!);
-            }
-
-            return false;
-        }
-
-        public AccountViolationDTO? IsAccountLocked(long accountId)
-        {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = {accountId} AND is_deleted = 0";
-            Logger.Log($"Query: {query}");
-
-            try
-            {
-                using MySqlCommand command = new(query, Connection);
-                command.Prepare();
-
-                using var reader = command.ExecuteReader();
-                if (reader.Read()) return FetchData(reader);
-                else return null;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.StackTrace!);
-            }
-
-            return null;
         }
 
         public bool IsRuleViolatedByUser(long violationId)

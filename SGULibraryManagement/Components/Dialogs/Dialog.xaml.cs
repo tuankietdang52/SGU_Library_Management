@@ -55,6 +55,12 @@ namespace SGULibraryManagement.Components.Dialogs
             dialogContent.Content = content;
         }
 
+        private void OnStatusBarMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+
         private void OnCloseDialog(object sender, RoutedEventArgs e)
         {
             Close();

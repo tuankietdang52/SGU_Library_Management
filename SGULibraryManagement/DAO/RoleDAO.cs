@@ -29,11 +29,12 @@ namespace SGULibraryManagement.DAO
 
         public List<RoleDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
 
             try
             {
                 MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
                 command.Prepare();
 
                 List<RoleDTO> result = [];
