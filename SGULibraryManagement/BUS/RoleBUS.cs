@@ -12,8 +12,6 @@ namespace SGULibraryManagement.BUS
     public class RoleBUS
     {
         private readonly RoleDAO RoleDAO = new();
-        public List<RoleDTO> Roles { get; private set; } = [];
-
         public Dictionary<ERole, SolidColorBrush> RoleColors { get; set; } = [];
 
         public RoleBUS()
@@ -41,7 +39,12 @@ namespace SGULibraryManagement.BUS
 
         public List<RoleDTO> GetAll()
         {
-            return Roles = RoleDAO.GetAll(true);
+            return RoleDAO.GetAll(true);
+        }
+
+        public RoleDTO FindById(long id)
+        {
+            return RoleDAO.FindById(id);
         }
     }
 

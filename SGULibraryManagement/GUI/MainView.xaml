@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:SGULibraryManagement.GUI"
              xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
              xmlns:contents="clr-namespace:SGULibraryManagement.GUI.Contents"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
              Width="{StaticResource AppWidth}"
@@ -47,6 +48,23 @@
                     </TextBlock>
                 </StackPanel>
             </StackPanel>
+            <Grid Canvas.Right="0"
+                  Width="130">
+                <buttons:RoundButton x:Name="currentUserButton"
+                                     Height="90"
+                                     Width="90"
+                                     Click="OnCurrentUserButtonClick">
+                    <buttons:RoundButton.Content>
+                        <ui:Image CornerRadius="100"
+                                  BorderThickness="1"
+                                  BorderBrush="Black"
+                                  Width="70"
+                                  Height="70"
+                                  Source="/Resources/Images/avatae.png">
+                        </ui:Image>
+                    </buttons:RoundButton.Content>
+                </buttons:RoundButton>
+            </Grid>
         </Canvas>
         <Border BorderBrush="LightGray" 
                 DockPanel.Dock="Left"
@@ -97,14 +115,6 @@
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
                             <contents:ViolationView></contents:ViolationView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
-
-                    <sideMenu:SideMenuItem Text="Settings"
-                                           Glyph="&#xf0ad;"
-                                           MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <views:SettingView></views:SettingView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
                 </StackPanel>

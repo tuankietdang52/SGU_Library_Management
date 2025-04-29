@@ -1,26 +1,13 @@
 ﻿using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
-using SGULibraryManagement.Components.TextFields;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.GUI.ViewModels;
+using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SGULibraryManagement.GUI.Contents
 {
@@ -42,7 +29,16 @@ namespace SGULibraryManagement.GUI.Contents
 
         public void Fetch()
         {
-            Users.ResetTo(userBUS.GetAllWithRole());
+            RenderTable();
+        }
+
+        private void RenderTable(List<AccountViewModel>? collections = null)
+        {
+            var list = collections ?? userBUS.GetAllWithRole();
+            AccountDTO currentAccount = AccountManager.CurrentUser!;
+
+            list.RemoveAll(vm => vm.Account.Id == currentAccount.Id);
+            App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
         }
 
         private void SetupComponent()
@@ -99,7 +95,7 @@ namespace SGULibraryManagement.GUI.Contents
             }
 
             result = userBUS.FilterByLockStatus(filter.Status, result);
-            App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
+            RenderTable(result);
         }
 
         private void OnSearch(object sender, TextChangedEventArgs e)

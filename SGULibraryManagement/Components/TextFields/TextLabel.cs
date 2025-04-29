@@ -6,14 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SGULibraryManagement.Components.TextFields
 {
@@ -37,6 +29,12 @@ namespace SGULibraryManagement.Components.TextFields
                                       typeof(TextLabel),
                                       new PropertyMetadata(null));
 
+        public static new readonly DependencyProperty PaddingProperty =
+          DependencyProperty.Register(nameof(Padding),
+                                      typeof(Thickness),
+                                      typeof(TextLabel),
+                                      new PropertyMetadata(new Thickness(6)));
+
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -53,6 +51,12 @@ namespace SGULibraryManagement.Components.TextFields
         {
             get => (TextDecorationCollection)GetValue(TextDecorationsProperty);
             set => SetValue(TextDecorationsProperty, value);
+        }
+
+        public new Thickness Padding
+        {
+            get => (Thickness)GetValue(PaddingProperty);
+            set => SetValue(PaddingProperty, value);
         }
 
         static TextLabel()

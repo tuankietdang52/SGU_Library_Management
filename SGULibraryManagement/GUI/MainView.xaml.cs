@@ -1,21 +1,9 @@
 ﻿using SGULibraryManagement.Components.SideMenu;
 using SGULibraryManagement.GUI.Contents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SGULibraryManagement.GUI
 {
@@ -53,6 +41,16 @@ namespace SGULibraryManagement.GUI
             PlayNavigateAnimation();
         }
 
+        public void Navigate(UserControl contentView)
+        {
+            OnChangeContent();
+
+            currentContent = contentView;
+            content.Navigate(currentContent);
+
+            PlayNavigateAnimation();
+        }
+
         /// <summary>
         /// Refetch all content view in types, if types is null, refetch all
         /// </summary>
@@ -83,6 +81,14 @@ namespace SGULibraryManagement.GUI
 
                 sideMenuItem.IsSelected = false;
             }
+        }
+
+        private void OnCurrentUserButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (currentContent is UserInformationView) return;
+
+            UserInformationView view = new();
+            Navigate(view);
         }
 
         private void OnLogout(object sender, MouseButtonEventArgs e)

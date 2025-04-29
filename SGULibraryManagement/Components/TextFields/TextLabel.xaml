@@ -9,7 +9,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}"
                             CornerRadius="{TemplateBinding CornerRadius}"
-                            Padding="6"
+                            Padding="{TemplateBinding Padding}"
                             Width="{TemplateBinding Width}"
                             Height="{TemplateBinding Height}">
                         <TextBlock Text="{TemplateBinding Text}"

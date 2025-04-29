@@ -1,0 +1,181 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.UserInformationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:fileChoosers="clr-namespace:SGULibraryManagement.Components.FileChoosers"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             Style="{StaticResource ContentStyle}">
+    <Grid Background="{StaticResource LoadingBackground}">
+        <Grid Height="700"
+              Width="1000">
+            <Grid Height="220"
+                  Width="220"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Center"
+                  Panel.ZIndex="2">
+                <fileChoosers:ImageChooser x:Name="imageChooser"
+                                           Height="210"
+                                           Width="210"
+                                           CornerRadius="100"
+                                           BorderThickness="1"
+                                           OnImageChoose="OnImageChoose">
+                </fileChoosers:ImageChooser>
+            </Grid>
+            <Border CornerRadius="10"
+                    BorderThickness="1"
+                    Height="500"
+                    Width="1000"
+                    Panel.ZIndex="1"
+                    Padding="10, 110, 10, 10">
+                <Border.Background>
+                    <SolidColorBrush Color="White" Opacity="0.8"></SolidColorBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock FontSize="25"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            Account Profile
+                        </TextBlock>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4.9*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                            <ColumnDefinition Width="4.9*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="18"
+                                           VerticalAlignment="Center"
+                                           Width="100">
+                                    Full Name:
+                                </TextBlock>
+                                <textFields:TextField x:Name="firstNameField" 
+                                                      Height="35"
+                                                      Margin="10, 0, 0, 0"
+                                                      VerticalAlignment="Top"
+                                                      VerticalContentAlignment="Center"
+                                                      FontSize="15"
+                                                      Width="200">
+                                </textFields:TextField>
+                                <textFields:TextField x:Name="lastNameField" 
+                                                      Height="35"
+                                                      Margin="5, 0, 0, 0"
+                                                      VerticalAlignment="Top"
+                                                      VerticalContentAlignment="Center"
+                                                      FontSize="15"
+                                                      Width="150">
+                                </textFields:TextField>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0, 30, 0, 0">
+                                <TextBlock FontSize="18"
+                                           Width="100"
+                                           VerticalAlignment="Center">
+                                    Username:
+                                </TextBlock>
+                                <textFields:TextField x:Name="usernameField" 
+                                                      Height="35"
+                                                      Margin="10, 0, 0, 0"
+                                                      VerticalAlignment="Top"
+                                                      VerticalContentAlignment="Center"
+                                                      FontSize="15"
+                                                      Width="355">
+                                </textFields:TextField>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0, 30, 0, 0">
+                                <TextBlock FontSize="18"
+                                           Width="100"
+                                           VerticalAlignment="Center">
+                                    Email:
+                                </TextBlock>
+                                <textFields:TextField x:Name="emailField" 
+                                                      Height="35"
+                                                      Margin="10, 0, 0, 0"
+                                                      VerticalAlignment="Top"
+                                                      VerticalContentAlignment="Center"
+                                                      FontSize="15"
+                                                      Width="355">
+                                </textFields:TextField>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="18"
+                                           Width="100"
+                                           VerticalAlignment="Center">
+                                    Role:
+                                </TextBlock>
+                                <textFields:TextLabel x:Name="roleLabel"
+                                                      FontSize="18"
+                                                      Foreground="White"
+                                                      Background="{StaticResource ErrorColor}"
+                                                      CornerRadius="10"
+                                                      Padding="8"
+                                                      Margin="10, 0, 0, 0">
+                                </textFields:TextLabel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0, 30, 0, 0">
+                                <TextBlock FontSize="18"
+                                           Width="100"
+                                           VerticalAlignment="Center">
+                                    Password:
+                                </TextBlock>
+                                <ui:PasswordBox x:Name="passwordField" 
+                                                Height="35"
+                                                Margin="10, 0, 0, 0"
+                                                VerticalAlignment="Top"
+                                                VerticalContentAlignment="Center"
+                                                FontSize="15"
+                                                Width="355">
+                                </ui:PasswordBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0, 30, 0, 0">
+                                <TextBlock FontSize="18"
+                                           Width="100"
+                                           VerticalAlignment="Center">
+                                    Phone:
+                                </TextBlock>
+                                <textFields:TextField x:Name="phoneField" 
+                                                      Height="35"
+                                                      Margin="10, 0, 0, 0"
+                                                      VerticalAlignment="Top"
+                                                      VerticalContentAlignment="Center"
+                                                      FontSize="15"
+                                                      Width="355">
+                                </textFields:TextField>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <buttons:RoundButton x:Name="saveButton"
+                                             CornerRadius="10"
+                                             BorderThickness="1"
+                                             Width="100"
+                                             Height="40"
+                                             Background="{StaticResource Blue74}"
+                                             HoverBackgroundColor="{StaticResource Blue90}"
+                                             Foreground="White"
+                                             Click="OnSave">
+                            Save
+                        </buttons:RoundButton>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

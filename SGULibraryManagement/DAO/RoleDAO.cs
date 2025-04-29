@@ -58,8 +58,28 @@ namespace SGULibraryManagement.DAO
         }
         public RoleDTO FindById(long id)
         {
-            return null;
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
+                command.Prepare();
+
+                using var reader = command.ExecuteReader();
+
+                if (reader.Read()) return FetchData(reader);
+                else return null!;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
         }
+
         public RoleDTO Create(RoleDTO request)
         {
             return null;
