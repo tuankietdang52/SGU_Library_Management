@@ -68,7 +68,7 @@
                               Height="40"
                               Width="200"
                               BorderThickness="0, 1, 1, 1"
-                              SelectionChanged="OnSearchByChanged"
+                              SelectionChanged="OnFilterCbChanged"
                               VerticalAlignment="Center">
                     </ComboBox>
                     <Viewbox Width="50"></Viewbox>
@@ -151,7 +151,6 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

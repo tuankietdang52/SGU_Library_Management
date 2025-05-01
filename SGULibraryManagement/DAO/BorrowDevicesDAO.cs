@@ -31,7 +31,7 @@ namespace SGULibraryManagement.DAO
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@IdDeleted", isActive);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
 
                 command.Prepare();
 

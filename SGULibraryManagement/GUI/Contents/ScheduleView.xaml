@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.ScheduleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             mc:Ignorable="d"
+             Style="{StaticResource ContentStyle}">
+    <StackPanel Margin="0, 10, 0, 0">
+        <Canvas Height="70">
+            <TextBlock Canvas.Left="10"
+                   FontWeight="Bold"
+                   FontSize="30">
+                    All Schedule
+            </TextBlock>
+        </Canvas>
+        <Border Width="{Binding Source={StaticResource AppContentWidth}, 
+                                Converter={StaticResource SubtractConverter}, 
+                                ConverterParameter=50}"
+                Height="530"
+                BorderThickness="1"
+                BorderBrush="Black"
+                CornerRadius="10">
+            <StackPanel>
+                <StackPanel Height="40"
+                        Orientation="Horizontal"
+                        Margin="20, 10">
+                    <TextBlock FontSize="20"
+                               VerticalAlignment="Center"
+                               Margin="0, 0, 20, 0">
+                        Search
+                    </TextBlock>
+                    <textFields:TextField x:Name="searchField"
+                                          Height="35"
+                                          Width="500"
+                                          BorderThickness="1, 1, 0, 1"
+                                          TextChanged="OnSearch"
+                                          Placeholder="Type something..."
+                                          VerticalContentAlignment="Center">
+                    </textFields:TextField>
+                    <ComboBox x:Name="searchByComboBox"
+                              Height="40"
+                              Width="200"
+                              BorderThickness="0, 1, 1, 1"
+                              SelectionChanged="OnFilterCbChanged"
+                              VerticalAlignment="Center">
+                    </ComboBox>
+                </StackPanel>
+                <Viewbox Height="10"></Viewbox>
+                <StackPanel Height="40"
+                        Orientation="Horizontal"
+                        Margin="20, 0">
+                    <TextBlock FontSize="20"
+                               VerticalAlignment="Center"
+                               Margin="0, 0, 20, 0">
+                        Status:
+                    </TextBlock>
+                    <ComboBox x:Name="statusComboBox"
+                              Height="40"
+                              Width="200"
+                              VerticalAlignment="Center"
+                              SelectedIndex="0"
+                              SelectionChanged="OnFilterCbChanged">
+                    </ComboBox>
+                </StackPanel>
+                <DataGrid x:Name="scheduleTable"
+                          Width="{Binding Source={StaticResource AppContentWidth}, 
+                                          Converter={StaticResource SubtractConverter}, 
+                                          ConverterParameter=50}"
+                          Height="400"
+                          ColumnWidth="*"
+                          AutoGenerateColumns="False"
+                          Margin="0, 10, 0, 0"
+                          CanUserResizeRows="False"
+                          IsReadOnly="True"
+                          Foreground="White"
+                          HorizontalScrollBarVisibility="Disabled"
+                          BorderBrush="Black"
+                          BorderThickness="0, 1, 0, 0"
+                          ColumnHeaderHeight="40"
+                          RowHeaderWidth="30"
+                          HeadersVisibility="Column"
+                          ItemsSource="{Binding BorrowDevices}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDue}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource LockedBackground}"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsReturn}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource ActiveBackground}"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device" Binding="{Binding Device.Name}" Width="*"/>
+                        <DataGridTextColumn Header="User" Binding="{Binding User.Email}" Width="*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                        <DataGridTextColumn Header="Date Borrow" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
+                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy}" Width="*"/>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <buttons:RoundButton CornerRadius="100"
+                                                         Margin="0, 10"
+                                                         Height="35"
+                                                         Width="35"
+                                                         Content="&#xf023;"
+                                                         Foreground="White"
+                                                         FontFamily="{DynamicResource FontAwesomeSolid}"
+                                                         Command="{Binding LockCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                         CommandParameter="{Binding User}">
+                                        <buttons:RoundButton.Style>
+                                            <Style TargetType="buttons:RoundButton">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDue}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                                        <Setter Property="Background" Value="Gray"></Setter>
+                                                        <Setter Property="HoverBackgroundColor" Value="Gray"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsDue}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource ErrorColor}"></Setter>
+                                                        <Setter Property="HoverBackgroundColor" Value="DarkRed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </buttons:RoundButton.Style>
+                                    </buttons:RoundButton>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

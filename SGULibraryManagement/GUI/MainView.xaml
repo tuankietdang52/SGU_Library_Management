@@ -48,23 +48,38 @@
                     </TextBlock>
                 </StackPanel>
             </StackPanel>
-            <Grid Canvas.Right="0"
-                  Width="130">
-                <buttons:RoundButton x:Name="currentUserButton"
-                                     Height="90"
-                                     Width="90"
-                                     Click="OnCurrentUserButtonClick">
-                    <buttons:RoundButton.Content>
-                        <ui:Image CornerRadius="100"
-                                  BorderThickness="1"
-                                  BorderBrush="Black"
-                                  Width="70"
-                                  Height="70"
-                                  Source="/Resources/Images/avatae.png">
-                        </ui:Image>
-                    </buttons:RoundButton.Content>
-                </buttons:RoundButton>
-            </Grid>
+            <StackPanel Canvas.Right="0"
+                        Width="270"
+                        Orientation="Horizontal">
+                <Grid Width="130">
+                    <buttons:RoundButton x:Name="currentUserButton"
+                                         Height="90"
+                                         Width="90"
+                                         Click="OnCurrentUserButtonClick">
+                        <buttons:RoundButton.Content>
+                            <ui:Image x:Name="userAvatar"
+                                      CornerRadius="100"
+                                      BorderThickness="1"
+                                      BorderBrush="Black"
+                                      Width="70"
+                                      Height="70">
+                            </ui:Image>
+                        </buttons:RoundButton.Content>
+                    </buttons:RoundButton>
+                </Grid>
+                <StackPanel Width="150"
+                            VerticalAlignment="Center">
+                    <TextBlock x:Name="currentUserName"
+                               FontSize="18"
+                               Foreground="White"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <TextBlock x:Name="currentUserRole"
+                               FontSize="15"
+                               Foreground="White">
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
         </Canvas>
         <Border BorderBrush="LightGray" 
                 DockPanel.Dock="Left"
@@ -90,7 +105,7 @@
                                            Glyph="&#xf073;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
-                            <views:ScheduleView></views:ScheduleView>
+                            <contents:ScheduleView></contents:ScheduleView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 

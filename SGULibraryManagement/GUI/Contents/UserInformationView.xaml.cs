@@ -1,23 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 
-namespace SGULibraryManagement.GUI
+namespace SGULibraryManagement.GUI.Contents
 {
     public partial class UserInformationView : UserControl
     {
@@ -94,6 +82,7 @@ namespace SGULibraryManagement.GUI
             await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
 
             AccountManager.CurrentUser = accountBUS.FindById(Current!.Id);
+            MainView.Instance.RefreshCurrentUser();
             MainView.Instance.Navigate(new UserInformationView());
         }
 

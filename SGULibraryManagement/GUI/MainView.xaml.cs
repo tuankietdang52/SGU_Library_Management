@@ -1,9 +1,12 @@
-﻿using SGULibraryManagement.Components.SideMenu;
+﻿using SGULibraryManagement.BUS;
+using SGULibraryManagement.Components.SideMenu;
 using SGULibraryManagement.GUI.Contents;
+using SGULibraryManagement.Helper;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace SGULibraryManagement.GUI
 {
@@ -11,11 +14,11 @@ namespace SGULibraryManagement.GUI
     {
         private UserControl? currentContent;
 
-        private static MainView? mainView;
+        private static MainView? instance;
         public static MainView Instance
         {
-            get => mainView ?? new MainView();
-            set => mainView = value;
+            get => instance ?? new MainView();
+            set => instance = value;
         }
 
         public MainView()
@@ -24,6 +27,7 @@ namespace SGULibraryManagement.GUI
             Navigate(SideMenuHomeItem, null!);
 
             Instance = this;
+            RefreshCurrentUser();
         }
 
         private void Navigate(object sender, MouseButtonEventArgs e)
@@ -51,6 +55,22 @@ namespace SGULibraryManagement.GUI
             PlayNavigateAnimation();
         }
 
+        public void RefreshCurrentUser()
+        {
+            var current = AccountManager.CurrentUser!;
+
+            currentUserName.Text = current.FullName;
+
+            var role = new RoleBUS().FindById(current.IdRole);
+            currentUserRole.Text = role.Name;
+
+            try
+            {
+                userAvatar.Source = new BitmapImage(new Uri(current.Avatar));
+            }
+            catch { }
+        }
+
         /// <summary>
         /// Refetch all content view in types, if types is null, refetch all
         /// </summary>
@@ -62,11 +82,11 @@ namespace SGULibraryManagement.GUI
 
             foreach (var child in list)
             {
-                if (child is not IContent) continue;
-                var content = (IContent)child;
+                if (child is not SideMenuItem sideMenuItem) continue;
+                if (sideMenuItem.ContentView is not IContent content) continue;
 
                 if (typeNames.Count == 0) content.Fetch();
-                else if (typeNames.Contains(child.GetType().Name)) content.Fetch();
+                else if (typeNames.Contains(content.GetType().Name)) content.Fetch();
             }
         }
 

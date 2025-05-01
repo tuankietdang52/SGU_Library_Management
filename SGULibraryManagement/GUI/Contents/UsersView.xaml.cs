@@ -85,7 +85,7 @@ namespace SGULibraryManagement.GUI.Contents
 
         private void OnApplyFilter(UserFilter? filter)
         {
-            if (filter == null) return;
+            if (filter is null) return;
 
             var result = userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
 
@@ -104,12 +104,6 @@ namespace SGULibraryManagement.GUI.Contents
 
             UserFilter? filter = GetFilter();
             searchDebounce(filter);
-        }
-
-        private void OnSearchByChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UserFilter? filter = GetFilter();
-            OnApplyFilter(filter);
         }
 
         private void OnFilterCbChanged(object sender, SelectionChangedEventArgs e)

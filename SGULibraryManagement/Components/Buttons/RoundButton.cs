@@ -1,4 +1,5 @@
 ﻿using SGULibraryManagement.Components.SideMenu;
+using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +30,13 @@ namespace SGULibraryManagement.Components.Buttons
             DependencyProperty.Register(nameof(HoverBackgroundColor),
                                         typeof(Brush),
                                         typeof(RoundButton),
-                                        new PropertyMetadata(null));
+                                        new PropertyMetadata(Brushes.Transparent));
 
         public static readonly DependencyProperty HoverForegroundColorProperty =
             DependencyProperty.Register(nameof(HoverForegroundColor),
                                         typeof(Brush),
                                         typeof(RoundButton),
-                                        new PropertyMetadata(null));
+                                        new FrameworkPropertyMetadata(Brushes.White));
 
         public CornerRadius CornerRadius
         {
@@ -53,13 +54,6 @@ namespace SGULibraryManagement.Components.Buttons
         {
             get => (Brush)GetValue(HoverForegroundColorProperty);
             set => SetValue(HoverForegroundColorProperty, value);
-        }
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();    
-            HoverBackgroundColor ??= Background;
-            HoverForegroundColor ??= Foreground;
         }
 
         static RoundButton()
