@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.EquipmentsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:button="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:equipments="clr-namespace:SGULibraryManagement.Components.Equipments"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             mc:Ignorable="d"
+             Style="{StaticResource ContentStyle}">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="EquipmentsFadeIn">
+            <DoubleAnimation Storyboard.TargetName="equipmentsContainer"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.0"
+                             To="1.0"
+                             Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="EquipmentsFadeOut">
+            <DoubleAnimation Storyboard.TargetName="content"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1.0"
+                             To="0.0"
+                             Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="FilterExpand">
+            <DoubleAnimation Storyboard.TargetName="filterContainer"
+                             Storyboard.TargetProperty="Height"
+                             From="0"
+                             To="200"
+                             Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="CloseExpand">
+            <DoubleAnimation Storyboard.TargetName="filterContainer"
+                     Storyboard.TargetProperty="Height"
+                     From="200"
+                     To="0"
+                     Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <StackPanel Margin="0, 10, 0, 0">
+        <Canvas Height="70">
+            <TextBlock Canvas.Left="30"
+                       FontWeight="Bold"
+                       FontSize="30">
+                        All Equipment
+            </TextBlock>
+            <button:RoundButton Canvas.Right="30"
+                                Foreground="White"
+                                Background="Black"
+                                Height="50"
+                                CornerRadius="20"
+                                Click="OnAddButtonClick"
+                                HoverBackgroundColor="#2B2B2B">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="&#xf055;"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontFamily="{StaticResource FontAwesomeSolid}">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock Text="Add New Equipment"
+                               Foreground="White"
+                               FontSize="15">
+
+                    </TextBlock>
+                </StackPanel>
+            </button:RoundButton>
+        </Canvas>
+        <Border BorderBrush="Black"
+                BorderThickness="1"
+                CornerRadius="10"
+                Width="{Binding Source={StaticResource AppContentWidth}, 
+                                Converter={StaticResource SubtractConverter}, 
+                                ConverterParameter=100}"
+                Height="540">
+            <StackPanel>
+                <Border BorderBrush="Black"
+                        BorderThickness="0, 0, 0, 1"
+                        CornerRadius="10, 10, 0, 0"
+                        Background="{StaticResource AppThemeSecondary}">
+                    <Canvas Height="40" Margin="0, 10, 0, 0">
+                        <button:RoundButton Canvas.Right="20"
+                                            Content="&#xf0b0;"
+                                            CornerRadius="10"
+                                            Foreground="White"
+                                            FontFamily="{DynamicResource FontAwesomeSolid}"
+                                            Background="Gray"
+                                            HoverBackgroundColor="LightGray"
+                                            Click="OnFilterButtonClick">
+
+                        </button:RoundButton>
+                    </Canvas>
+                </Border>
+                <Grid>
+                    <Border x:Name="filterContainer"
+                            BorderBrush="Black"
+                            BorderThickness="0, 0, 0, 1"
+                            CornerRadius="10"
+                            VerticalAlignment="Top"
+                            Panel.ZIndex="2"
+                            Background="White"
+                            Padding="10"
+                            Height="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"></ColumnDefinition>
+                                <ColumnDefinition Width="4*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="0, 0, 20, 0">
+                                            Search
+                                    </TextBlock>
+                                    <textFields:TextField x:Name="searchField"
+                                                          Height="35"
+                                                          Width="500"
+                                                          Placeholder="Type something..."
+                                                          TextChanged="OnSearch"
+                                                          VerticalContentAlignment="Center">
+
+                                    </textFields:TextField>
+                                </StackPanel>
+                                <Viewbox Height="30"></Viewbox>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="0, 0, 20, 0">
+                                            Status
+                                    </TextBlock>
+                                    <ComboBox x:Name="statusComboBox"
+                                              Height="40"
+                                              Width="200"
+                                              Margin="2, 0, 0, 0"
+                                              VerticalAlignment="Center"
+                                              SelectedIndex="0"
+                                              SelectionChanged="OnStatusChanged">
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="0, 0, 20, 0">
+                                           Sort By
+                                    </TextBlock>
+                                    <ComboBox x:Name="sortComboBox"
+                                              Height="40"
+                                              Width="200"
+                                              Margin="2, 0, 0, 0"
+                                              VerticalAlignment="Center"
+                                              SelectionChanged="OnSort">
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Id</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf062;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Id</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf063;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Name</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf062;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Name</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf063;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Quantity</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock VerticalAlignment="Center"
+                                                           FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf062;">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Quantity</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock VerticalAlignment="Center"
+                                                           FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf063;">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ScrollViewer x:Name="scrollContainer"
+                                  Height="500"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Hidden"
+                                  Panel.ZIndex="1"
+                                  HorizontalAlignment="Center">
+                        <WrapPanel x:Name="equipmentsContainer"
+                                   Margin="0, 10, 0, 0"
+                                   HorizontalAlignment="Center">
+
+                        </WrapPanel>
+                    </ScrollViewer>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

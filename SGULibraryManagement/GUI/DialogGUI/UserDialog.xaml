@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.DialogGUI.UserDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             xmlns:fileChoosers="clr-namespace:SGULibraryManagement.Components.FileChoosers"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             mc:Ignorable="d"
+             Height="600" Width="800">
+    <StackPanel Margin="0, 20, 0, 0">
+        <TextBlock x:Name="lbTitle" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24">
+            Add new User
+        </TextBlock>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"></ColumnDefinition>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0"
+                        Margin="0, 10, 0, 0">
+                <Grid>
+                    <fileChoosers:ImageChooser x:Name="imageChooser"
+                                               BorderThickness="1"
+                                               CornerRadius="100"
+                                               VerticalAlignment="Top"
+                                               OnImageChoose="OnChooseImage">
+                        
+                    </fileChoosers:ImageChooser>
+                    <ui:Image x:Name="image"
+                              BorderThickness="1"
+                              CornerRadius="100"
+                              VerticalAlignment="Top"
+                              Width="200"
+                              Height="200"
+                              Visibility="Collapsed">
+                    </ui:Image>
+                </Grid>
+                <TextBlock FontSize="20"
+                           FontWeight="Bold"
+                           Margin="0, 10"
+                           HorizontalAlignment="Center">
+                    Profile picture
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Width="400">
+                <TextBlock Height="20"
+                           VerticalAlignment="Top" 
+                           FontSize="18"
+                           Margin="0, 10, 0, 5"
+                           Text="Fullname"/>
+                <StackPanel Orientation="Horizontal"
+                            Margin="0, 0, 0, 10">
+                    <textFields:TextField x:Name="txtHo"
+                                          Height="35"
+                                          VerticalAlignment="Top"
+                                          VerticalContentAlignment="Center"
+                                          TextBlock.FontSize="15"
+                                          Placeholder="Nguyen Nhat"
+                                          Width="300"/>
+                    <textFields:TextField x:Name="txtTen" 
+                                          Height="35"
+                                          VerticalAlignment="Top"
+                                          VerticalContentAlignment="Center"
+                                          Placeholder="Quang"
+                                          TextBlock.FontSize="15"
+                                          Width="100"/>
+                </StackPanel>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           FontSize="18" 
+                           Margin="0, 0, 0, 5"
+                           Text="Phone Number"/>
+                <textFields:TextField x:Name="txtSdt" 
+                                      Height="35"
+                                      FontSize="15"
+                                      AcceptNumberOnly="True"
+                                      VerticalContentAlignment="Center"               
+                                      VerticalAlignment="Top"
+                                      TextBlock.FontSize="15"
+                                      Margin="0, 0, 0, 10"
+                                      Placeholder="039999999"/>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           FontSize="18" 
+                           Margin="0, 0, 0, 5"
+                           Text="Email"/>
+                <textFields:TextField x:Name="txtEmail" 
+                                      Height="35"
+                                      IsEmailField="True"
+                                      VerticalAlignment="Top"
+                                      Margin="0, 0, 0, 10"
+                                      VerticalContentAlignment="Center"
+                                      Placeholder="abc@gmail.com"
+                                      TextBlock.FontSize="15"/>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           Margin="0, 0, 0, 5"
+                           FontSize="18" Text="Username"/>
+                <textFields:TextField x:Name="txtTaiKhoan" 
+                                      Height="35"
+                                      VerticalAlignment="Top"
+                                      Margin="0, 0, 0, 10"
+                                      VerticalContentAlignment="Center"
+                                      Placeholder="admin123"
+                                      TextBlock.FontSize="15"/>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           FontSize="18"
+                           Margin="0, 0, 0, 5"
+                           Text="Password">
+                </TextBlock>
+                <Grid VerticalAlignment="Top"
+                      Margin="0, 0, 0, 10">
+                    <ui:PasswordBox x:Name="txtMatKhau" 
+                                    Height="35"
+                                    FontSize="15">
+                    </ui:PasswordBox>
+                    <TextBox x:Name="passwordTB"
+                             Height="35"
+                             FontSize="15"
+                             IsEnabled="False"
+                             Foreground="Black"
+                             Visibility="Collapsed">
+                    </TextBox>
+                </Grid>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           Margin="0, 0, 0, 5"
+                           FontSize="18" 
+                           Text="Role"/>
+                <ComboBox x:Name="cbxQuyen" 
+                          Margin="0, 0, 0, 10"
+                          Height="35"
+                          VerticalAlignment="Top"
+                          FontSize="18">
+                </ComboBox>
+                <Viewbox Height="20"></Viewbox>
+                <StackPanel x:Name="violationDescriptionContainer"
+                            Orientation="Horizontal"
+                            Visibility="Collapsed">
+                    <TextBlock Text="&#xf023;"
+                               Foreground="{StaticResource ErrorColor}"
+                               FontFamily="{DynamicResource FontAwesomeSolid}"
+                               FontSize="18">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock x:Name="violationDescription"
+                               FontSize="18"
+                               Height="50"
+                               Width="{Binding ActualWidth, 
+                                               RelativeSource={RelativeSource AncestorType=StackPanel, AncestorLevel=2},
+                                               Converter={StaticResource SubtractConverter},
+                                               ConverterParameter=30}"
+                               Foreground="{StaticResource ErrorColor}"
+                               TextWrapping="Wrap">
+                    </TextBlock>
+                </StackPanel>
+                <Viewbox Height="20"></Viewbox>
+                <Grid>
+                    <buttons:RoundButton x:Name="lockButton"
+                                         Background="Red"
+                                         HoverBackgroundColor="{StaticResource ErrorColor}"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                         FontSize="20"
+                                         Height="42"
+                                         CornerRadius="10"
+                                         Content="Lock Option"
+                                         HorizontalAlignment="Left"
+                                         Click="OnLockUserClick"
+                                         Visibility="Collapsed">
+                    </buttons:RoundButton>
+                    <buttons:RoundButton x:Name="btn"
+                                         Content="Create"
+                                         CornerRadius="10"
+                                         Width="110" 
+                                         Height="42"
+                                         FontSize="20"
+                                         HorizontalAlignment="Right"
+                                         Foreground="White"
+                                         Background="{StaticResource Blue74}"
+                                         HoverBackgroundColor="{StaticResource Blue90}"
+                                         FontWeight="Bold" 
+                                         Click="btn_Click">
+                    </buttons:RoundButton>
+                </Grid>
+                <StackPanel x:Name="historyOptionContainer"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Visibility="Collapsed">
+                    <buttons:RoundButton x:Name="borrowHistory"
+                                         Background="{StaticResource Blue74}"
+                                         HoverBackgroundColor="{StaticResource Blue90}"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                         FontSize="20"
+                                         Height="42"
+                                         CornerRadius="10"
+                                         Content="Borrow History"
+                                         HorizontalAlignment="Left"
+                                         Click="OnShowBorrowHistory">
+                    </buttons:RoundButton>
+                    <Viewbox Width="40"></Viewbox>
+                    <buttons:RoundButton x:Name="violationHistory"
+                                         Background="Red"
+                                         HoverBackgroundColor="{StaticResource ErrorColor}"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                         FontSize="20"
+                                         Height="42"
+                                         CornerRadius="10"
+                                         Content="Violation History"
+                                         HorizontalAlignment="Left"
+                                         Click="OnShowViolationHistory">
+                    </buttons:RoundButton>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

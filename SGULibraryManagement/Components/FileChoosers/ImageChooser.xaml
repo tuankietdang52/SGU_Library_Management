@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="SGULibraryManagement.Components.FileChoosers.ImageChooser"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:local="clr-namespace:SGULibraryManagement.Components.FileChoosers"
+             mc:Ignorable="d" 
+             Height="230"
+             Width="230">
+    <Border x:Name="imageChooserContainer"
+            CornerRadius="10"
+            BorderBrush="Black"
+            BorderThickness="1"
+            MouseEnter="OnMouseEnter"
+            MouseLeave="OnMouseLeave"
+            MouseDown="OnMouseDown"
+            Background="LightGray"
+            Height="200" 
+            Width="200"
+            Cursor="Hand">
+        <Grid>
+            <ui:Image x:Name="imageContainer"
+                      CornerRadius="10" 
+                      Height="200"
+                      Width="200"
+                      Visibility="Collapsed">
+            </ui:Image>
+            <StackPanel x:Name="nonImageContainer"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="&#xf03e;"
+                           Foreground="Gray"
+                           FontSize="30"
+                           HorizontalAlignment="Center"
+                           FontFamily="{DynamicResource FontAwesomeSolid}">
+                </TextBlock>
+                <TextBlock FontSize="15" 
+                           Text="Click to upload image"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource DarkGray20}">
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

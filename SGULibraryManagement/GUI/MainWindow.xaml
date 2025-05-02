@@ -1,59 +1,44 @@
-﻿<Window x:Class="SGULibraryManagement.GUI.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SGULibraryManagement"
-        xmlns:views="clr-namespace:SGULibraryManagement.GUI"
-        xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
-        ui:ThemeManager.RequestedTheme="Light"
-        ui:WindowHelper.UseModernWindowStyle="True"
-        Style="{StaticResource WindowStyle}"
-        Title="SGU Library Management">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top" 
-                    Height="{StaticResource HeaderHeight}"
-                    Background="{StaticResource AppThemeColor}">
+<ui:FluentWindow x:Class="SGULibraryManagement.GUI.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:SGULibraryManagement"
+                 xmlns:views="clr-namespace:SGULibraryManagement.GUI"
+                 xmlns:sideMenu="clr-namespace:SGULibraryManagement.Components.SideMenu"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 mc:Ignorable="d"
+                 Width="{StaticResource AppWidth}"
+                 Height="{StaticResource AppHeight}"
+                 FontFamily="Calibri Light"
+                 WindowStartupLocation="CenterScreen"
+                 Title="SGU Library Management"
+                 Icon="/Resources/Images/Books.png"
+                 ResizeMode="NoResize">
+    <Grid>
+        <StackPanel Width="{StaticResource AppWidth}"
+                    Height="{StaticResource AppHeight}">
+            <ui:TitleBar Title="SGU Library Management"
+                         Height="30"
+                         Background="{StaticResource AppThemeColor}"
+                         ButtonsForeground="White"
+                         ShowMaximize="False"
+                         Foreground="White"
+                         CanMaximize="False"
+                         Panel.ZIndex="2">
+                <ui:TitleBar.Icon>
+                    <ui:ImageIcon Source="/Resources/Images/Books.png"></ui:ImageIcon>
+                </ui:TitleBar.Icon>
+            </ui:TitleBar>
+            <Grid>
+                <ContentPresenter x:Name="windowContent"
+                                  Panel.ZIndex="1">
+                </ContentPresenter>
+                <views:LoadingView x:Name="loadingView"
+                                   Panel.ZIndex="2">
+                </views:LoadingView>
+            </Grid>
         </StackPanel>
-        <Border BorderBrush="LightGray" 
-                BorderThickness="1">
-            <StackPanel x:Name="sideMenu"
-                        DockPanel.Dock="Left" 
-                        Width="{StaticResource SideMenuWidth}"
-                        Background="White">
-                <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
-                                       Text="Home"
-                                       Glyph="&#xf015;"
-                                       MouseDown="Navigate">
-                    <sideMenu:SideMenuItem.ContentView>
-                        <views:HomeView></views:HomeView>
-                    </sideMenu:SideMenuItem.ContentView>
-                </sideMenu:SideMenuItem>
-
-                <sideMenu:SideMenuItem Text="Devices"
-                                       Glyph="&#xf02d;"
-                                       MouseDown="Navigate">
-                    <sideMenu:SideMenuItem.ContentView>
-                        <views:DevicesView></views:DevicesView>
-                    </sideMenu:SideMenuItem.ContentView>
-                </sideMenu:SideMenuItem>
-
-                <sideMenu:SideMenuItem Text="Equipments"
-                                       Glyph="&#xf5fd;"
-                                       MouseDown="Navigate">
-                    <sideMenu:SideMenuItem.ContentView>
-                        <views:EquipmentsView></views:EquipmentsView>
-                    </sideMenu:SideMenuItem.ContentView>
-
-                </sideMenu:SideMenuItem>
-            </StackPanel>
-        </Border>
-        <Frame x:Name="content"
-               DockPanel.Dock="Right"
-               NavigationUIVisibility="Hidden">
-        </Frame>
-    </DockPanel>
-</Window>
+        <ContentPresenter x:Name="dialogHost"></ContentPresenter>
+    </Grid>
+</ui:FluentWindow>

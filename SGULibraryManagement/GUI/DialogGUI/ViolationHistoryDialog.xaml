@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.DialogGUI.ViolationHistoryDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             mc:Ignorable="d" 
+             Height="650"
+             Width="1000">
+    <StackPanel>
+        <Grid Height="100">
+            <TextBlock FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                Violation History
+            </TextBlock>
+        </Grid>
+        <Border BorderBrush="Black"
+                BorderThickness="1"
+                CornerRadius="10"
+                Width="900">
+            <StackPanel>
+                <StackPanel Height="40"
+                            Orientation="Horizontal"
+                            Margin="20, 10">
+                    <TextBlock FontSize="20"
+                               VerticalAlignment="Center"
+                               Margin="0, 0, 20, 0">
+                        Search
+                    </TextBlock>
+                    <textFields:TextField x:Name="searchField"
+                                          Height="35"
+                                          Width="500"
+                                          BorderThickness="1, 1, 0, 1"
+                                          TextChanged="OnSearch"
+                                          Placeholder="Type something..."
+                                          VerticalContentAlignment="Center">
+                    </textFields:TextField>
+                </StackPanel>
+                <DataGrid x:Name="historyTable" 
+                          Width="900"
+                          Height="400"
+                          ColumnWidth="*"
+                          AutoGenerateColumns="False"
+                          Margin="0, 10, 0, 0"
+                          CanUserResizeRows="False"
+                          IsReadOnly="True"
+                          Foreground="White"
+                          HorizontalScrollBarVisibility="Disabled"
+                          BorderBrush="Black"
+                          BorderThickness="0, 1, 0, 0"
+                          HeadersVisibility="Column"
+                          RowHeaderWidth="40"
+                          ColumnHeaderHeight="40"
+                          ItemsSource="{Binding HistoryItemSource}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Setter Property="Background" Value="{Binding BgColor}"></Setter>
+                            <Setter Property="Height" Value="70"></Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Violation" Binding="{Binding Violation.Name}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Date Create" Binding="{Binding DateCreate}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

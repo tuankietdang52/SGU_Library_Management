@@ -16,16 +16,16 @@
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="7*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Label x:Name="sideMenuIcon"
-                                   Grid.Column="0"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   FontFamily="{DynamicResource FontAwesomeSolid}"
-                                   FontSize="{TemplateBinding FontSize}"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Right"
-                                   FontWeight="{TemplateBinding FontWeight}"
-                                   Content="{TemplateBinding Glyph}">
-                            </Label>
+                            <TextBlock x:Name="sideMenuIcon"
+                                       Grid.Column="0"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontFamily="{DynamicResource FontAwesomeSolid}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       Text="{TemplateBinding Glyph}">
+                            </TextBlock>
                             <TextBlock x:Name="sideMenuText"
                                        Grid.Column="2"
                                        Foreground="{TemplateBinding Foreground}"
@@ -36,6 +36,12 @@
                             </TextBlock>
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="sideMenuText" Property="Foreground" Value="{DynamicResource AppThemeSecondary}"></Setter>
+                            <Setter TargetName="sideMenuIcon" Property="Foreground" Value="{DynamicResource AppThemeSecondary}"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
