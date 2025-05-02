@@ -93,19 +93,27 @@
                                             ConverterParameter=5}"
                             Canvas.Top="0">
                     <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
-                                           Text="Home"
-                                           Glyph="&#xf015;"
+                                           Text="Dashboard"
+                                           Glyph="&#xf201;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
-                            <contents:HomeView></contents:HomeView>
+                            <contents:DashboardView></contents:DashboardView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
-                    <sideMenu:SideMenuItem Text="Schedule"
+                    <sideMenu:SideMenuItem Text="Circulation"
+                                           Glyph="&#xe4bb;"
+                                           MouseDown="Navigate">
+                        <sideMenu:SideMenuItem.ContentView>
+                            <contents:CirculationView></contents:CirculationView>
+                        </sideMenu:SideMenuItem.ContentView>
+                    </sideMenu:SideMenuItem>
+
+                    <sideMenu:SideMenuItem Text="Reservation"
                                            Glyph="&#xf073;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
-                            <contents:ScheduleView></contents:ScheduleView>
+                            <contents:ReservationView></contents:ReservationView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 

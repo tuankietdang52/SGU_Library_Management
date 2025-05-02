@@ -2,11 +2,6 @@
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGULibraryManagement.DAO
 {
@@ -91,9 +86,13 @@ namespace SGULibraryManagement.DAO
 
         public List<Pair<DeviceDTO, int>> GetAllWithBorrowQuantity()
         {
-            string query = $"SELECT COUNT(device_id) AS borrow_quantity, {TableName}.* " +
-                           $"FROM borrow_devices INNER JOIN {TableName} ON {TableName}.id = borrow_devices.device_id " +
-                           "GROUP BY device_id";
+            string query = $@"SELECT COALESCE(SUM(borrow_devices.quantity), 0) AS borrow_quantity, 
+                        			 COALESCE(SUM(reservations.quantity), 0) AS reservation_quantity, 
+                        			 {TableName}.*
+                              FROM {TableName}
+                              LEFT JOIN borrow_devices ON devices.id = borrow_devices.device_id
+                              LEFT JOIN reservations ON devices.id = reservations.device_id
+                              GROUP BY {TableName}.id;";
 
             try
             {
@@ -108,7 +107,9 @@ namespace SGULibraryManagement.DAO
                 while (reader.Read())
                 {
                     int borrowQuantity = reader.GetInt32("borrow_quantity");
-                    result.Add(new(FetchData(reader), borrowQuantity));
+                    int reservationQuantity = reader.GetInt32("reservation_quantity");
+
+                    result.Add(new(FetchData(reader), borrowQuantity + reservationQuantity));
                 }
 
                 return result;
@@ -125,6 +126,7 @@ namespace SGULibraryManagement.DAO
         {
             command.Parameters.AddWithValue("@Name", request.Name);
             command.Parameters.AddWithValue("@Quantity", request.Quantity);
+            command.Parameters.AddWithValue("@Description", request.Description);
             command.Parameters.AddWithValue("@Img", request.ImageSource);
             command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
             command.Parameters.AddWithValue("@IsAvailable", request.IsAvailable);

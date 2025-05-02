@@ -86,10 +86,10 @@
                                     </TextBlock>
                                 </buttons:RoundButton>
                                 <Viewbox Width="30"></Viewbox>
-                                <buttons:TextButton Text="Forgot Password"
+                                <!--<buttons:TextButton Text="Forgot Password"
                                                     Foreground="Gray"
                                                     TextDecorations="Underline">
-                                </buttons:TextButton>
+                                </buttons:TextButton>-->
                             </StackPanel>
                         </StackPanel>
                     </Grid>

@@ -2,10 +2,16 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Components\Dashboards\DashboardQuantityStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Dialogs\Dialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\FileChoosers\ImageChooser.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\Contents\ReservationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DialogGUI\BorrowDeviceHistoryDialog.xaml.cs">
@@ -20,7 +26,7 @@
     <Compile Update="GUI\Contents\EquipmentsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\Contents\HomeView.xaml.cs">
+    <Compile Update="GUI\Contents\DashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DialogGUI\UserDialog.xaml.cs">
@@ -44,7 +50,7 @@
     <Compile Update="GUI\Contents\UserInformationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\Contents\ScheduleView.xaml.cs">
+    <Compile Update="GUI\Contents\CirculationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\Contents\ViolationView.xaml.cs">
@@ -52,7 +58,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="GUI\Contents\ScheduleView.xaml">
+    <Page Update="GUI\Contents\CirculationView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Compile Update="GUI\Contents\UsersView.xaml.cs">

@@ -9,7 +9,6 @@ namespace SGULibraryManagement.BUS
         private readonly BorrowDevicesDAO dao = new();
         private readonly DeviceBUS deviceBUS = new();
         private readonly AccountBUS accountBUS = new();
-        private readonly AccountViolationBUS accountViolationBUS = new();
 
         private List<BorrowDeviceViewModel>? BorrowDevices;
 
@@ -29,6 +28,7 @@ namespace SGULibraryManagement.BUS
                 var account = accounts[item.UserId];
 
                 return new BorrowDeviceViewModel() {
+                    Id = item.Id,
                     Device = device,
                     User = account,
                     Quantity = item.Quantity,
@@ -92,7 +92,7 @@ namespace SGULibraryManagement.BUS
                 "All" => list,
                 "Return" => list.Where(item => item.IsReturn),
                 "Not Return" => list.Where(item => item.IsDue),
-                "Not yet due" => list.Where(item => DateTime.Now < item.DateReturn),
+                "Not yet due" => list.Where(item => DateTime.Now.Date < item.DateReturn.Date),
                 _ => []
             };
         } 

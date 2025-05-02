@@ -40,9 +40,27 @@ namespace SGULibraryManagement.GUI
             item.IsSelected = true;
 
             currentContent = item.ContentView;
+            if (currentContent is DashboardView view) view.Fetch();
+
             content.Navigate(currentContent);
 
             PlayNavigateAnimation();
+        }
+
+        public void Navigate<TContent>() where TContent : IContent
+        {
+            var list = sideMenu.Children;
+
+            foreach (var child in list)
+            {
+                if (child is not SideMenuItem sideMenuItem) continue;
+                if (sideMenuItem.ContentView is not TContent) continue;
+
+                sideMenuItem.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.MouseDownEvent
+                });
+            }
         }
 
         public void Navigate(UserControl contentView)

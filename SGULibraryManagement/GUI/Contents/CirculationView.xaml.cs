@@ -4,15 +4,13 @@ using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.ViewModels;
 using SGULibraryManagement.Utilities;
 using System.Collections.ObjectModel;
-using System.Security.Principal;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
 namespace SGULibraryManagement.GUI.Contents
 {
-    public partial class ScheduleView : UserControl, IContent
+    public partial class CirculationView : UserControl, IContent
     {
         public ObservableCollection<BorrowDeviceViewModel> BorrowDevices { get; set; } = [];
         private readonly BorrowDevicesBUS BUS = new();
@@ -23,16 +21,17 @@ namespace SGULibraryManagement.GUI.Contents
 
         private Action<BorrowDeviceFilter?>? searchDebounce;
 
-        public ScheduleView()
+        public CirculationView()
         {
             InitializeComponent();
-            Fetch();
             SetupComponent();
+            Fetch();
         }
 
         public void Fetch()
         {
-            RenderTable(BUS.GetAllWithDetail());
+            _ = BUS.GetAllWithDetail();
+            OnApplyFilter(GetFilter());
         }
 
         private void RenderTable(IEnumerable<BorrowDeviceViewModel> collections)
@@ -128,15 +127,11 @@ namespace SGULibraryManagement.GUI.Contents
                 IsDeleted = false
             };
 
-            switch (result)
+            if (result == SimpleDialogResult.Yes)
             {
-                case SimpleDialogResult.Yes:
-                    accountViolationBUS.Create(violation);
-                    return true;
-
-                default:
-                    return false;
+                return accountViolationBUS.Create(violation) is not null;
             }
+            else return false;
         }
 
         private async void ChangeUserViolation(AccountDTO account, AccountViolationDTO accountViolation)
@@ -176,14 +171,9 @@ namespace SGULibraryManagement.GUI.Contents
                 IsDeleted = false,
             };
 
-            switch (result)
+            if (result == SimpleDialogResult.Yes)
             {
-                case SimpleDialogResult.Yes:
-                    accountViolationBUS.ChangeViolation(accountViolation.Id, newViolation);
-                    return;
-
-                default:
-                    return;
+                accountViolationBUS.ChangeViolation(accountViolation.Id, newViolation);
             }
         }
     }

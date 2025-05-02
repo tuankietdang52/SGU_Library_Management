@@ -23,13 +23,14 @@ namespace SGULibraryManagement.GUI.Contents
         public UsersView()
         {
             InitializeComponent();
-            Fetch();
             SetupComponent();
+            Fetch();
         }
 
         public void Fetch()
         {
-            RenderTable();
+            _ = userBUS.GetAllWithRole();
+            OnApplyFilter(GetFilter());
         }
 
         private void RenderTable(List<AccountViewModel>? collections = null)

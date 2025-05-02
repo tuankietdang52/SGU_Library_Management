@@ -46,7 +46,7 @@
     </UserControl.Resources>
     <StackPanel Margin="0, 10, 0, 0">
         <Canvas Height="70">
-            <TextBlock Canvas.Left="10"
+            <TextBlock Canvas.Left="30"
                        FontWeight="Bold"
                        FontSize="30">
                         All Equipment

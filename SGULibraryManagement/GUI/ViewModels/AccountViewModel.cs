@@ -13,6 +13,7 @@ namespace SGULibraryManagement.GUI.ViewModels
         public required AccountDTO Account { get; set; }
         public required RoleDTO Role { get; set; }
         public required SolidColorBrush RoleBackgroundColor { get; set; }
+        public required bool IsLocked { get; set; }
         public required SolidColorBrush BgColor { get; set; }
     }
 }

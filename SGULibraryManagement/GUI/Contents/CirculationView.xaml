@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.ScheduleView"
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.CirculationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,10 +9,10 @@
              Style="{StaticResource ContentStyle}">
     <StackPanel Margin="0, 10, 0, 0">
         <Canvas Height="70">
-            <TextBlock Canvas.Left="10"
-                   FontWeight="Bold"
-                   FontSize="30">
-                    All Schedule
+            <TextBlock Canvas.Left="30"
+                       FontWeight="Bold"
+                       FontSize="30">
+                All Circulation
             </TextBlock>
         </Canvas>
         <Border Width="{Binding Source={StaticResource AppContentWidth}, 
@@ -64,7 +64,7 @@
                               SelectionChanged="OnFilterCbChanged">
                     </ComboBox>
                 </StackPanel>
-                <DataGrid x:Name="scheduleTable"
+                <DataGrid x:Name="circulationTable"
                           Width="{Binding Source={StaticResource AppContentWidth}, 
                                           Converter={StaticResource SubtractConverter}, 
                                           ConverterParameter=50}"
@@ -101,9 +101,10 @@
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Device" Binding="{Binding Device.Name}" Width="*"/>
-                        <DataGridTextColumn Header="User" Binding="{Binding User.Email}" Width="*"/>
-                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="70"/>
+                        <DataGridTextColumn Header="Device" Binding="{Binding Device.Name}" Width="1.5*"/>
+                        <DataGridTextColumn Header="User" Binding="{Binding User.Email}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
                         <DataGridTextColumn Header="Date Borrow" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
                         <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy}" Width="*"/>
                         <DataGridTemplateColumn Header="Actions">

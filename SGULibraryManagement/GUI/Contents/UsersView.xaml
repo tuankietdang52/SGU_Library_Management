@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
              xmlns:tables="clr-namespace:SGULibraryManagement.Components.Tables"
              xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
@@ -11,10 +12,10 @@
              Style="{StaticResource ContentStyle}">
     <StackPanel Margin="0, 10, 0, 0">
         <Canvas Height="70">
-            <TextBlock Canvas.Left="10"
+            <TextBlock Canvas.Left="30"
                        FontWeight="Bold"
                        FontSize="30">
-                        All Users
+                All Users
             </TextBlock>
             <buttons:RoundButton Canvas.Right="30"
                                  Foreground="White"
@@ -110,8 +111,8 @@
                           Height="400"
                           ColumnWidth="*"
                           AutoGenerateColumns="False"
-                          Margin="0, 10, 0, 0"
                           CanUserResizeRows="False"
+                          Margin="0, 10, 0, 0"
                           IsReadOnly="True"
                           Foreground="White"
                           HorizontalScrollBarVisibility="Disabled"

@@ -53,12 +53,15 @@ namespace SGULibraryManagement.BUS
                 }
                 else roleBg = roleBUS.RoleColors[eRole];
 
+                bool isLocked = lockedUser.Contains(user.Id);
+
                 return new AccountViewModel()
                 {
                     Account = user,
                     Role = roles[user.IdRole],
+                    IsLocked = isLocked,
                     RoleBackgroundColor = roleBg,
-                    BgColor = !lockedUser.Contains(user.Id) ? Brushes.Transparent : (SolidColorBrush)App.Instance!.Resources["LockedBackground"]
+                    BgColor = !isLocked ? Brushes.Transparent : (SolidColorBrush)App.Instance!.Resources["LockedBackground"]
                 };
             })];
         }
