@@ -239,7 +239,7 @@ namespace SGULibraryManagement.GUI.Contents
                         new SimpleDialog
                         {
                             Title = "Error",
-                            Content = "Something went wrong!",
+                            Content = "Cant delete device",
                             Width = 400,
                             Height = 200
                         },

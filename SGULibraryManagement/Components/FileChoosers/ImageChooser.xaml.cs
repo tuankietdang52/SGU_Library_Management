@@ -44,7 +44,7 @@ namespace SGULibraryManagement.Components.FileChoosers
             {
                 filePath = value;
 
-                if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+                if (!string.IsNullOrWhiteSpace(filePath))
                 {
                     imageContainer.Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute));
                     imageContainer.Visibility = Visibility.Visible;

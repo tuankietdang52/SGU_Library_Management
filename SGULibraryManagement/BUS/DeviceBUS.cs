@@ -12,6 +12,9 @@ namespace SGULibraryManagement.BUS
     public class DeviceBUS
     {
         private readonly DeviceDAO DAO = new();
+        private readonly ReservationDAO reservationDAO = new();
+        private readonly BorrowDevicesDAO borrowDeviceDAO = new();
+
         private List<DeviceDTO> devices = [];
         public Dictionary<long, int> DeviceBorrowQuantity;
 
@@ -42,6 +45,14 @@ namespace SGULibraryManagement.BUS
 
         public bool Delete(DeviceDTO device)
         {
+            var borrows = borrowDeviceDAO.FindByDeviceId(device.Id);
+            var reservations = reservationDAO.FindByDeviceId(device.Id);
+
+            if (borrows.Count > 0 || reservations.Count > 0)
+            {
+                return false;
+            }
+
             return DAO.Delete(device.Id);
         }
 
