@@ -2,36 +2,66 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Components\Dashboards\DashboardQuantityStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Dialogs\Dialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\FileChoosers\ImageChooser.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\Contents\ReservationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DialogGUI\BorrowDeviceHistoryDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DialogGUI\EquipmentDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\EquipmentsView.xaml.cs">
+    <Compile Update="GUI\DialogGUI\LockAccountDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\HomeView.xaml.cs">
+    <Compile Update="GUI\Contents\EquipmentsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\Contents\DashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DialogGUI\UserDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SettingView.xaml.cs">
+    <Compile Update="GUI\DialogGUI\ViolationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\ScheduleView.xaml.cs">
+    <Compile Update="GUI\DialogGUI\ViolationHistoryDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\LoadingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\LoginView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\MainView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\Contents\UserInformationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\Contents\CirculationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\Contents\ViolationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="GUI\ScheduleView.xaml">
+    <Page Update="GUI\Contents\CirculationView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Compile Update="GUI\UsersView.xaml.cs">
+    <Compile Update="GUI\Contents\UsersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

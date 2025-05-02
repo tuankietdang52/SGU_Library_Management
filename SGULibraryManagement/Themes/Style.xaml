@@ -18,6 +18,7 @@
     <Style x:Key="ContentStyle" TargetType="UserControl">
         <Setter Property="Width" Value="{DynamicResource AppContentWidth}"></Setter>
         <Setter Property="Height" Value="{DynamicResource AppContentHeight}"></Setter>
+        <Setter Property="FontFamily" Value="Calibri Light"></Setter>
     </Style>
 
     <Style TargetType="sideMenu:SideMenuItem">
@@ -27,10 +28,6 @@
         <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="Height" Value="70"></Setter>
     </Style>
-
-    <!--<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="Foreground" Value="Black"></Setter>
-    </Style>-->
 
     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Foreground" Value="Black"></Setter>
@@ -59,7 +56,8 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AppThemeSecondary}"></Setter>
+                <Setter Property="Background" Value="{DynamicResource TableItemSelected}"></Setter>
+                <Setter Property="BorderBrush" Value="Transparent"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

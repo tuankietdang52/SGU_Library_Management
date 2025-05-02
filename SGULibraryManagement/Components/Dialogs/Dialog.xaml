@@ -8,15 +8,16 @@
                  xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
                  WindowStartupLocation="CenterScreen"
                  Icon="/Resources/Images/Books.png"
-                 ResizeMode="NoResize"
-                 Height="200"
-                 Width="200">
+                 FontFamily="Calibri Light"
+                 ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Canvas Grid.Row="0" Background="{StaticResource AppThemeSecondary}">
+        <Canvas Grid.Row="0" 
+                Background="{StaticResource AppThemeSecondary}"
+                MouseDown="OnStatusBarMouseDown">
             <Grid Canvas.Left="10" Height="35">
                 <TextBlock x:Name="titleBarTitle"
                            Height="20"

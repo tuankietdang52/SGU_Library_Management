@@ -8,26 +8,37 @@
                     <Border x:Name="container"
                             Height="{TemplateBinding Height}"
                             Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            Margin="{TemplateBinding Margin}"
+                            HorizontalAlignment="Stretch"
                             TextBlock.Foreground="{TemplateBinding Foreground}">
                         <Border.Resources>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="OverridesDefaultStyle" Value="True"></Setter>
                             </Style>
                         </Border.Resources>
-                        <StackPanel Orientation="Horizontal" 
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
+                        <Grid HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <ContentPresenter Content="{TemplateBinding Icon}"
+                                              Grid.Column="0"
                                               VerticalAlignment="Center"
                                               RecognizesAccessKey="True" />
-                            <Viewbox Width="10"></Viewbox>
-                            <TextBlock Text="{TemplateBinding ItemContent}"
+                            <Viewbox Grid.Column="1"
+                                     Width="10">
+                            </Viewbox>
+                            <TextBlock Grid.Column="2"
+                                       Text="{TemplateBinding ItemContent}"
                                        FontSize="{TemplateBinding FontSize}"
                                        FontWeight="{TemplateBinding FontWeight}"
                                        FontFamily="{TemplateBinding FontFamily}">
-                                
+
                             </TextBlock>
-                        </StackPanel>
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">

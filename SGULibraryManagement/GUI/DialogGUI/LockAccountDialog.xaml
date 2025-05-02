@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.DialogGUI.LockAccountDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             mc:Ignorable="d" 
+             Height="410"
+             Width="500">
+    <StackPanel>
+        <TextBlock x:Name="title" 
+                   HorizontalAlignment="Center"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Margin="0, 20">
+        </TextBlock>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" FontSize="18">Violation Rule:</TextBlock>
+            <Viewbox Width="10"></Viewbox>
+            <ComboBox x:Name="violationCB" 
+                      Height="40"
+                      Width="200"
+                      SelectionChanged="OnViolationRuleChanged">
+            </ComboBox>
+        </StackPanel>
+        <TextBlock Margin="10, 5"
+                   FontSize="15">
+            Violation Description
+        </TextBlock>
+        <TextBox x:Name="violationDescription"
+                 IsEnabled="False"
+                 Foreground="Black"
+                 FontSize="17"
+                 TextWrapping="Wrap"
+                 Margin="10, 0"
+                 Height="200">
+        </TextBox>
+        <Grid Margin="0, 10" 
+              HorizontalAlignment="Center">
+            <buttons:RoundButton x:Name="lockButton"
+                                 Content="Accept"
+                                 Height="40"
+                                 Width="150"
+                                 Foreground="White"
+                                 CornerRadius="10"
+                                 BorderThickness="1"
+                                 Background="Red"
+                                 HoverBackgroundColor="{StaticResource ErrorColor}"
+                                 Click="OnLockAccount">
+            </buttons:RoundButton>
+            <StackPanel x:Name="updateButtonContainer"
+                        Visibility="Collapsed"
+                        Orientation="Horizontal">
+                <buttons:RoundButton x:Name="saveButton"
+                                     Content="Save"
+                                     Height="40"
+                                     Width="150"
+                                     CornerRadius="10"
+                                     Foreground="White"
+                                     Background="Red"
+                                     BorderThickness="1"
+                                     HoverBackgroundColor="{StaticResource ErrorColor}"
+                                     Click="OnUpdateLockAccount">
+                </buttons:RoundButton>
+                <Viewbox Width="50"></Viewbox>
+                <buttons:RoundButton x:Name="unlockButton"
+                                     Content="Unlock"
+                                     Height="40"
+                                     Width="150"
+                                     CornerRadius="10"
+                                     Background="Green"
+                                     BorderThickness="1"
+                                     Foreground="White"
+                                     HoverBackgroundColor="LightGreen"
+                                     Click="OnUnlockAccount">
+                </buttons:RoundButton>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

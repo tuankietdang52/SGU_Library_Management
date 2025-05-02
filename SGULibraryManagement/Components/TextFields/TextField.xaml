@@ -12,7 +12,8 @@
                         <converter:PlusConverter x:Key="PlusConverter"></converter:PlusConverter>
                     </ControlTemplate.Resources>
 
-                    <Border>
+                    <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <Grid>
                             <TextBox x:Name="textBox"
                                      Width="{TemplateBinding Width}"
@@ -22,6 +23,7 @@
                                      FontWeight="{TemplateBinding FontWeight}"
                                      Foreground="{TemplateBinding Foreground}"
                                      Text="{TemplateBinding Text}"
+                                     IsEnabled="{TemplateBinding IsEnabled}"
                                      Padding="10, 0, 30, 0"
                                      OverridesDefaultStyle="True"
                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -52,12 +54,16 @@
                                                  HorizontalAlignment="Right"
                                                  Foreground="{TemplateBinding Foreground}"
                                                  HoverForegroundColor="{DynamicResource AppThemeSecondary}"
-                                                 FontFamily="{DynamicResource FontAwesomeSolid}">
+                                                 FontFamily="{DynamicResource FontAwesomeSolid}"
+                                                 IsTabStop="False">
                                 <buttons:RoundButton.Style>
                                     <Style TargetType="{x:Type buttons:RoundButton}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Text, ElementName=textBox}" Value="">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEnabled, ElementName=textBox}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"></Setter>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

@@ -1,4 +1,5 @@
 ﻿using SGULibraryManagement.GUI;
+using SGULibraryManagement.GUI.Contents;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
@@ -43,9 +44,36 @@ namespace SGULibraryManagement.Components.Dialogs
         {
             titleBarTitle.Text = title;
             Title = title;
+            
+            MinWidth = content.Width;
+            MaxWidth = content.Width;
+            MinHeight = content.Height + 35;
+            MaxHeight = content.Height + 35;
+
             Width = content.Width;
             Height = content.Height + 35;
+
+            content.SizeChanged += OnSizeChanged;
             dialogContent.Content = content;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var size = e.NewSize;
+
+            MinWidth = size.Width;
+            MaxWidth = size.Width;
+            MinHeight = size.Height + 35;
+            MaxHeight = size.Height + 35;
+
+            Width = size.Width;
+            Height = size.Height + 35;
+        }
+
+        private void OnStatusBarMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
 
         private void OnCloseDialog(object sender, RoutedEventArgs e)

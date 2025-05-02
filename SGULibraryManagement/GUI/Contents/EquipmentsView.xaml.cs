@@ -20,15 +20,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SGULibraryManagement.GUI
+namespace SGULibraryManagement.GUI.Contents
 {
-    public partial class EquipmentsView : UserControl
+    public partial class EquipmentsView : UserControl, IContent
     {
         private readonly DeviceBUS BUS = new();
         private bool isOpenFilter = false;
 
         private Action<EquipmentFilter?>? searchDebounce;
-        private Dictionary<long, EquipmentItem> equipmentItems = [];
+        private readonly Dictionary<long, EquipmentItem> equipmentItems = [];
         private List<DeviceDTO> devices = [];
 
         public EquipmentsView()
@@ -38,21 +38,25 @@ namespace SGULibraryManagement.GUI
             SetupComponent();
         }
 
-        private void Fetch()
+        public void Fetch()
         {
             ClearEquipmentItems();
             devices = BUS.GetAll();
 
             foreach (var item in devices)
             {
+                if (!BUS.DeviceBorrowQuantity.TryGetValue(item.Id, out int borrowQuantity)) borrowQuantity = 0;
+
                 EquipmentItem equipmentItem = new()
                 {
                     Model = item,
                     Margin = new Thickness(0, 0, 15, 15),
                     BorderBrush = Brushes.LightGray,
                     BorderThickness = new Thickness(1),
+                    RemainQuantity = item.Quantity - borrowQuantity
                 };
 
+                equipmentItem.OnView += OnView;
                 equipmentItem.OnEdit += OnEdit;
                 equipmentItem.OnDelete += OnDelete;
 
@@ -64,6 +68,7 @@ namespace SGULibraryManagement.GUI
         {
             foreach (var item in equipmentItems.Values)
             {
+                item.OnView -= OnView;
                 item.OnEdit -= OnEdit;
                 item.OnDelete -= OnDelete;
             }
@@ -182,40 +187,30 @@ namespace SGULibraryManagement.GUI
 
         private void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new Dialog("Add new equipment", new EquipmentDialog(EDialogType.Create));
+            var dialog = new Dialog("Add new equipment", new EquipmentDialog());
             dialog.ShowDialog();
 
             Fetch();
-            OnSort(this, null!);
+            OnApplySort();
         }
 
-        private async void OnEdit(object sender, DeviceDTO model)
+        private void OnView(object sender, DeviceDTO model)
         {
-            var dialog = new Dialog("Edit equipment", new EquipmentDialog(EDialogType.Edit, model));
+            var dialog = new Dialog($"View equipment Id {model.Id} detail", new EquipmentDialog(EDialogType.View, model));
             dialog.ShowDialog();
 
-            bool isSuccess = true; // hoặc lấy từ dialog
-
-            if (isSuccess)
-            {
-                Fetch();
-                OnApplySort();
-            }
-            else
-            {
-                await MainWindow.Instance!.ShowSimpleDialogAsync(
-                    new SimpleDialog
-                    {
-                        Title = "Error",
-                        Content = "Something went wrong!",
-                        Width = 400,
-                        Height = 200
-                    },
-                    SimpleDialogType.OK
-                );
-            }
+            Fetch();
+            OnApplySort();
         }
 
+        private void OnEdit(object sender, DeviceDTO model)
+        {
+            var dialog = new Dialog($"Edit equipment Id {model.Id}", new EquipmentDialog(EDialogType.Edit, model));
+            dialog.ShowDialog();
+
+            Fetch();
+            OnApplySort();
+        }
 
         private async void OnDelete(object sender, DeviceDTO model)
         {
@@ -231,7 +226,7 @@ namespace SGULibraryManagement.GUI
 
             if (result == SimpleDialogResult.Yes)
             {
-                bool isSuccess = BUS.Delete(model.Id); // giả sử Delete trả bool
+                bool isSuccess = BUS.Delete(model); // giả sử Delete trả bool
 
                 if (isSuccess)
                 {
@@ -253,7 +248,6 @@ namespace SGULibraryManagement.GUI
                 }
             }
         }
-
 
         private class EquipmentFilter
         {

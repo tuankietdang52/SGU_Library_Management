@@ -10,20 +10,11 @@
                  mc:Ignorable="d"
                  Width="{StaticResource AppWidth}"
                  Height="{StaticResource AppHeight}"
+                 FontFamily="Calibri Light"
                  WindowStartupLocation="CenterScreen"
                  Title="SGU Library Management"
                  Icon="/Resources/Images/Books.png"
                  ResizeMode="NoResize">
-    <ui:FluentWindow.Resources>
-        <Storyboard x:Key="ContentFadeIn">
-            <DoubleAnimation Storyboard.TargetName="content"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.0"
-                             To="1.0"
-                             Duration="0:0:0.25">
-            </DoubleAnimation>
-        </Storyboard>
-    </ui:FluentWindow.Resources>
     <Grid>
         <StackPanel Width="{StaticResource AppWidth}"
                     Height="{StaticResource AppHeight}">
@@ -33,91 +24,20 @@
                          ButtonsForeground="White"
                          ShowMaximize="False"
                          Foreground="White"
-                         CanMaximize="False">
+                         CanMaximize="False"
+                         Panel.ZIndex="2">
                 <ui:TitleBar.Icon>
                     <ui:ImageIcon Source="/Resources/Images/Books.png"></ui:ImageIcon>
                 </ui:TitleBar.Icon>
             </ui:TitleBar>
-            <DockPanel Height="{StaticResource AppHeight}">
-                <Canvas DockPanel.Dock="Top" 
-                        Height="{StaticResource HeaderHeight}"
-                        Background="{StaticResource AppThemeColor}">
-                    <StackPanel Canvas.Left="20"
-                                Canvas.Top="10"
-                                Orientation="Horizontal">
-                        <Image Source="/Resources/Images/Books.png"
-                               Height="60"
-                               Width="60"
-                               Margin="10, 0">
-                        </Image>
-                        <StackPanel Height="60">
-                            <TextBlock Height="27"
-                                       FontSize="20"
-                                       Foreground="White"
-                                       FontWeight="Bold">
-                                   SGU LIBRARY
-                            </TextBlock>
-                            <TextBlock Height="27"
-                                       FontSize="20"
-                                       Foreground="White">
-                                   EQUIPMENT MANAGEMENT
-                            </TextBlock>
-                        </StackPanel>
-                    </StackPanel>
-                </Canvas>
-                <Border BorderBrush="LightGray" 
-                        BorderThickness="1">
-                    <StackPanel x:Name="sideMenu"
-                                DockPanel.Dock="Left"
-                                Width="{StaticResource SideMenuWidth}"
-                                Background="White">
-                        <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
-                                               Text="Home"
-                                               Glyph="&#xf015;"
-                                               MouseDown="Navigate">
-                            <sideMenu:SideMenuItem.ContentView>
-                                <views:HomeView></views:HomeView>
-                            </sideMenu:SideMenuItem.ContentView>
-                        </sideMenu:SideMenuItem>
-
-                        <sideMenu:SideMenuItem Text="Schedule"
-                                               Glyph="&#xf073;"
-                                               MouseDown="Navigate">
-                            <sideMenu:SideMenuItem.ContentView>
-                                <views:ScheduleView></views:ScheduleView>
-                            </sideMenu:SideMenuItem.ContentView>
-                        </sideMenu:SideMenuItem>
-
-                        <sideMenu:SideMenuItem Text="Equipments"
-                                               Glyph="&#xf5fd;"
-                                               MouseDown="Navigate">
-                            <sideMenu:SideMenuItem.ContentView>
-                                <views:EquipmentsView></views:EquipmentsView>
-                            </sideMenu:SideMenuItem.ContentView>
-                        </sideMenu:SideMenuItem>
-
-                        <sideMenu:SideMenuItem Text="Users"
-                                               Glyph="&#xf0c0;"
-                                               MouseDown="Navigate">
-                            <sideMenu:SideMenuItem.ContentView>
-                                <views:UsersView></views:UsersView>
-                            </sideMenu:SideMenuItem.ContentView>
-                        </sideMenu:SideMenuItem>
-
-                        <sideMenu:SideMenuItem Text="Settings"
-                                               Glyph="&#xf0ad;"
-                                               MouseDown="Navigate">
-                            <sideMenu:SideMenuItem.ContentView>
-                                <views:SettingView></views:SettingView>
-                            </sideMenu:SideMenuItem.ContentView>
-                        </sideMenu:SideMenuItem>
-                    </StackPanel>
-                </Border>
-                <Frame x:Name="content"
-                       DockPanel.Dock="Right"
-                       NavigationUIVisibility="Hidden">
-                </Frame>
-            </DockPanel>
+            <Grid>
+                <ContentPresenter x:Name="windowContent"
+                                  Panel.ZIndex="1">
+                </ContentPresenter>
+                <views:LoadingView x:Name="loadingView"
+                                   Panel.ZIndex="2">
+                </views:LoadingView>
+            </Grid>
         </StackPanel>
         <ContentPresenter x:Name="dialogHost"></ContentPresenter>
     </Grid>

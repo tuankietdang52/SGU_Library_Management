@@ -6,8 +6,8 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:SGULibraryManagement.Components.FileChoosers"
              mc:Ignorable="d" 
-             Height="200"
-             Width="200">
+             Height="230"
+             Width="230">
     <Border x:Name="imageChooserContainer"
             CornerRadius="10"
             BorderBrush="Black"
@@ -16,11 +16,14 @@
             MouseLeave="OnMouseLeave"
             MouseDown="OnMouseDown"
             Background="LightGray"
+            Height="200" 
+            Width="200"
             Cursor="Hand">
-        <Grid Height="200" 
-              Width="200">
+        <Grid>
             <ui:Image x:Name="imageContainer"
                       CornerRadius="10" 
+                      Height="200"
+                      Width="200"
                       Visibility="Collapsed">
             </ui:Image>
             <StackPanel x:Name="nonImageContainer"

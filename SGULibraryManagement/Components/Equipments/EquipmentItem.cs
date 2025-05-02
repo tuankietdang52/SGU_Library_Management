@@ -27,12 +27,19 @@ namespace SGULibraryManagement.Components.Equipments
                                       typeof(EquipmentItem),
                                       new PropertyMetadata(null));
 
+        public static readonly DependencyProperty RemainQuantityProperty =
+         DependencyProperty.Register(nameof(RemainQuantity),
+                                     typeof(int),
+                                     typeof(EquipmentItem),
+                                     new PropertyMetadata(0));
+
         public static readonly DependencyProperty AvailableColorProperty =
           DependencyProperty.Register(nameof(AvailableColor),
                                       typeof(SolidColorBrush),
                                       typeof(EquipmentItem),
                                       new PropertyMetadata(null));
 
+        public event OnEquipmentActionHandler? OnView;
         public event OnEquipmentActionHandler? OnEdit;
         public event OnEquipmentActionHandler? OnDelete;
 
@@ -45,28 +52,25 @@ namespace SGULibraryManagement.Components.Equipments
             }
         }
 
+        public int RemainQuantity
+        {
+            get => (int)GetValue(RemainQuantityProperty);
+            set => SetValue(RemainQuantityProperty, value);
+        }
+
         public SolidColorBrush AvailableColor
         {
             get => (SolidColorBrush)GetValue(AvailableColorProperty);
             set => SetValue(AvailableColorProperty, value);
         }
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            if (GetTemplateChild("edit") is not DropdownMenuItem editMenuItem) return;
-            if (GetTemplateChild("delete") is not DropdownMenuItem deleteMenuItem) return;
-
-            editMenuItem.Click += (sender, e) => OnEdit?.Invoke(this, Model);
-            deleteMenuItem.Click += (sender, e) => OnDelete?.Invoke(this, Model);
-        }
-
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            if (Template.FindName("view", this) is not DropdownMenuItem viewMenuItem) return;
             if (Template.FindName("edit", this) is not DropdownMenuItem editMenuItem) return;
             if (Template.FindName("delete", this) is not DropdownMenuItem deleteMenuItem) return;
 
+            viewMenuItem.Click += (sender, e) => OnView?.Invoke(this, Model);
             editMenuItem.Click += (sender, e) => OnEdit?.Invoke(this, Model);
             deleteMenuItem.Click += (sender, e) => OnDelete?.Invoke(this, Model);
         }

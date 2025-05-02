@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             mc:Ignorable="d"
+             Width="{StaticResource AppWidth}"
+             Height="{StaticResource AppHeight}">
+    <Grid>
+        <Image Source="/Resources/Images/loginBg.jpg"
+               Width="2000"
+               Height="1000"
+               RenderOptions.BitmapScalingMode="HighQuality">
+        </Image>
+        <Canvas>
+            <Grid Canvas.Left="200"
+                  Height="{StaticResource AppHeight}">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="SGU" 
+                               FontWeight="Bold"
+                               FontSize="65"
+                               Foreground="White">
+                    </TextBlock>
+                    <TextBlock Text="Library Management" 
+                               FontWeight="Bold"
+                               FontSize="50"
+                               Foreground="White">
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+            <Grid Canvas.Right="150"
+                  Height="{StaticResource AppHeight}">
+                <Border Width="450"
+                        Height="400"
+                        CornerRadius="10"
+                        Padding="20, 30"
+                        HorizontalAlignment="Right">
+                    <Border.Background>
+                        <SolidColorBrush Color="White" Opacity="0.8"></SolidColorBrush>
+                    </Border.Background>
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock FontSize="30"
+                                       FontFamily="Arial"
+                                       FontWeight="Bold">
+                                Login
+                            </TextBlock>
+                            <Viewbox Height="50"></Viewbox>
+                            <TextBlock FontSize="20">
+                                Username
+                            </TextBlock>
+                            <textFields:TextField x:Name="usernameField"
+                                                  CornerRadius="10"
+                                                  Margin="0, 5"
+                                                  VerticalContentAlignment="Center"
+                                                  Height="35"
+                                                  Placeholder="Enter username">
+                            </textFields:TextField>
+                            <TextBlock FontSize="20">
+                                Password
+                            </TextBlock>
+                            <ui:PasswordBox x:Name="passwordField"
+                                            Margin="0, 5"
+                                            VerticalContentAlignment="Center"
+                                            Height="40">
+                            </ui:PasswordBox>
+                            <Viewbox Height="50"></Viewbox>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <buttons:RoundButton x:Name="loginButton"
+                                                     Width="120" 
+                                                     Height="40"
+                                                     Foreground="White"
+                                                     CornerRadius="20"
+                                                     Background="Black"
+                                                     HoverBackgroundColor="#2B2B2B"
+                                                     IsDefault="True"
+                                                     Click="OnLoginClick">
+                                    <TextBlock FontSize="18"
+                                               FontWeight="Bold">
+                                        Login
+                                    </TextBlock>
+                                </buttons:RoundButton>
+                                <Viewbox Width="30"></Viewbox>
+                                <!--<buttons:TextButton Text="Forgot Password"
+                                                    Foreground="Gray"
+                                                    TextDecorations="Underline">
+                                </buttons:TextButton>-->
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Canvas>
+    </Grid>
+</UserControl>

@@ -12,6 +12,19 @@ namespace SGULibraryManagement.Components.Dialogs
         public string Title { get; set; } = string.Empty;
         public double Width { get; set; }
         public double Height { get; set; }
+
+        public SimpleDialog()
+        {
+
+        }
+
+        public SimpleDialog(object content, string title, double width, double height)
+        {
+            Content = content;
+            Title = title;
+            Width = width;
+            Height = height;
+        }
     }
 
     public enum SimpleDialogType

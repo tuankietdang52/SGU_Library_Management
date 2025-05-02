@@ -1,30 +1,17 @@
 ﻿using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
-using SGULibraryManagement.Components.TextFields;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.GUI.ViewModels;
+using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace SGULibraryManagement.GUI
+namespace SGULibraryManagement.GUI.Contents
 {
-    public partial class UsersView : UserControl
+    public partial class UsersView : UserControl, IContent
     {
         private readonly AccountBUS userBUS = new();
         private readonly RoleBUS roleBUS = new();
@@ -36,13 +23,23 @@ namespace SGULibraryManagement.GUI
         public UsersView()
         {
             InitializeComponent();
-            Fetch();
             SetupComponent();
+            Fetch();
         }
 
-        private void Fetch()
+        public void Fetch()
         {
-            Users.ResetTo(userBUS.GetAllWithRole());
+            _ = userBUS.GetAllWithRole();
+            OnApplyFilter(GetFilter());
+        }
+
+        private void RenderTable(List<AccountViewModel>? collections = null)
+        {
+            var list = collections ?? userBUS.GetAllWithRole();
+            AccountDTO currentAccount = AccountManager.CurrentUser!;
+
+            list.RemoveAll(vm => vm.Account.Id == currentAccount.Id);
+            App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
         }
 
         private void SetupComponent()
@@ -67,24 +64,29 @@ namespace SGULibraryManagement.GUI
 
             roleComboBox.ItemsSource = roles;
             roleComboBox.SelectedIndex = 0;
+
+            statusComboBox.ItemsSource = new List<string>() { "All", "Locked", "Normal" };
+            statusComboBox.SelectedIndex = 0;
         }
 
         private UserFilter? GetFilter()
         {
             if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
             if (roleComboBox.SelectedItem is not RoleDTO role) return null;
+            if (statusComboBox.SelectedItem is not string status) return null;
 
             return new UserFilter()
             {
                 Query = searchField.Text,
                 UserQueryOption = queryOption,
-                Role = role
+                Role = role,
+                Status = status
             };
         }
 
         private void OnApplyFilter(UserFilter? filter)
         {
-            if (filter == null) return;
+            if (filter is null) return;
 
             var result = userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
 
@@ -93,7 +95,8 @@ namespace SGULibraryManagement.GUI
                 result = userBUS.FilterByRole(filter.Role, result);
             }
 
-            App.Instance!.InvokeInMainThread(() => Users.ResetTo(result));
+            result = userBUS.FilterByLockStatus(filter.Status, result);
+            RenderTable(result);
         }
 
         private void OnSearch(object sender, TextChangedEventArgs e)
@@ -104,28 +107,15 @@ namespace SGULibraryManagement.GUI
             searchDebounce(filter);
         }
 
-        private void OnSearchByChanged(object sender, SelectionChangedEventArgs e)
+        private void OnFilterCbChanged(object sender, SelectionChangedEventArgs e)
         {
             UserFilter? filter = GetFilter();
             OnApplyFilter(filter);
-        }
-
-        private void OnRoleChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UserFilter? filter = GetFilter();
-            OnApplyFilter(filter);
-        }
-
-        private void OnEditClick(object sender, object model)
-        {
-            Dialog dialog = new("Update user", new UserDialog("update", (AccountDTO)model));
-            dialog.ShowDialog();
-            Fetch();
         }
 
         private void AddUserAction(object sender, RoutedEventArgs e)
         {
-            Dialog dialog = new("Add new User", new UserDialog("create", null));
+            Dialog dialog = new("Add new User", new UserDialog());
             dialog.ShowDialog();
             Fetch();
 
@@ -133,7 +123,14 @@ namespace SGULibraryManagement.GUI
 
         private void OnViewClick(object sender, object model)
         {
-            Dialog dialog = new("View user", new UserDialog("view", (AccountDTO)model));
+            Dialog dialog = new("View user", new UserDialog(EDialogType.View, (AccountDTO)model));
+            dialog.ShowDialog();
+            Fetch();
+        }
+
+        private void OnEditClick(object sender, object model)
+        {
+            Dialog dialog = new("Update user", new UserDialog(EDialogType.Edit, (AccountDTO)model));
             dialog.ShowDialog();
             Fetch();
         }
@@ -151,11 +148,12 @@ namespace SGULibraryManagement.GUI
             };
 
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo);
-            if (result == SimpleDialogResult.OK)
+            if (result == SimpleDialogResult.Yes)
             {
-                userBUS.DeleteAccount(user.Username);
+                userBUS.DeleteAccount(user);
             }
             else return;
+
             Fetch();
         }
 
@@ -164,6 +162,7 @@ namespace SGULibraryManagement.GUI
             public string Query { get; set; } = string.Empty;
             public RoleDTO? Role { get; set; }
             public UserQueryOption UserQueryOption { get; set; }
+            public string Status { get; set; } = "All";
         }
     }
 }

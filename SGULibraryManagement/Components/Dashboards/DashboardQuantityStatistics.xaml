@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="SGULibraryManagement.Components.Dashboards.DashboardQuantityStatistics"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.Components.Dashboards"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             mc:Ignorable="d" 
+             Width="800">
+    <Grid>
+        <Border BorderBrush="LightGray"
+                BorderThickness="0, 0, 1, 1"
+                CornerRadius="10"
+                Margin="30, 0"
+                Padding="20">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="5" BlurRadius="10" Opacity="0.5" Color="Black" />
+            </Border.Effect>
+        </Border>
+        <Border BorderThickness="1"
+                BorderBrush="LightGray"
+                CornerRadius="10"
+                Margin="30, 0"
+                Padding="20">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <StackPanel Width="150"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <buttons:RoundButton Width="45"
+                                         Height="45"
+                                         CornerRadius="10"
+                                         Content="&#xf02d;"
+                                         FontFamily="{DynamicResource FontAwesomeSolid}"
+                                         Background="#FFF2E9"
+                                         HoverBackgroundColor="#FFF2E9"
+                                         Foreground="#FF6A00"
+                                         HoverForegroundColor="#FF6A00"
+                                         Click="OnBookingClick">
+                    </buttons:RoundButton>
+                    <StackPanel Margin="10, 0">
+                        <TextBlock FontSize="18"
+                                   Foreground="Black"
+                                   FontWeight="Bold">
+                            Booking
+                        </TextBlock>
+                        <TextBlock x:Name="bookingQuantityTb"
+                                   FontSize="15"
+                                   Foreground="Black"
+                                   Text="{Binding BookingQuantity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <Canvas Width="35">
+                    <Line X1="10" Y1="5" X2="10" Y2="50" Stroke="LightGray" StrokeThickness="1"/>
+                </Canvas>
+                <StackPanel Width="150"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <buttons:RoundButton Width="45"
+                                         Height="45"
+                                         CornerRadius="10"
+                                         Content="&#xf073;"
+                                         FontFamily="{DynamicResource FontAwesomeSolid}"
+                                         Background="#FFEBEF"
+                                         HoverBackgroundColor="#FFEBEF"
+                                         Foreground="#FD2254"
+                                         HoverForegroundColor="#FD2254"
+                                         Click="OnReservationClick">
+                    </buttons:RoundButton>
+                    <StackPanel Margin="10, 0">
+                        <TextBlock FontSize="18"
+                                   Foreground="Black"
+                                   FontWeight="Bold">
+                            Reservations
+                        </TextBlock>
+                        <TextBlock x:Name="reservationQuantityTb"
+                                   Text="{Binding ReservationQuantity, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   FontSize="15"
+                                   Foreground="Black">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <Canvas Width="35">
+                    <Line X1="10" Y1="5" X2="10" Y2="50" Stroke="LightGray" StrokeThickness="1"/>
+                </Canvas>
+                <StackPanel Width="150"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <buttons:RoundButton Width="45"
+                                         Height="45"
+                                         CornerRadius="10"
+                                         Content="&#xf007;"
+                                         FontFamily="{DynamicResource FontAwesomeSolid}"
+                                         Background="#EAF9FF"
+                                         HoverBackgroundColor="#EAF9FF"
+                                         Foreground="#00B7FE"
+                                         HoverForegroundColor="#00B7FE"
+                                         Click="OnUserClick">
+                    </buttons:RoundButton>
+                    <StackPanel Margin="10, 0">
+                        <TextBlock FontSize="18"
+                                   Foreground="Black"
+                                   FontWeight="Bold">
+                            Users
+                        </TextBlock>
+                        <TextBlock x:Name="userQuantityTb"
+                                   Text="{Binding UserQuantity, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   FontSize="15"
+                                   Foreground="Black">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <Canvas Width="35">
+                    <Line X1="10" Y1="5" X2="10" Y2="50" Stroke="LightGray" StrokeThickness="1"/>
+                </Canvas>
+                <StackPanel Width="150"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <buttons:RoundButton Width="45"
+                                         Height="45"
+                                         CornerRadius="10"
+                                         Content="&#xf5fd;"
+                                         FontFamily="{DynamicResource FontAwesomeSolid}"
+                                         Background="#EDE8FF"
+                                         HoverBackgroundColor="#EDE8FF"
+                                         Foreground="#551FFF"
+                                         HoverForegroundColor="#551FFF"
+                                         Click="OnDeviceClick">
+                    </buttons:RoundButton>
+                    <StackPanel Margin="10, 0">
+                        <TextBlock FontSize="18"
+                                   Foreground="Black"
+                                   FontWeight="Bold">
+                            Devices
+                        </TextBlock>
+                        <TextBlock x:Name="deviceQuantityTb"
+                                   Text="{Binding DeviceQuantity, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   FontSize="15"
+                                   Foreground="Black">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

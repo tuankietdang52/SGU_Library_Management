@@ -7,11 +7,11 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type tables:ActionColumn}">
                     <StackPanel Orientation="Horizontal"
-                                Margin="0, 10, 0, 10">
+                                Margin="0, 10">
                         <buttons:RoundButton x:Name="viewAction"
                                              Content="&#xf06e;"
                                              FontFamily="{DynamicResource FontAwesomeSolid}"
-                                             Background="#00A2E8"
+                                             Background="{DynamicResource Turquoise91}"
                                              HoverBackgroundColor="Blue"
                                              CornerRadius="50"
                                              FontSize="13"

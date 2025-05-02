@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SGULibraryManagement.GUI.EquipmentsView"
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.EquipmentsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -46,7 +46,7 @@
     </UserControl.Resources>
     <StackPanel Margin="0, 10, 0, 0">
         <Canvas Height="70">
-            <TextBlock Canvas.Left="10"
+            <TextBlock Canvas.Left="30"
                        FontWeight="Bold"
                        FontSize="30">
                         All Equipment
@@ -161,6 +161,26 @@
                                               Margin="2, 0, 0, 0"
                                               VerticalAlignment="Center"
                                               SelectionChanged="OnSort">
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Id</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf062;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">Id</TextBlock>
+                                                <Viewbox Width="5"></Viewbox>
+                                                <TextBlock FontFamily="{StaticResource FontAwesomeSolid}"
+                                                           Text="&#xf063;"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ComboBoxItem>
                                         <ComboBoxItem>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center">Name</TextBlock>

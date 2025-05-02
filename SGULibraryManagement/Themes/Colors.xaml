@@ -7,4 +7,6 @@
     <SolidColorBrush x:Key="Blue74">#0F6BBC</SolidColorBrush>
     <SolidColorBrush x:Key="Blue90">#1283E6</SolidColorBrush>
     <SolidColorBrush x:Key="ErrorColor">#F44336</SolidColorBrush>
+    <SolidColorBrush x:Key="Turquoise91">#00A2E8</SolidColorBrush>
+    <SolidColorBrush x:Key="LoadingBackground">#FEB69E</SolidColorBrush>
 </ResourceDictionary>

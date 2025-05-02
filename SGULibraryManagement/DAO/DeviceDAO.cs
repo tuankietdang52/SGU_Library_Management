@@ -2,11 +2,6 @@
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGULibraryManagement.DAO
 {
@@ -14,7 +9,7 @@ namespace SGULibraryManagement.DAO
     {
         private MySqlConnection Connection => MySqlConnector.Instance?.Connection!;
 
-        public string TableName { get; } = "devicess";
+        public string TableName { get; } = "devices";
 
         public DeviceDAO()
         {
@@ -29,24 +24,45 @@ namespace SGULibraryManagement.DAO
                 Name = reader.GetString("name"),
                 Quantity = reader.GetInt32("quantity"),
                 ImageSource = reader.GetString("img"),
+                Description = reader.GetString("description"),
                 IsDeleted = reader.GetBoolean("is_deleted"),
-                IsAvailable = reader.GetBoolean("is_avaible")
+                IsAvailable = reader.GetBoolean("is_available")
             };
         }
 
         public DeviceDTO FindById(long id)
         {
-            throw new NotImplementedException();
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
+                command.Prepare();
+
+                using var reader = command.ExecuteReader();
+
+                if (reader.Read()) return FetchData(reader);
+                else return null!;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
         }
 
         public List<DeviceDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
             Logger.Log($"Query: {query}");
             
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
                 command.Prepare();
 
                 List<DeviceDTO> result = [];
@@ -68,15 +84,65 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
+        public List<Pair<DeviceDTO, int>> GetAllWithBorrowQuantity()
+        {
+            string query = $@"SELECT COALESCE(SUM(borrow_devices.quantity), 0) AS borrow_quantity, 
+                        			 COALESCE(SUM(reservations.quantity), 0) AS reservation_quantity, 
+                        			 {TableName}.*
+                              FROM {TableName}
+                              LEFT JOIN borrow_devices ON devices.id = borrow_devices.device_id
+                              LEFT JOIN reservations ON devices.id = reservations.device_id
+                              GROUP BY {TableName}.id;";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                List<Pair<DeviceDTO, int>> result = [];
+
+                using var reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    int borrowQuantity = reader.GetInt32("borrow_quantity");
+                    int reservationQuantity = reader.GetInt32("reservation_quantity");
+
+                    result.Add(new(FetchData(reader), borrowQuantity + reservationQuantity));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        private void AddData(MySqlCommand command, DeviceDTO request)
+        {
+            command.Parameters.AddWithValue("@Name", request.Name);
+            command.Parameters.AddWithValue("@Quantity", request.Quantity);
+            command.Parameters.AddWithValue("@Description", request.Description);
+            command.Parameters.AddWithValue("@Img", request.ImageSource);
+            command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
+            command.Parameters.AddWithValue("@IsAvailable", request.IsAvailable);
+        }
+
         public DeviceDTO Create(DeviceDTO request)
         {
-            string query = $"INSERT INTO {TableName} (name, quantity, img, is_deleted, is_avaible) VALUES " +
-                           $"('{request.Name}', {request.Quantity}, '{request.ImageSource}', {(request.IsDeleted ? 1 : 0)}, {(request.IsAvailable ? 1 : 0)})";
+            string query = $@"INSERT INTO {TableName} (name, quantity, img, description, is_deleted, is_available) 
+                              VALUES (@Name, @Quantity, @Img, @Description, @IsDeleted, @IsAvailable)";
+
             Logger.Log($"Query: {query}");
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
                 command.Prepare();
 
                 command.ExecuteNonQuery();
@@ -93,18 +159,22 @@ namespace SGULibraryManagement.DAO
 
         public bool Update(long id, DeviceDTO request)
         {
-            string query = $"UPDATE {TableName} SET " +
-                           $"name = '{request.Name}', " +
-                           $"quantity = {request.Quantity}, " +
-                           $"img = '{request.ImageSource}', " +
-                           $"is_deleted = {(request.IsDeleted ? 1 : 0)}, " +
-                           $"is_avaible = {(request.IsAvailable ? 1 : 0)} " +
-                           $"WHERE id = {id}";
+            string query = $@"UPDATE {TableName} SET 
+                           name = @Name,
+                           quantity = @Quantity,
+                           img = @Img,
+                           description = @Description,
+                           is_deleted = @IsDeleted,
+                           is_available = @IsAvailable
+                           WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
+                AddData(command, request);
+                command.Parameters.AddWithValue("@Id", id);
+
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();
@@ -120,12 +190,13 @@ namespace SGULibraryManagement.DAO
 
         public bool Delete(long id)
         {
-            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = {id}";
+            string query = $"UPDATE {TableName} SET is_deleted = 1 WHERE id = @Id";
             Logger.Log($"Query: {query}");
 
             try
             {
-                MySqlCommand command = new(query, Connection);
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
                 int rowsAffected = command.ExecuteNonQuery();

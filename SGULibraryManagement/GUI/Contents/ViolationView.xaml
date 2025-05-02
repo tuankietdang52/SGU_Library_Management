@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.ViolationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:tables="clr-namespace:SGULibraryManagement.Components.Tables"
+             mc:Ignorable="d" 
+             Style="{StaticResource ContentStyle}">
+    <StackPanel Margin="0, 10, 0, 0">
+        <Canvas Height="70">
+            <TextBlock Canvas.Left="30"
+                       FontWeight="Bold"
+                       FontSize="30">
+                All Violation Rules
+            </TextBlock>
+            <buttons:RoundButton Canvas.Right="30"
+                                 Foreground="White"
+                                 Background="Black"
+                                 Height="40"
+                                 CornerRadius="20"
+                                 HoverBackgroundColor="#2B2B2B"
+                                 Click="OnCreateClick">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="&#xf055;"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontFamily="{StaticResource FontAwesomeSolid}">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock Text="Add New Violation Rule"
+                               Foreground="White"
+                               FontSize="15">
+                    </TextBlock>
+                </StackPanel>
+            </buttons:RoundButton>
+        </Canvas>
+        <Border Width="{Binding Source={StaticResource AppContentWidth}, 
+                             Converter={StaticResource SubtractConverter}, 
+                             ConverterParameter=50}"
+                Height="530"
+                BorderThickness="1"
+                BorderBrush="Black"
+                CornerRadius="10">
+            <StackPanel>
+                <StackPanel Height="70"
+                            Orientation="Horizontal"
+                            Margin="20, 0">
+                    <TextBlock FontSize="20"
+                               VerticalAlignment="Center"
+                               Margin="0, 0, 20, 0">
+                        Search
+                    </TextBlock>
+                    <textFields:TextField x:Name="searchField"
+                                          Height="35"
+                                          Width="700"
+                                          BorderThickness="1, 1, 0, 1"
+                                          TextChanged="OnSearch"
+                                          Placeholder="Type something..."
+                                          VerticalContentAlignment="Center">
+                    </textFields:TextField>
+                </StackPanel>
+                <DataGrid x:Name="violationTable" 
+                          Width="{Binding Source={StaticResource AppContentWidth}, 
+                                          Converter={StaticResource SubtractConverter}, 
+                                          ConverterParameter=50}"
+                          Height="460"
+                          ColumnWidth="*"
+                          AutoGenerateColumns="False"
+                          CanUserResizeRows="False"
+                          IsReadOnly="True"
+                          Foreground="White"
+                          HorizontalScrollBarVisibility="Disabled"
+                          BorderBrush="Black"
+                          BorderThickness="0, 1, 0, 0"
+                          HeadersVisibility="Column"
+                          ColumnHeaderHeight="40"
+                          RowHeaderWidth="30"
+                          ItemsSource="{Binding Violations}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Width="100" Binding="{Binding Violation.Id}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Violation.Name}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Violation Count" Width="150" Binding="{Binding ViolationCount}"></DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Actions" Width="300">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <tables:ActionColumn Model="{Binding Violation}"
+                                                         OnEditClick="OnEditClick"
+                                                         OnViewClick="OnViewClick"
+                                                         OnDeleteClick="OnDeleteClick">
+                                    </tables:ActionColumn>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>
