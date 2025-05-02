@@ -164,6 +164,7 @@ namespace SGULibraryManagement.GUI.Contents
             switch (option)
             {
                 case "Top 3":
+                    FetchQuantityStatistics();
                     top3Container.Visibility = Visibility.Visible;
                     return;
 
