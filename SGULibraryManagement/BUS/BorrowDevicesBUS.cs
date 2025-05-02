@@ -24,8 +24,13 @@ namespace SGULibraryManagement.BUS
             Dictionary<long, DeviceDTO> devices = deviceBUS.GetAll().ToDictionary(pr => pr.Id);
 
             return BorrowDevices = [.. list.Select(item => {
-                var device = devices[item.DeviceId];
-                var account = accounts[item.UserId];
+                if (!devices.TryGetValue(item.DeviceId, out var device)) {
+                    return null;
+                }
+
+                if (!accounts.TryGetValue(item.UserId, out var account)) {
+                    return null;
+                }
 
                 return new BorrowDeviceViewModel() {
                     Id = item.Id,
