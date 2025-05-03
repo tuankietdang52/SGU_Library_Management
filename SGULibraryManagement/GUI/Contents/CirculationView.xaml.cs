@@ -121,7 +121,7 @@ namespace SGULibraryManagement.GUI.Contents
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(alreadyLockedDialog, SimpleDialogType.YesNo);
             AccountViolationDTO violation = new()
             {
-                UserId = account.Id,
+                UserId = account.Mssv,
                 ViolationId = 1,
                 DateCreate = DateTime.Now,
                 IsDeleted = false
@@ -165,7 +165,7 @@ namespace SGULibraryManagement.GUI.Contents
             var result = await mainWindow.ShowSimpleDialogAsync(changeDialog, SimpleDialogType.YesNo);
             AccountViolationDTO newViolation = new()
             {
-                UserId = account.Id,
+                UserId = account.Mssv,
                 ViolationId = 1,
                 DateCreate = DateTime.Now,
                 IsDeleted = false,

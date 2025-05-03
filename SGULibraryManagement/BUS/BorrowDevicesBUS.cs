@@ -20,7 +20,7 @@ namespace SGULibraryManagement.BUS
         public List<BorrowDeviceViewModel> GetAllWithDetail()
         {
             var list = GetAll();
-            Dictionary<long, AccountDTO> accounts = accountBUS.GetAll().ToDictionary(pr => pr.Id);
+            Dictionary<long, AccountDTO> accounts = accountBUS.GetAll().ToDictionary(pr => pr.Mssv);
             Dictionary<long, DeviceDTO> devices = deviceBUS.GetAll().ToDictionary(pr => pr.Id);
 
             return BorrowDevices = [.. list.Select(item => {
@@ -51,7 +51,7 @@ namespace SGULibraryManagement.BUS
 
         public List<BorrowDevicesDTO> FindByAccount(AccountDTO account)
         {
-            return dao.FindByAccountId(account.Id);
+            return dao.FindByAccountMssv(account.Mssv);
         }
 
         public List<BorrowDevicesDTO> FindByDevice(DeviceDTO device)

@@ -23,6 +23,12 @@ namespace SGULibraryManagement.BUS
             DeviceBorrowQuantity = DAO.GetAllWithBorrowQuantity().ToDictionary(pair => pair.First.Id, pair => pair.Last);
         }
 
+
+        public bool CreateListDevice(List<DeviceDTO> listDevice)
+        {
+            return DAO.CreateListDevice(listDevice);
+        }
+
         public List<DeviceDTO> GetAll()
         {
             return devices = DAO.GetAll(true);

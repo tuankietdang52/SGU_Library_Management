@@ -55,13 +55,13 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-        public List<BorrowDevicesDTO> FindByAccountId(long accountId)
+        public List<BorrowDevicesDTO> FindByAccountMssv(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv";
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Id", accountId);
+                command.Parameters.AddWithValue("@Mssv", mssv);
                 command.Prepare();
 
                 List<BorrowDevicesDTO> result = [];

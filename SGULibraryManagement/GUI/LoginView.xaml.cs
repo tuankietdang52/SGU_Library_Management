@@ -38,7 +38,7 @@ namespace SGULibraryManagement.GUI
 
         private void Fetch()
         {
-            accounts = accountBUS.GetAll().ToDictionary(account => account.Username);
+            accounts = accountBUS.GetAll().ToDictionary(account => account.Mssv.ToString());
         }
 
         private bool IsLocked(AccountDTO account)
@@ -46,14 +46,14 @@ namespace SGULibraryManagement.GUI
             return accountViolationBUS.IsAccountLocked(account, out var _);
         }
 
-        private Result ValidateAccount(string username, string password)
+        private Result ValidateAccount(string mssv, string password)
         {
             Fetch();
             string wrongMessage = "Wrong username or password";
 
-            if (!accounts!.TryGetValue(username, out var account)) return new Result(false, wrongMessage);
+            if (!accounts!.TryGetValue(mssv, out var account)) return new Result(false, wrongMessage);
 
-            if (username.Equals(account.Username) && password.Equals(account.Password))
+            if (long.Parse(mssv) == account.Mssv && password.Equals(account.Password))
             {
                 if (account.IdRole != 1) return new Result(false, "This account is not admin");
                 if (IsLocked(account)) return new Result(false, "This account is locked");
@@ -66,12 +66,12 @@ namespace SGULibraryManagement.GUI
 
         private void OnLoginClick(object sender, RoutedEventArgs e)
         {
-            string username = usernameField.Text;
+            string mssv = usernameField.Text;
             string password = passwordField.Password;
 
-            var result = ValidateAccount(username, password);
+            var result = ValidateAccount(mssv, password);
 
-            if (result.Value) OnLoginSuccess(accounts![username]);
+            if (result.Value) OnLoginSuccess(accounts![mssv]);
             else OnLoginFail(result);
         }
 
