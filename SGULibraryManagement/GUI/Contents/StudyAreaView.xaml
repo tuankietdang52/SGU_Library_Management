@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.Contents.StudyAreaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI.Contents"
+             xmlns:button ="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:textField ="clr-namespace:SGULibraryManagement.Components.TextFields"
+             mc:Ignorable="d" 
+             Style="{StaticResource ContentStyle}"
+             >
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" >
+            <Setter Property="FontWeight" Value="UltraBold"></Setter>
+            <Setter Property="FontSize" Value="30px"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontWeight" Value="UltraBold"></Setter>
+            <Setter Property="FontSize" Value="30px"></Setter>
+        </Style>
+    </UserControl.Resources>
+    
+        <StackPanel Margin="10">
+        
+        <!-- Title-->
+        <StackPanel Margin="-20,0,0,0">
+                <Canvas Height="70">
+                    <TextBlock Canvas.Left="30"
+                       FontWeight="Bold"
+                       FontSize="30">
+                Study Area
+                    </TextBlock>
+            </Canvas>
+        </StackPanel>
+        
+        <!-- Search Input and Button -->
+        <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Width="1000" HorizontalAlignment="Left">
+            <!-- <TextBox x:Name="SearchInput" Width="400" Height="50" Margin="0,0,10,0" VerticalContentAlignment="Center"/> -->
+            <textField:TextField x:Name="SearchInput"  
+                                 Width="400" Height="50" 
+                                 Margin="0,0,10,0" 
+                                 VerticalContentAlignment="Center" 
+                                 Placeholder="Enter MSSV..."/>
+            
+            <button:RoundButton x:Name="SearchButton" Content="Search" CornerRadius="20" Width="150" Height="50" Click="SearchButton_Click"
+             Background="Black"  Foreground="White" HoverBackgroundColor="DarkSlateGray" />
+
+
+        </StackPanel>
+
+        <!-- Results Section -->
+        <ScrollViewer Margin="10,20,0,0" Width="800" HorizontalAlignment="Left" >
+            
+            <Border  Background="White" HorizontalAlignment="Left" BorderBrush="Black" CornerRadius="10" BorderThickness="2" Width="800" Height="400">
+
+                <StackPanel x:Name="MemberInfoPanel" Orientation="Vertical">
+
+                    <Grid Height="50" Width="800" Background="{StaticResource AppThemeSecondary}" HorizontalAlignment="Left">
+                        <Grid.Clip>
+                            <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,800,50" />
+                        </Grid.Clip>
+                        <TextBlock Text="Member infomation : "  Canvas.Left ="10"/>
+                        <TextBlock  Canvas.Right="10"/>
+                    </Grid>
+
+                    <Canvas Height="50">
+                        <TextBlock Text="Mã số sinh viên"  Canvas.Left ="10"/>
+                        <TextBlock x:Name="Mssv" Canvas.Right="10"/>
+                    </Canvas>
+
+                    <Canvas Height="50">
+                        <TextBlock Text="Họ tên của sinh viên"  Canvas.Left ="10"/>
+                        <TextBlock x:Name="FullName" Canvas.Right="10"/>
+                    </Canvas>
+
+                    <Canvas Height="50">
+                        <TextBlock Text="Số điện thoại " Canvas.Left ="10"/>
+                        <TextBlock x:Name="Phone" Canvas.Right="10"/>
+                    </Canvas>
+
+                    <Canvas Height="50">
+                        <TextBlock Text="Email" Canvas.Left ="10"/>
+                        <TextBlock x:Name="Email" Canvas.Right="10"/>
+                    </Canvas>
+
+                    <Canvas Height="50">
+                        <TextBlock Text="Khoa" Canvas.Left ="10"/>
+                        <TextBlock x:Name="Falculity" Canvas.Right="10"/>
+                    </Canvas>
+
+                    <Canvas Height="50">
+                        <TextBlock Text="Ngành" Canvas.Left ="10"/>
+                        <TextBlock x:Name="Major" Canvas.Right="10"/>
+                    </Canvas>
+
+                </StackPanel>
+                    
+                   
+            </Border>
+
+        </ScrollViewer>
+    </StackPanel>
+</UserControl>
