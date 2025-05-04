@@ -52,14 +52,16 @@
                             </TextBlock>
                             <Viewbox Height="50"></Viewbox>
                             <TextBlock FontSize="20">
-                                Username
+                                Student Code
                             </TextBlock>
                             <textFields:TextField x:Name="usernameField"
                                                   CornerRadius="10"
+                                                  AcceptNumberOnly="True"
                                                   Margin="0, 5"
                                                   VerticalContentAlignment="Center"
                                                   Height="35"
-                                                  Placeholder="Enter username">
+                                                  MaxLength="10"
+                                                  Placeholder="Enter admin code">
                             </textFields:TextField>
                             <TextBlock FontSize="20">
                                 Password

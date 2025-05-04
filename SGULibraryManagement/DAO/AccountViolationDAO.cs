@@ -153,8 +153,8 @@ namespace SGULibraryManagement.DAO
 
         public AccountViolationDTO Create(AccountViolationDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (user_id, violation_id, status, ban_expired, compensation, create_at, is_deleted) 
-                              VALUES (@UserId, @ViolationId, @Status, @BanExpired, @Compensation, @DateCreate, @IsDeleted)";
+            string query = $@"INSERT INTO {TableName} (mssv, violation_id, create_at, is_deleted) 
+                              VALUES (@Mssv, @ViolationId, @DateCreate, @IsDeleted)";
             Logger.Log($"Query: {query}");
 
             try
@@ -178,7 +178,7 @@ namespace SGULibraryManagement.DAO
         public bool Update(long id, AccountViolationDTO request)
         {
             string query = $@"UPDATE {TableName} 
-                              SET user_id = @UserId, 
+                              SET mssv = @Mssv, 
                                   violation_id = @ViolationId, 
                                   status = @Status, 
                                   ban_expired = @BanExpired,
@@ -235,7 +235,7 @@ namespace SGULibraryManagement.DAO
 
         public AccountViolationDTO? IsAccountLocked(long accountId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = @AccountId AND is_deleted = 0";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND is_deleted = 0";
             Logger.Log($"Query: {query}");
 
             try

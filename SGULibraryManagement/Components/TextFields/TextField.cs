@@ -46,6 +46,13 @@ namespace SGULibraryManagement.Components.TextFields
                                         typeof(TextField),
                                         new PropertyMetadata(Brushes.DarkGray));
 
+        public static readonly DependencyProperty MaxLengthProperty =
+           DependencyProperty.Register(nameof(MaxLength),
+                                       typeof(int),
+                                       typeof(TextField),
+                                       new PropertyMetadata(int.MaxValue));
+
+
         public string Text
         {
             get => (string)GetValue(TextProperty);
@@ -68,6 +75,12 @@ namespace SGULibraryManagement.Components.TextFields
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
+        }
+        
+        public int MaxLength
+        {
+            get => (int)GetValue(MaxLengthProperty);
+            set => SetValue(MaxLengthProperty, value);
         }
 
         public bool AcceptNumberOnly { get; set; } = false;

@@ -11,6 +11,7 @@ namespace SGULibraryManagement.DTO
         public long Id { get; set; }
         public long UserId { get; set; }
         public long DeviceId { get; set; }
+        public string? Code { get; set; }
         public DateTime DateCreate {  get; set; }
         public int Quantity { get; set; }
         public DateTime DateBorrow { get; set; }

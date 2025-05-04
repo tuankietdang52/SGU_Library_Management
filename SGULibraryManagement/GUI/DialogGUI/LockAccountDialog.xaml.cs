@@ -48,7 +48,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private void SetupComponent()
         {
-            title.Text = $"Lock {account.Username} for ";
+            title.Text = $"Lock {account.Mssv} for ";
 
             violationCB.ItemsSource = violationBUS.GetAll();
             violationCB.DisplayMemberPath = "Name";
@@ -57,7 +57,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private void SetupUpdateComponent()
         {
-            title.Text = $"{account.Username} is currently lock for ";
+            title.Text = $"{account.Mssv} is currently lock for ";
 
             foreach(var item in violationCB.ItemsSource)
             {
@@ -85,7 +85,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
             SimpleDialog dialog = new()
             {
-                Title = $"Unlock {account.Username}",
+                Title = $"Unlock {account.Mssv}",
                 Content = "Do you want to unlock this account ?",
                 Width = 300,
                 Height = 200
@@ -134,7 +134,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
             AccountViolationDTO model = new()
             {
-                UserId = account.Id,
+                UserId = account.Mssv,
                 ViolationId = violation.Id,
                 DateCreate = DateTime.Now,
                 IsDeleted = false
@@ -172,7 +172,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             SimpleDialog dialog = new()
             {
                 Title = "Success",
-                Content = $"Lock {account.Username} successful!",
+                Content = $"Lock {account.Mssv} successful!",
                 Width = 300,
                 Height = 200
             };
@@ -185,7 +185,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             SimpleDialog dialog = new()
             {
                 Title = "Failed",
-                Content = $"Lock {account.Username} fail",
+                Content = $"Lock {account.Mssv} fail",
                 Width = 300,
                 Height = 200
             };

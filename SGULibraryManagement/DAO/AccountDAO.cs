@@ -23,14 +23,15 @@ namespace SGULibraryManagement.DAO
         {
             return new AccountDTO()
             {
-                Id = reader.GetInt64("id"),
-                Username = reader.GetString("username"),
+                Mssv = reader.GetInt64("mssv"),
                 Password = reader.GetString("password"),
                 FirstName = reader.GetString("first_name"),
                 LastName = reader.GetString("last_name"),
                 Phone = reader.GetString("phone"),
                 Email = reader.GetString("email"),
                 IdRole = reader.GetInt64("role_id"),
+                Faculty = reader.GetString("faculty"),
+                Major = reader.GetString("major"),
                 Avatar = reader.GetString("avt"),
                 IsDeleted = reader.GetBoolean("is_deleted")
             };
@@ -38,10 +39,11 @@ namespace SGULibraryManagement.DAO
 
         public List<AccountDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
             try
             {
                 MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
                 command.Prepare();
 
                 List<AccountDTO> result = [];
@@ -64,13 +66,14 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-        public AccountDTO FindById(long id)
+        public AccountDTO FindById(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = {id}";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @MSSV";
 
             try
             {
                 MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@MSSV", mssv);
                 command.Prepare();
 
                 using MySqlDataReader reader = command.ExecuteReader();
@@ -89,20 +92,22 @@ namespace SGULibraryManagement.DAO
         }
         public AccountDTO Create(AccountDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (username, password, first_name, last_name, phone, email, role_id, avt, is_deleted) 
-                            VALUES (@Username, @Password, @First_name, @Last_name, @Phone, @Email, @Role, @Avt, @IsActive)";
+            string query = $@"INSERT INTO {TableName} (mssv, password, first_name, last_name, phone, email, role_id, faculty, major, avt, is_deleted) 
+                            VALUES (@Mssv, @Password, @First_name, @Last_name, @Phone, @Email, @Role, @Faculty, @Major, @Avt, @IsActive)";
 
             Logger.Log(query);
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Username", request.Username);
+                command.Parameters.AddWithValue("@mssv", request.Mssv);
                 command.Parameters.AddWithValue("@Password", request.Password);
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
                 command.Parameters.AddWithValue("@Phone", request.Phone);
                 command.Parameters.AddWithValue("@Email", request.Email);
                 command.Parameters.AddWithValue("@Role", request.IdRole);
+                command.Parameters.AddWithValue("@Faculty", request.Faculty);
+                command.Parameters.AddWithValue("@Major", request.Major);
                 command.Parameters.AddWithValue("@Avt", request.Avatar);
                 command.Parameters.AddWithValue("@IsActive", request.IsDeleted);
 
@@ -122,11 +127,75 @@ namespace SGULibraryManagement.DAO
             return null!;
         }
 
-        public bool Update(long id, AccountDTO request)
+
+        public AccountDTO CreateV1(AccountDTO request, MySqlTransaction transaction)
+        {
+            string query = $@"INSERT INTO {TableName} (mssv, password, first_name, last_name, phone, email, role_id, faculty, major, avt, is_deleted) 
+                            VALUES (@Mssv, @Password, @First_name, @Last_name, @Phone, @Email, @Role, @Faculty, @Major, @Avt, @IsActive)";
+
+            Logger.Log(query);
+            try
+            {
+                using MySqlCommand command = new(query, Connection, transaction);
+                command.Parameters.AddWithValue("@mssv", request.Mssv);
+                command.Parameters.AddWithValue("@Password", request.Password);
+                command.Parameters.AddWithValue("@First_name", request.FirstName);
+                command.Parameters.AddWithValue("@Last_name", request.LastName);
+                command.Parameters.AddWithValue("@Phone", request.Phone);
+                command.Parameters.AddWithValue("@Email", request.Email);
+                command.Parameters.AddWithValue("@Role", request.IdRole);
+                command.Parameters.AddWithValue("@Faculty", request.Faculty);
+                command.Parameters.AddWithValue("@Major", request.Major);
+                command.Parameters.AddWithValue("@Avt", request.Avatar);
+                command.Parameters.AddWithValue("@IsActive", request.IsDeleted);
+
+                command.Prepare();
+                int rowsAffected = command.ExecuteNonQuery();
+
+
+                if (rowsAffected > 0)
+                {
+                    return request;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+            return null!;
+        }
+        public bool CreateListAccount(List<AccountDTO> listAccount)
+        {
+            MySqlTransaction tr = null!;
+            try
+            {
+                tr = this.Connection.BeginTransaction();
+                foreach (AccountDTO account in listAccount)
+                {
+                    var result = CreateV1(account, tr);
+                    if (result == null)
+                    {
+                        tr.Rollback();
+                        return false;
+                    }
+                    
+                }
+
+                tr.Commit();
+                return true;
+            }
+            catch (MySqlException)
+            {
+                tr.Rollback();
+                return false;
+            }
+        }
+
+
+        public bool Update(long mssv, AccountDTO request)
         {
             string query = $@"UPDATE {TableName}
-                            SET username = @Username, 
-                                password = @Password,
+                            SET password = @Password,
                                 first_name = @First_name,
                                 last_name = @Last_name,
                                 phone = @Phone,
@@ -134,13 +203,12 @@ namespace SGULibraryManagement.DAO
                                 role_id = @RoleId,
                                 avt = @Avt,
                                 is_deleted = @Is_Deleted 
-                            WHERE id = @Id";
+                            WHERE mssv = @Mssv";
 
             Logger.Log(query);
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Username", request.Username); 
                 command.Parameters.AddWithValue("@Password", request.Password);
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
@@ -149,7 +217,7 @@ namespace SGULibraryManagement.DAO
                 command.Parameters.AddWithValue("@RoleId", request.IdRole);
                 command.Parameters.AddWithValue("@Avt", request.Avatar);
                 command.Parameters.AddWithValue("@Is_Deleted", request.IsDeleted);
-                command.Parameters.AddWithValue("@Id", request.Id);
+                command.Parameters.AddWithValue("@Mssv", request.Mssv);
 
                 command.Prepare();
                 int rowsAffected = command.ExecuteNonQuery();
@@ -167,14 +235,14 @@ namespace SGULibraryManagement.DAO
             return false;
         }
 
-        public AccountDTO? FindByUsername(string username)
+        public AccountDTO? FindByUsername(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE username = @Username AND is_deleted = 0";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv AND is_deleted = 0";
 
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Username", username);
+                command.Parameters.AddWithValue("@Mssv", mssv);
                 command.Prepare();
 
                 using MySqlDataReader reader = command.ExecuteReader();
@@ -192,15 +260,15 @@ namespace SGULibraryManagement.DAO
             return null;
         }
 
-        public bool Delete(long id)
+        public bool Delete(long mssv)
         {
             string query = $@"UPDATE {TableName} 
                             SET is_deleted = 1 
-                            WHERE id = @Id";
+                            WHERE mssv = @Mssv";
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Mssv", mssv);
                 command.Prepare();
                 int rowsAffected = command.ExecuteNonQuery();
                 if (rowsAffected > 0)

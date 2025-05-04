@@ -21,8 +21,9 @@ namespace SGULibraryManagement.DAO
             return new BorrowDevicesDTO()
             {
                 Id = r.GetInt64("id"),
-                UserId = r.GetInt64("user_id"),
+                UserId = r.GetInt64("mssv"),
                 DeviceId = r.GetInt64("device_id"),
+                Code = r.GetString("code"),
                 Quantity = r.GetInt32("quantity"),
                 DateCreate = r.GetDateTime("create_at"),
                 DateBorrow = r.GetDateTime("date_borrow"),
@@ -63,13 +64,13 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
-        public List<BorrowDevicesDTO> FindByAccountId(long accountId)
+        public List<BorrowDevicesDTO> FindByAccountMssv(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv";
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Id", accountId);
+                command.Parameters.AddWithValue("@Mssv", mssv);
                 command.Prepare();
 
                 List<BorrowDevicesDTO> result = [];
@@ -90,6 +91,30 @@ namespace SGULibraryManagement.DAO
             }
 
             return [];
+        }
+
+        public BorrowDevicesDTO FindByCode(string code)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE code = @Code";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Code", code);
+                command.Prepare();
+
+                using var reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                if (reader.Read()) return FetchData(reader);
+                else return null!;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
         }
 
         public List<BorrowDevicesDTO> FindByDeviceId(long deviceId)
@@ -130,8 +155,6 @@ namespace SGULibraryManagement.DAO
                 command.Parameters.AddWithValue("@Id", id);
                 command.Prepare();
 
-                List<BorrowDevicesDTO> result = [];
-
                 using var reader = command.ExecuteReader();
                 Logger.Log($"Query: {query}");
 
@@ -150,6 +173,7 @@ namespace SGULibraryManagement.DAO
         {
             command.Parameters.AddWithValue("@UserId", request.UserId);
             command.Parameters.AddWithValue("@DeviceId", request.DeviceId);
+            command.Parameters.AddWithValue("@Code", request.Code);
             command.Parameters.AddWithValue("@Quantity", request.Quantity);
             command.Parameters.AddWithValue("@CreateAt", request.DateCreate);
             command.Parameters.AddWithValue("@DateBorrow", request.DateBorrow);
@@ -159,8 +183,8 @@ namespace SGULibraryManagement.DAO
 
         public BorrowDevicesDTO Create(BorrowDevicesDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (user_id, device_id, quantity, create_at, date_borrow, date_return_expected, is_deleted, is_return) 
-                              VALUES (@UserId, @DeviceId, @Quantity, @CreateAt, @DateBorrow, @DateReturnExpected, @IsDeleted, 0)";
+            string query = $@"INSERT INTO {TableName} (mssv, device_id, code, quantity, create_at, date_borrow, date_return_expected, is_deleted, is_return) 
+                              VALUES (@UserId, @DeviceId, @Code, @Quantity, @CreateAt, @DateBorrow, @DateReturnExpected, @IsDeleted, 0)";
 
             Logger.Log($"Query: {query}");
 
@@ -186,8 +210,9 @@ namespace SGULibraryManagement.DAO
         public bool Update(long id, BorrowDevicesDTO request)
         {
             string query = @$"UPDATE {TableName}
-                              SET user_id = @UserId,
+                              SET mssv = @UserId,
                                   device_id = @DeviceId,
+                                  code = @Code,
                                   quantity = @Quantity,
                                   create_at = @CreateAt,
                                   date_borrow = @DateBorrow,

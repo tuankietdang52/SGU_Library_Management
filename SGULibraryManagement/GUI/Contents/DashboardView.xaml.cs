@@ -16,10 +16,6 @@ namespace SGULibraryManagement.GUI.Contents
         private readonly BorrowDevicesBUS borrowDevicesBUS = new();
         private readonly ReservationBUS reservationBUS = new();
 
-        public PlotModel? Top3BorrowModel { get; set; }
-        public PlotModel? Top3UserModel { get; set; }
-        public PlotModel? UserStatusModel { get; set; }
-
         public DashboardView()
         {
             InitializeComponent();
@@ -98,7 +94,7 @@ namespace SGULibraryManagement.GUI.Contents
                                                   .ToDictionary(pr => pr.Key.ToString(), 
                                                                 pr => new BarItem() { Value = pr.Value });
 
-            Top3BorrowModel = StatisticsUtility.CreateHorizontalBarChart("Top 3 most borrowed devices", "Borrow Quantity", top3, "Borrow Quantity", "Device Id");
+            top3DeviceChart.Model = StatisticsUtility.CreateHorizontalBarChart("Top 3 most borrowed devices", "Borrow Quantity", top3, "Borrow Quantity", "Device Id");
         }
 
         private void FetchTop3User()
@@ -111,14 +107,14 @@ namespace SGULibraryManagement.GUI.Contents
 
             foreach (var item in borrows)
             {
-                if (!top.TryAdd(item.User.Id, 1))
-                    top[item.User.Id] += 1;
+                if (!top.TryAdd(item.User.Mssv, 1))
+                    top[item.User.Mssv] += 1;
             }
 
             foreach (var item in reservations)
             {
-                if (!top.TryAdd(item.User.Id, 1))
-                    top[item.User.Id] += 1;
+                if (!top.TryAdd(item.User.Mssv, 1))
+                    top[item.User.Mssv] += 1;
             }
 
             Dictionary<string, BarItem> top3 = top.OrderByDescending(pr => pr.Value)
@@ -126,7 +122,7 @@ namespace SGULibraryManagement.GUI.Contents
                                                  .ToDictionary(pr => pr.Key.ToString(),
                                                                pr => new BarItem() { Value = pr.Value });
 
-            Top3UserModel = StatisticsUtility.CreateHorizontalBarChart("Top 3 User", "Borrow Time", top3, "Borrow Time", "User Id");
+            top3UserChart.Model = StatisticsUtility.CreateHorizontalBarChart("Top 3 User", "Borrow Time", top3, "Borrow Time", "User Id");
         }
 
         private void FetchUsersStatus()
@@ -140,13 +136,11 @@ namespace SGULibraryManagement.GUI.Contents
             var lockedColor = (SolidColorBrush)App.Instance!.Resources["ErrorColor"];
             var unLockedColor = (SolidColorBrush)App.Instance!.Resources["ActiveBackground"];
 
-            UserStatusModel = StatisticsUtility.CreatePieChart("User Lock Status",
+            userStatusChart.Model = StatisticsUtility.CreatePieChart("User Lock Status",
             [
                 new("Locked", lockedUser) { Fill = lockedColor.ParseToOxyColor() },
                 new("Unlocked", unLockedUser) { Fill = unLockedColor.ParseToOxyColor() }
             ]);
-
-            userStatusChart.Model = UserStatusModel;
         }
 
         private void HideAllStatistic()

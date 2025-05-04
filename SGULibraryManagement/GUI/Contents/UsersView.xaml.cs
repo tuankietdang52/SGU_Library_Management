@@ -1,4 +1,6 @@
-﻿using SGULibraryManagement.BUS;
+﻿using Microsoft.Win32;
+using OfficeOpenXml;
+using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.DialogGUI;
@@ -6,8 +8,13 @@ using SGULibraryManagement.GUI.ViewModels;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Controls;
+using LicenseContext = OfficeOpenXml.LicenseContext;
+
 
 namespace SGULibraryManagement.GUI.Contents
 {
@@ -38,7 +45,7 @@ namespace SGULibraryManagement.GUI.Contents
             var list = collections ?? userBUS.GetAllWithRole();
             AccountDTO currentAccount = AccountManager.CurrentUser!;
 
-            list.RemoveAll(vm => vm.Account.Id == currentAccount.Id);
+            list.RemoveAll(vm => vm.Account.Mssv == currentAccount.Mssv);
             App.Instance!.InvokeInMainThread(() => Users.ResetTo(list));
         }
 
@@ -120,6 +127,73 @@ namespace SGULibraryManagement.GUI.Contents
             Fetch();
 
         }
+
+        private void ImportExcel(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "Excel Files|*.xlsx"
+            };
+
+            if (openFileDialog.ShowDialog() != true) return;
+
+            var listAccount = Importing(openFileDialog);
+
+            if (userBUS.CreateListAccount(listAccount) == false)
+            {
+                MessageBox.Show("Import failed");
+                return;
+            }
+
+            MessageBox.Show("Import successfully!");
+            MainView.Instance.FetchAll([typeof(UsersView), typeof(ViolationView)]);
+        }
+
+        private List<AccountDTO> Importing(OpenFileDialog openFileDialog)
+        {
+            string filePath = openFileDialog.FileName;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            // Xử lý file Excel
+            using var excelPackage = new ExcelPackage(new FileInfo(filePath));
+            var worksheet = excelPackage.Workbook.Worksheets[0];
+            int startRow = worksheet.Dimension.Start.Row + 1;
+            int endRow = worksheet.Dimension.End.Row;
+
+            List<AccountDTO> listAccount = [];
+            for (int i = startRow; i <= endRow; i++)
+            {
+                List<string> rowData = [];
+                for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
+                {
+                    rowData.Add(worksheet.Cells[i, j].Text);
+                }
+                try
+                {
+                    listAccount.Add(new AccountDTO()
+                    {
+                        Mssv = long.Parse(rowData[0]),
+                        Password = rowData[1],
+                        FirstName = rowData[2],
+                        LastName = rowData[3],
+                        Phone = rowData[4],
+                        Email = rowData[5],
+                        IdRole = int.Parse(rowData[6]),
+                        Faculty = rowData[7],
+                        Major = rowData[8],
+                        IsDeleted = false,
+                    });
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("One or more object in excel does not match with account object");
+                    return [];
+                }
+            }
+
+            return listAccount;
+        }
+
 
         private void OnViewClick(object sender, object model)
         {

@@ -9,7 +9,6 @@
              xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
              mc:Ignorable="d"
              Style="{StaticResource ContentStyle}">
-
     <UserControl.Resources>
         <Storyboard x:Key="EquipmentsFadeIn">
             <DoubleAnimation Storyboard.TargetName="equipmentsContainer"
@@ -49,7 +48,7 @@
             <TextBlock Canvas.Left="30"
                        FontWeight="Bold"
                        FontSize="30">
-                        All Equipment
+                All Equipment
             </TextBlock>
             <button:RoundButton Canvas.Right="30"
                                 Foreground="White"
@@ -71,6 +70,28 @@
                                Foreground="White"
                                FontSize="15">
 
+                    </TextBlock>
+                </StackPanel>
+            </button:RoundButton>
+            <button:RoundButton Canvas.Right="250"
+                                Foreground="White"
+                                Background="Black"
+                                Height="50"
+                                CornerRadius="20"
+                                Click="ImportExcel"
+                                HoverBackgroundColor="#2B2B2B">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="&#xf055;"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontFamily="{StaticResource FontAwesomeSolid}">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock Text="Import Excel"
+                               Foreground="White"
+                               FontSize="15">
                     </TextBlock>
                 </StackPanel>
             </button:RoundButton>

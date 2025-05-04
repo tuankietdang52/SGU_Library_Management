@@ -21,7 +21,7 @@ namespace SGULibraryManagement.DAO
             return new ReservationDTO()
             {
                 Id = r.GetInt64("id"),
-                UserId = r.GetInt64("user_id"),
+                UserId = r.GetInt64("mssv"),
                 DeviceId = r.GetInt64("device_id"),
                 Quantity = r.GetInt32("quantity"),
                 DateCreate = r.GetDateTime("create_at"),
@@ -64,11 +64,11 @@ namespace SGULibraryManagement.DAO
 
         public List<ReservationDTO> FindByAccountId(long accountId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv";
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Id", accountId);
+                command.Parameters.AddWithValue("@Mssv", accountId);
                 command.Prepare();
 
                 List<ReservationDTO> result = [];

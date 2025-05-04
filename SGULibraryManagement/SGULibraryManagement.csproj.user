@@ -17,6 +17,9 @@
     <Compile Update="GUI\DialogGUI\BorrowDeviceHistoryDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DialogGUI\CirculationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DialogGUI\EquipmentDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

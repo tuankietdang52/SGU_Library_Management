@@ -24,7 +24,7 @@ namespace SGULibraryManagement.BUS
 
         public List<AccountViolationDTO> FindByAccount(AccountDTO account)
         {
-            return DAO.FindByAccountId(account.Id);
+            return DAO.FindByAccountId(account.Mssv);
         }
 
         public List<AccountViolationDTO> FindByViolation(ViolationDTO violation)
@@ -64,7 +64,7 @@ namespace SGULibraryManagement.BUS
 
         public bool IsAccountLocked(AccountDTO account, out AccountViolationDTO accountViolation)
         {
-            accountViolation = DAO.IsAccountLocked(account.Id)!;
+            accountViolation = DAO.IsAccountLocked(account.Mssv)!;
             return accountViolation != null;
         }
 
