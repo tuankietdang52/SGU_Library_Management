@@ -21,9 +21,11 @@ namespace SGULibraryManagement.DAO
             return new AccountViolationDTO()
             {
                 Id = reader.GetInt64("id"),
-                UserId = reader.GetInt64("user_id"),
+                UserId = reader.GetInt64("mssv"),
                 ViolationId = reader.GetInt64("violation_id"),
                 DateCreate = reader.GetDateTime("create_at"),
+                BanExpired = reader.GetDateTime("ban_expired"),
+                Compensation = reader.GetInt64("compensation"),
                 IsDeleted = reader.GetBoolean("is_deleted")
             };
         }
@@ -232,8 +234,10 @@ namespace SGULibraryManagement.DAO
 
         public AccountViolationDTO? IsAccountLocked(long accountId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND is_deleted = 0";
-            Logger.Log($"Query: {query}");
+            string query1 = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND is_deleted = 0";
+            string query = $"SELECT * FROM {TableName} Where mssv = @AccountId AND DATE(ban_expired) < CURDATE() ORDER BY ABS(DATEDIFF(create_at, CURDATE())) LIMIT 1";
+            Logger.Log($"accountId truyen vao violation :{accountId}");
+            Logger.Log($"Query cua vialation: {query}");
 
             try
             {
@@ -242,7 +246,11 @@ namespace SGULibraryManagement.DAO
                 command.Prepare();
 
                 using var reader = command.ExecuteReader();
-                if (reader.Read()) return FetchData(reader);
+                if (reader.Read()) {
+                    AccountViolationDTO rs = FetchData(reader);
+                    return rs;
+                }
+                    
                 else return null;
             }
             catch (Exception ex)

@@ -12,6 +12,16 @@ namespace SGULibraryManagement.DTO
         public long UserId { get; set; }
         public long ViolationId { get; set; }
         public DateTime DateCreate { get; set; }
+
+        public DateTime BanExpired { get; set; }
+
+        public enum Status
+        {
+            Handled , 
+            BeingProcessed
+        }
+        public long Compensation { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }
