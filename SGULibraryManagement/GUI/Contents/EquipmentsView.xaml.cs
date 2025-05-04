@@ -1,4 +1,6 @@
-﻿using SGULibraryManagement.BUS;
+﻿using Microsoft.Win32;
+using OfficeOpenXml;
+using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.Equipments;
 using SGULibraryManagement.DTO;
@@ -6,6 +8,7 @@ using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -193,6 +196,63 @@ namespace SGULibraryManagement.GUI.Contents
             Fetch();
             OnApplySort();
         }
+        private void ImportExcel(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel Files|*.xlsx";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                // Xử lý file Excel
+                using (var excelPackage = new ExcelPackage(new FileInfo(filePath)))
+                {
+                    var worksheet = excelPackage.Workbook.Worksheets[0];
+                    int startRow = worksheet.Dimension.Start.Row + 1;
+                    int endRow = worksheet.Dimension.End.Row;
+
+                    List<DeviceDTO> listDevice = new();
+                    for (int i = startRow; i <= endRow; i++)
+                    {
+                        List<string> rowData = new List<string>();
+                        for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
+                        {
+                            rowData.Add(worksheet.Cells[i, j].Text);
+                        }
+                        try
+                        {
+                            listDevice.Add(new DeviceDTO()
+                            {
+                                Name = rowData[0],
+                                Quantity = int.Parse(rowData[1]),
+                                ImageSource = rowData[2],
+                                Description = rowData[3],
+                                IsAvailable = false,
+                                IsDeleted = false
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Sai kiểu dữ liệu khi import");
+                            return;
+                        }
+
+                    }
+
+                    if (BUS.CreateListDevice(listDevice) == false)
+                    {
+                        MessageBox.Show("Import thất bại");
+                        return;
+                    }
+                    MessageBox.Show("Import thành công");
+                    Fetch();
+
+
+                }
+            }
+        }
+        
 
         private void OnView(object sender, DeviceDTO model)
         {
@@ -239,7 +299,7 @@ namespace SGULibraryManagement.GUI.Contents
                         new SimpleDialog
                         {
                             Title = "Error",
-                            Content = "Something went wrong!",
+                            Content = "Cant delete device",
                             Width = 400,
                             Height = 200
                         },

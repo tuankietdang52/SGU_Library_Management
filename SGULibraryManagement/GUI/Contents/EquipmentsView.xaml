@@ -74,6 +74,29 @@
                     </TextBlock>
                 </StackPanel>
             </button:RoundButton>
+            <button:RoundButton Canvas.Right="250"
+                    Foreground="White"
+                    Background="Black"
+                    Height="50"
+                    CornerRadius="20"
+                    Click="ImportExcel"
+                    HoverBackgroundColor="#2B2B2B">
+                <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                    <TextBlock Text="&#xf055;"
+                   VerticalAlignment="Center"
+                   Foreground="White"
+                   FontFamily="{StaticResource FontAwesomeSolid}">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock Text="Import Excel"
+                   Foreground="White"
+                   FontSize="15">
+
+                    </TextBlock>
+                </StackPanel>
+            </button:RoundButton>
         </Canvas>
         <Border BorderBrush="Black"
                 BorderThickness="1"

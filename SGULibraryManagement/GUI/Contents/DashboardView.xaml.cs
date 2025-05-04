@@ -111,14 +111,14 @@ namespace SGULibraryManagement.GUI.Contents
 
             foreach (var item in borrows)
             {
-                if (!top.TryAdd(item.User.Id, 1))
-                    top[item.User.Id] += 1;
+                if (!top.TryAdd(item.User.Mssv, 1))
+                    top[item.User.Mssv] += 1;
             }
 
             foreach (var item in reservations)
             {
-                if (!top.TryAdd(item.User.Id, 1))
-                    top[item.User.Id] += 1;
+                if (!top.TryAdd(item.User.Mssv, 1))
+                    top[item.User.Mssv] += 1;
             }
 
             Dictionary<string, BarItem> top3 = top.OrderByDescending(pr => pr.Value)

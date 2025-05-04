@@ -59,13 +59,13 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
             if (dialogType == EDialogType.Edit)
             {
-                lbTitle.Text = $"Update User Id {model.Id}";
+                lbTitle.Text = $"Update User Id {model.Mssv}";
                 btn.Content = "Save";
                 lockButton.Visibility = Visibility.Visible;
             }
             else // view
             {
-                lbTitle.Text = $"View User With Id {model.Id} Detail";
+                lbTitle.Text = $"View User With Id {model.Mssv} Detail";
                 btn.Visibility = Visibility.Hidden;
                 historyOptionContainer.Visibility = Visibility.Visible;
                 DisableForm();
@@ -95,7 +95,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             if (accountViolation is not null) ShowViolation();
             else HideViolation();
 
-            txtTaiKhoan.Text = model.Username;
+            txtTaiKhoan.Text = model.Mssv + "";
             txtMatKhau.Password = model.Password;
             passwordTB.Text = model.Password;
             txtTen.Text = model.FirstName;
@@ -160,7 +160,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             }
             return new AccountDTO()
             {
-                Username = txtTaiKhoan.Text,
+                //Username = txtTaiKhoan.Text,
                 Password = txtMatKhau.Password,
                 FirstName = txtTen.Text,
                 LastName = txtHo.Text,
@@ -195,9 +195,9 @@ namespace SGULibraryManagement.GUI.DialogGUI
             AccountDTO modelData = GetData();
             if (modelData == null) return;
 
-            modelData.Id = model!.Id;
+            modelData.Mssv = model!.Mssv;
 
-            if (accountBUS.UpdateAccount(modelData.Id, modelData))
+            if (accountBUS.UpdateAccount(modelData.Mssv, modelData))
             {
                 MessageBox.Show("Update Successful!");
                 OnCloseDialog?.Invoke(this);
@@ -216,7 +216,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             else OnShowLockDialog();
 
             //refetch model
-            model = accountBUS.FindById(model.Id);
+            model = accountBUS.FindById(model.Mssv);
             accountViolationBUS.IsAccountLocked(model, out accountViolation);
             LoadFormData();
         }

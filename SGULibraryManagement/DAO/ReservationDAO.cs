@@ -64,11 +64,11 @@ namespace SGULibraryManagement.DAO
 
         public List<ReservationDTO> FindByAccountId(long accountId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv";
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@Id", accountId);
+                command.Parameters.AddWithValue("@Mssv", accountId);
                 command.Prepare();
 
                 List<ReservationDTO> result = [];

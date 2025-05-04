@@ -27,7 +27,7 @@ namespace SGULibraryManagement.GUI.Contents
 
             firstNameField.Text = Current.FirstName;
             lastNameField.Text = Current.LastName;
-            usernameField.Text = Current.Username;
+            //usernameField.Text = Current.Username;
             passwordField.Password = Current.Password;
             emailField.Text = Current.LastName;
             phoneField.Text = Current.Phone;
@@ -46,10 +46,9 @@ namespace SGULibraryManagement.GUI.Contents
         {
             return new AccountDTO()
             {
-                Id = Current!.Id,
+                Mssv = Current!.Mssv,
                 FirstName = firstNameField.Text,
                 LastName = lastNameField.Text,
-                Username = usernameField.Text,
                 Password = passwordField.Password,
                 Email = emailField.Text,
                 Phone = phoneField.Text,
@@ -62,7 +61,7 @@ namespace SGULibraryManagement.GUI.Contents
         {
             var model = GatherData();
 
-            if (accountBUS.UpdateAccount(Current!.Id, model))
+            if (accountBUS.UpdateAccount(Current!.Mssv, model))
             {
                 OnSuccess();
             }
@@ -81,7 +80,7 @@ namespace SGULibraryManagement.GUI.Contents
 
             await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
 
-            AccountManager.CurrentUser = accountBUS.FindById(Current!.Id);
+            AccountManager.CurrentUser = accountBUS.FindById(Current!.Mssv);
             MainView.Instance.RefreshCurrentUser();
             MainView.Instance.Navigate(new UserInformationView());
         }

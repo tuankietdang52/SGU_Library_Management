@@ -27,6 +27,12 @@ namespace SGULibraryManagement.BUS
 
         }
 
+        public bool CreateListAccount(List<AccountDTO> listAccount)
+        {
+            return userDAO.CreateListAccount(listAccount);
+        }
+
+
         public List<AccountDTO> GetAll()
         {
             return userDAO.GetAll(true);
@@ -53,7 +59,7 @@ namespace SGULibraryManagement.BUS
                 }
                 else roleBg = roleBUS.RoleColors[eRole];
 
-                bool isLocked = lockedUser.Contains(user.Id);
+                bool isLocked = lockedUser.Contains(user.Mssv);
 
                 return new AccountViewModel()
                 {
@@ -66,9 +72,9 @@ namespace SGULibraryManagement.BUS
             })];
         }
 
-        public AccountDTO? FindByUsername(string username)
+        public AccountDTO? FindByUsername(long mssv)
         {
-            return userDAO.FindByUsername(username);
+            return userDAO.FindByUsername(mssv);
         }
 
         public AccountDTO CreateAccount(AccountDTO account)
@@ -83,7 +89,7 @@ namespace SGULibraryManagement.BUS
 
         public bool DeleteAccount(AccountDTO account)
         {
-            return userDAO.Delete(account.Id);
+            return userDAO.Delete(account.Mssv);
         }
 
         public List<AccountViewModel> FilterByQuery(string query, UserQueryOption queryOption, IEnumerable<AccountViewModel>? collection = null)
@@ -91,7 +97,7 @@ namespace SGULibraryManagement.BUS
             var list = collection ?? users;
             return queryOption switch
             {
-                UserQueryOption.Username => [.. list.Where(user => user.Account.Username.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
+                UserQueryOption.Mssv => [.. list.Where(user => user.Account.Mssv.ToString().Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 UserQueryOption.Fullname => [.. list.Where(user => user.Account.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 UserQueryOption.Phone => [.. list.Where(user => user.Account.Phone.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
                 UserQueryOption.Email => [.. list.Where(user => user.Account.Email.Contains(query, StringComparison.CurrentCultureIgnoreCase))],
@@ -113,13 +119,13 @@ namespace SGULibraryManagement.BUS
             lockedUser ??= [.. accountViolationBUS.GetAllLockedUsers().Select(item => item.UserId)];
             bool isLocked = status == "Locked";
 
-            return [.. list.Where(user => isLocked ? lockedUser.Contains(user.Account.Id) : !lockedUser.Contains(user.Account.Id))];
+            return [.. list.Where(user => isLocked ? lockedUser.Contains(user.Account.Mssv) : !lockedUser.Contains(user.Account.Mssv))];
         }
     }
 
     public enum UserQueryOption
     {
-        Username,
+        Mssv,
         Fullname,
         Phone,
         Email
