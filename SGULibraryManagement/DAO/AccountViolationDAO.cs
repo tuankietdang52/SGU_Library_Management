@@ -1,13 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Asn1.Ocsp;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGULibraryManagement.DAO
 {
@@ -24,6 +18,9 @@ namespace SGULibraryManagement.DAO
                 UserId = reader.GetInt64("user_id"),
                 ViolationId = reader.GetInt64("violation_id"),
                 DateCreate = reader.GetDateTime("create_at"),
+                Status = Enum.Parse<AccountViolationStatus>(reader.GetString("status")),
+                BanExpired = reader.GetDateTime("ban_expired"),
+                Compensation = reader.GetInt64("compensation"),
                 IsDeleted = reader.GetBoolean("is_deleted")
             };
         }
@@ -148,13 +145,16 @@ namespace SGULibraryManagement.DAO
             command.Parameters.AddWithValue("@UserId", request.UserId);
             command.Parameters.AddWithValue("@ViolationId", request.ViolationId);
             command.Parameters.AddWithValue("@DateCreate", request.DateCreate);
+            command.Parameters.AddWithValue("@BanExpired", request.BanExpired);
+            command.Parameters.AddWithValue("@Compensation", request.Compensation);
+            command.Parameters.AddWithValue("@Status", request.Status);
             command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
         }
 
         public AccountViolationDTO Create(AccountViolationDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (user_id, violation_id, create_at, is_deleted) 
-                              VALUES (@UserId, @ViolationId, @DateCreate, @IsDeleted)";
+            string query = $@"INSERT INTO {TableName} (user_id, violation_id, status, ban_expired, compensation, create_at, is_deleted) 
+                              VALUES (@UserId, @ViolationId, @Status, @BanExpired, @Compensation, @DateCreate, @IsDeleted)";
             Logger.Log($"Query: {query}");
 
             try
@@ -180,6 +180,9 @@ namespace SGULibraryManagement.DAO
             string query = $@"UPDATE {TableName} 
                               SET user_id = @UserId, 
                                   violation_id = @ViolationId, 
+                                  status = @Status, 
+                                  ban_expired = @BanExpired,
+                                  compensation = @Compensation, 
                                   create_at = @DateCreate, 
                                   is_deleted = @IsDeleted
                               WHERE id = @Id";

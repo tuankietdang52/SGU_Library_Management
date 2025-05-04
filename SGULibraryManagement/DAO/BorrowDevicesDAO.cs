@@ -11,6 +11,13 @@ namespace SGULibraryManagement.DAO
 
         private BorrowDevicesDTO FetchData(MySqlDataReader r)
         {
+            DateTime dateReturn;
+            if (r.IsDBNull(r.GetOrdinal("date_return")))
+            {
+                dateReturn = DateTime.MinValue;
+            }
+            else dateReturn = r.GetDateTime("date_return");
+
             return new BorrowDevicesDTO()
             {
                 Id = r.GetInt64("id"),
@@ -19,7 +26,8 @@ namespace SGULibraryManagement.DAO
                 Quantity = r.GetInt32("quantity"),
                 DateCreate = r.GetDateTime("create_at"),
                 DateBorrow = r.GetDateTime("date_borrow"),
-                DateReturn = r.GetDateTime("date_return"),
+                DateReturn = dateReturn,
+                DateReturnExpected = r.GetDateTime("date_return_expected"),
                 IsDeleted = r.GetBoolean("is_deleted"),
                 IsReturn = r.GetBoolean("is_return")
             };
@@ -145,14 +153,14 @@ namespace SGULibraryManagement.DAO
             command.Parameters.AddWithValue("@Quantity", request.Quantity);
             command.Parameters.AddWithValue("@CreateAt", request.DateCreate);
             command.Parameters.AddWithValue("@DateBorrow", request.DateBorrow);
-            command.Parameters.AddWithValue("@DateReturn", request.DateReturn);
+            command.Parameters.AddWithValue("@DateReturnExpected", request.DateReturnExpected);
             command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
         }
 
         public BorrowDevicesDTO Create(BorrowDevicesDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (user_id, device_id, quantity, create_at, date_borrow, date_return, is_deleted, is_return) 
-                              VALUES (@UserId, @DeviceId, @Quantity, @CreateAt, @DateBorrow, @DateReturn, @IsDeleted, 0)";
+            string query = $@"INSERT INTO {TableName} (user_id, device_id, quantity, create_at, date_borrow, date_return_expected, is_deleted, is_return) 
+                              VALUES (@UserId, @DeviceId, @Quantity, @CreateAt, @DateBorrow, @DateReturnExpected, @IsDeleted, 0)";
 
             Logger.Log($"Query: {query}");
 
@@ -184,6 +192,7 @@ namespace SGULibraryManagement.DAO
                                   create_at = @CreateAt,
                                   date_borrow = @DateBorrow,
                                   date_return = @DateReturn,
+                                  date_return_expected = @DateReturnExpected,
                                   is_deleted = @IsDeleted,
                                   is_return = @IsReturn
                               WHERE id = @Id";
@@ -195,6 +204,7 @@ namespace SGULibraryManagement.DAO
                 using MySqlCommand command = new(query, Connection);
                 AddData(command, request);
                 command.Parameters.AddWithValue("@IsReturn", request.IsReturn);
+                command.Parameters.AddWithValue("@DateReturn", request.DateReturn);
                 command.Parameters.AddWithValue("@Id", id);
 
                 command.Prepare();

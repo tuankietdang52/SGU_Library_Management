@@ -38,6 +38,7 @@ namespace SGULibraryManagement.BUS
                     User = account,
                     Quantity = item.Quantity,
                     DateBorrow = item.DateBorrow,
+                    DateReturnExpected = item.DateReturnExpected,
                     DateReturn = item.DateReturn,
                     IsReturn = item.IsReturn
                 };

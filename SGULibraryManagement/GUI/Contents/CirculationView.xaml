@@ -106,7 +106,8 @@
                         <DataGridTextColumn Header="User" Binding="{Binding User.Email}" Width="1.5*"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
                         <DataGridTextColumn Header="Date Borrow" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
-                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy}" Width="*"/>
+                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy, Converter={StaticResource DateTimeConverter}}" Width="*"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Date Return Expected" Binding="{Binding DateReturnExpected, StringFormat=dd/MM/yyyy}" Width="*"/>
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

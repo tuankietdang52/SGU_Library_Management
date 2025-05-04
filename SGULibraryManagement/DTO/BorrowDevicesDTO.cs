@@ -15,6 +15,7 @@ namespace SGULibraryManagement.DTO
         public int Quantity { get; set; }
         public DateTime DateBorrow { get; set; }
         public DateTime DateReturn { get; set; }
+        public DateTime DateReturnExpected { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsReturn { get; set; }
         public BorrowDevicesDTO() { }
