@@ -58,7 +58,7 @@ namespace SGULibraryManagement.GUI
 
                 sideMenuItem.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
                 {
-                    RoutedEvent = UIElement.MouseDownEvent
+                    RoutedEvent = MouseDownEvent
                 });
             }
         }

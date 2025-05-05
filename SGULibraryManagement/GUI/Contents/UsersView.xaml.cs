@@ -127,68 +127,83 @@ namespace SGULibraryManagement.GUI.Contents
             Fetch();
 
         }
+        private async void OnAlert(string title, string message)
+        {
+            SimpleDialog dialog = new()
+            {
+                Title = title,
+                Content = message,
+                Width = 400,
+                Height = 300
+            };
+
+            await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+        }
 
         private void ImportExcel(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Excel Files|*.xlsx";
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new()
             {
-                string filePath = openFileDialog.FileName;
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                Filter = "Excel Files|*.xlsx"
+            };
 
-                // Xử lý file Excel
-                using (var excelPackage = new ExcelPackage(new FileInfo(filePath)))
-                {
-                    var worksheet = excelPackage.Workbook.Worksheets[0];
-                    int startRow = worksheet.Dimension.Start.Row + 1;
-                    int endRow = worksheet.Dimension.End.Row;
+            if (openFileDialog.ShowDialog() != true) return;
 
-                    List<AccountDTO> listAccount = new();
-                    for (int i = startRow; i <= endRow; i++)
-                    {
-                        List<string> rowData = new List<string>();
-                        for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
-                        {
-                            rowData.Add(worksheet.Cells[i, j].Text);
-                        }
-                        try
-                        {
-                            listAccount.Add(new AccountDTO()
-                            {
-                                Mssv = long.Parse(rowData[0]),
-                                Password = rowData[1],
-                                FirstName = rowData[2],
-                                LastName = rowData[3],
-                                Phone = rowData[4],
-                                Email = rowData[5],
-                                IdRole = int.Parse(rowData[6]),
-                                Faculty = rowData[7],
-                                Major = rowData[8],
-                                IsDeleted = false,
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Sai kiểu dữ liệu khi import");
-                            return;
-                        }
-                        
-                    }
-                    
-                    if (userBUS.CreateListAccount(listAccount) == false)
-                    {
-                        MessageBox.Show("Import thất bại");
-                        return;
-                    }
-                    MessageBox.Show("Import thành công");
-                    Fetch();
+            var listAccount = Importing(openFileDialog);
 
-
-                }
-
-
+            if (userBUS.CreateListAccount(listAccount) == false)
+            {
+                OnAlert("Fail", "Import Failed");
+                return;
             }
+
+            OnAlert("Success", "Import Successfully!");
+            MainView.Instance.FetchAll([typeof(UsersView), typeof(ViolationView)]);
+        }
+
+        private List<AccountDTO> Importing(OpenFileDialog openFileDialog)
+        {
+            string filePath = openFileDialog.FileName;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            // Xử lý file Excel
+            using var excelPackage = new ExcelPackage(new FileInfo(filePath));
+            var worksheet = excelPackage.Workbook.Worksheets[0];
+            int startRow = worksheet.Dimension.Start.Row + 1;
+            int endRow = worksheet.Dimension.End.Row;
+
+            List<AccountDTO> listAccount = [];
+            for (int i = startRow; i <= endRow; i++)
+            {
+                List<string> rowData = [];
+                for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
+                {
+                    rowData.Add(worksheet.Cells[i, j].Text);
+                }
+                try
+                {
+                    listAccount.Add(new AccountDTO()
+                    {
+                        Mssv = long.Parse(rowData[0]),
+                        Password = rowData[1],
+                        FirstName = rowData[2],
+                        LastName = rowData[3],
+                        Phone = rowData[4],
+                        Email = rowData[5],
+                        IdRole = int.Parse(rowData[6]),
+                        Faculty = rowData[7],
+                        Major = rowData[8],
+                        IsDeleted = false,
+                    });
+                }
+                catch (Exception)
+                {
+                    OnAlert("Fail", "One or more object in excel does not match with account object");
+                    return [];
+                }
+            }
+
+            return listAccount;
         }
 
         private void OnViewClick(object sender, object model)

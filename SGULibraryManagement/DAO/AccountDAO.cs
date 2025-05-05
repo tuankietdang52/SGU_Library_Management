@@ -39,10 +39,11 @@ namespace SGULibraryManagement.DAO
 
         public List<AccountDTO> GetAll(bool isActive)
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = {(isActive ? 0 : 1)}";
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
             try
             {
                 MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
                 command.Prepare();
 
                 List<AccountDTO> result = [];
@@ -67,11 +68,12 @@ namespace SGULibraryManagement.DAO
 
         public AccountDTO FindById(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE mssv = {mssv}";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @MSSV";
 
             try
             {
                 MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@MSSV", mssv);
                 command.Prepare();
 
                 using MySqlDataReader reader = command.ExecuteReader();
@@ -97,7 +99,7 @@ namespace SGULibraryManagement.DAO
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@mssv", request.Mssv);
+                command.Parameters.AddWithValue("@Mssv", request.Mssv);
                 command.Parameters.AddWithValue("@Password", request.Password);
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
@@ -135,7 +137,7 @@ namespace SGULibraryManagement.DAO
             try
             {
                 using MySqlCommand command = new(query, Connection, transaction);
-                command.Parameters.AddWithValue("@mssv", request.Mssv);
+                command.Parameters.AddWithValue("@Mssv", request.Mssv);
                 command.Parameters.AddWithValue("@Password", request.Password);
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
@@ -164,7 +166,7 @@ namespace SGULibraryManagement.DAO
         }
         public bool CreateListAccount(List<AccountDTO> listAccount)
         {
-            MySqlTransaction tr = null;
+            MySqlTransaction tr = null!;
             try
             {
                 tr = this.Connection.BeginTransaction();
@@ -182,7 +184,7 @@ namespace SGULibraryManagement.DAO
                 tr.Commit();
                 return true;
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
                 tr.Rollback();
                 return false;

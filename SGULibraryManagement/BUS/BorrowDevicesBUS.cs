@@ -1,6 +1,7 @@
 ﻿using SGULibraryManagement.DAO;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.ViewModels;
+using SGULibraryManagement.Utilities;
 
 namespace SGULibraryManagement.BUS
 {
@@ -36,8 +37,10 @@ namespace SGULibraryManagement.BUS
                     Id = item.Id,
                     Device = device,
                     User = account,
+                    Code = item.Code!,
                     Quantity = item.Quantity,
                     DateBorrow = item.DateBorrow,
+                    DateReturnExpected = item.DateReturnExpected,
                     DateReturn = item.DateReturn,
                     IsReturn = item.IsReturn
                 };
@@ -47,6 +50,11 @@ namespace SGULibraryManagement.BUS
         public BorrowDevicesDTO FindById(long id)
         {
             return dao.FindById(id);
+        }
+
+        public BorrowDevicesDTO FindByCode(string code)
+        {
+            return dao.FindByCode(code);
         }
 
         public List<BorrowDevicesDTO> FindByAccount(AccountDTO account)
@@ -61,6 +69,9 @@ namespace SGULibraryManagement.BUS
 
         public BorrowDevicesDTO Create(BorrowDevicesDTO request)
         {
+            string code = CodeUtility.GenerateRandom(6);
+            request.Code = code;
+
             return dao.Create(request);
         }
 
@@ -83,6 +94,7 @@ namespace SGULibraryManagement.BUS
             {
                 "Device Name" => list.Where(item => item.Device.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)),
                 "User Email" => list.Where(item => item.User.Email.Contains(query, StringComparison.CurrentCultureIgnoreCase)),
+                "Code" => list.Where(item => item.Code.Contains(query)),
                 _ => []
             };
         }
@@ -96,7 +108,8 @@ namespace SGULibraryManagement.BUS
             {
                 "All" => list,
                 "Return" => list.Where(item => item.IsReturn),
-                "Not Return" => list.Where(item => item.IsDue),
+                "Return Late" => list.Where(item => item.IsReturn && item.IsDue),
+                "Not Return" => list.Where(item => !item.IsReturn && item.IsDue),
                 "Not yet due" => list.Where(item => DateTime.Now.Date < item.DateReturn.Date),
                 _ => []
             };

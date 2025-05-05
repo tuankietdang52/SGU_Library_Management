@@ -21,7 +21,7 @@ namespace SGULibraryManagement.DAO
             return new ReservationDTO()
             {
                 Id = r.GetInt64("id"),
-                UserId = r.GetInt64("user_id"),
+                UserId = r.GetInt64("mssv"),
                 DeviceId = r.GetInt64("device_id"),
                 Quantity = r.GetInt32("quantity"),
                 DateCreate = r.GetDateTime("create_at"),

@@ -1,9 +1,11 @@
 ﻿using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.GUI.ViewModels;
 using SGULibraryManagement.Utilities;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Wpf.Ui.Input;
@@ -49,11 +51,18 @@ namespace SGULibraryManagement.GUI.Contents
             searchByComboBox.ItemsSource = new List<string>
             {
                 "Device Name",
-                "User Email"
+                "User Email",
+                "Code"
             };
             searchByComboBox.SelectedIndex = 0;
 
-            statusComboBox.ItemsSource = new List<string> { "All", "Return", "Not Return", "Not yet due" };
+            statusComboBox.ItemsSource = new List<string> { 
+                "All", 
+                "Return", 
+                "Return Late",
+                "Not Return", 
+                "Not yet due" 
+            };
             statusComboBox.SelectedIndex = 0;
         }
 
@@ -92,6 +101,18 @@ namespace SGULibraryManagement.GUI.Contents
         {
             var filter = GetFilter();
             OnApplyFilter(filter);
+        }
+
+        private void OnBorrow(object sender, RoutedEventArgs e)
+        {
+            Dialog dialog = new("Borrow Device", new CirculationDialog(CirculationDialogType.Borrow));
+            dialog.ShowDialog();
+        }
+
+        private void OnReturn(object sender, RoutedEventArgs e)
+        {
+            Dialog dialog = new("Return Device", new CirculationDialog(CirculationDialogType.Return));
+            dialog.ShowDialog();
         }
 
         private async void OnLockUser(AccountDTO account)

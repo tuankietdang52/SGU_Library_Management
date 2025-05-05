@@ -9,7 +9,7 @@
              xmlns:fileChoosers="clr-namespace:SGULibraryManagement.Components.FileChoosers"
              xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
              mc:Ignorable="d"
-             Height="600" Width="800">
+             Height="780" Width="800">
     <StackPanel Margin="0, 20, 0, 0">
         <TextBlock x:Name="lbTitle" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24">
             Add new User
@@ -77,6 +77,7 @@
                 <textFields:TextField x:Name="txtSdt" 
                                       Height="35"
                                       FontSize="15"
+                                      MaxLength="11"
                                       AcceptNumberOnly="True"
                                       VerticalContentAlignment="Center"               
                                       VerticalAlignment="Top"
@@ -99,10 +100,12 @@
                 <TextBlock Height="20"
                            VerticalAlignment="Top"
                            Margin="0, 0, 0, 5"
-                           FontSize="18" Text="Username"/>
+                           FontSize="18" 
+                           Text="Student Code"/>
                 <textFields:TextField x:Name="txtTaiKhoan" 
                                       Height="35"
                                       VerticalAlignment="Top"
+                                      MaxLength="10"
                                       Margin="0, 0, 0, 10"
                                       VerticalContentAlignment="Center"
                                       Placeholder="admin123"
@@ -127,6 +130,30 @@
                              Visibility="Collapsed">
                     </TextBox>
                 </Grid>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           Margin="0, 0, 0, 5"
+                           FontSize="18" 
+                           Text="Faculty"/>
+                <textFields:TextField x:Name="facultyTB" 
+                                      Height="35"
+                                      VerticalAlignment="Top"
+                                      Margin="0, 0, 0, 10"
+                                      VerticalContentAlignment="Center"
+                                      Placeholder="CNTT"
+                                      TextBlock.FontSize="15"/>
+                <TextBlock Height="20"
+                           VerticalAlignment="Top"
+                           Margin="0, 0, 0, 5"
+                           FontSize="18" 
+                           Text="Major"/>
+                <textFields:TextField x:Name="majorTB" 
+                                      Height="35"
+                                      VerticalAlignment="Top"
+                                      Margin="0, 0, 0, 10"
+                                      VerticalContentAlignment="Center"
+                                      Placeholder="KTPM"
+                                      TextBlock.FontSize="15"/>
                 <TextBlock Height="20"
                            VerticalAlignment="Top"
                            Margin="0, 0, 0, 5"

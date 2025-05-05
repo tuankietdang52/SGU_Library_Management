@@ -26,7 +26,7 @@ namespace SGULibraryManagement.GUI
         private readonly AccountBUS accountBUS = new();
         private readonly AccountViolationBUS accountViolationBUS = new();
 
-        private Dictionary<string, AccountDTO>? accounts;
+        private Dictionary<long, AccountDTO>? accounts;
 
         public event OnLoginSuccessHandler? LoginSuccess;
 
@@ -38,7 +38,7 @@ namespace SGULibraryManagement.GUI
 
         private void Fetch()
         {
-            accounts = accountBUS.GetAll().ToDictionary(account => account.Mssv.ToString());
+            accounts = accountBUS.GetAll().ToDictionary(account => account.Mssv);
         }
 
         private bool IsLocked(AccountDTO account)
@@ -46,17 +46,28 @@ namespace SGULibraryManagement.GUI
             return accountViolationBUS.IsAccountLocked(account, out var _);
         }
 
-        private Result ValidateAccount(string mssv, string password)
+        private Result ValidateField()
+        {
+            if (string.IsNullOrWhiteSpace(usernameField.Text) ||
+                string.IsNullOrWhiteSpace(passwordField.Password))
+            {
+                return new(false, "Username or password is empty");
+            }
+
+            return new(true, "");
+        }
+
+        private Result ValidateAccount(long mssv, string password)
         {
             Fetch();
             string wrongMessage = "Wrong username or password";
 
-            if (!accounts!.TryGetValue(mssv, out var account)) return new Result(false, wrongMessage);
+            if (!accounts!.TryGetValue(mssv, out var account)) return new(false, wrongMessage);
 
-            if (long.Parse(mssv) == account.Mssv && password.Equals(account.Password))
+            if (mssv == account.Mssv && password.Equals(account.Password))
             {
-                if (account.IdRole != 1) return new Result(false, "This account is not admin");
-                if (IsLocked(account)) return new Result(false, "This account is locked");
+                if (account.IdRole != 1) return new(false, "This account is not admin");
+                if (IsLocked(account)) return new(false, "This account is locked");
 
                 return new Result(true, "");
             }
@@ -66,7 +77,14 @@ namespace SGULibraryManagement.GUI
 
         private void OnLoginClick(object sender, RoutedEventArgs e)
         {
-            string mssv = usernameField.Text;
+            var validate = ValidateField();
+            if (!validate.Value)
+            {
+                OnLoginFail(validate);
+                return;
+            }
+
+            long mssv = long.Parse(usernameField.Text);
             string password = passwordField.Password;
 
             var result = ValidateAccount(mssv, password);

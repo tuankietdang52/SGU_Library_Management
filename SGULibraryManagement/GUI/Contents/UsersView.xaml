@@ -41,19 +41,19 @@
                 </StackPanel>
             </buttons:RoundButton>
             <buttons:RoundButton Canvas.Right="200"
-                     Foreground="White"
-                     Background="Black"
-                     Height="40"
-                     CornerRadius="20"
-                     HoverBackgroundColor="#2B2B2B"
-                     Click="ImportExcel">
+                                 Foreground="White"
+                                 Background="Black"
+                                 Height="40"
+                                 CornerRadius="20"
+                                 HoverBackgroundColor="#2B2B2B"
+                                 Click="ImportExcel">
                 <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
                     <TextBlock Text="&#xf055;"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   FontFamily="{StaticResource FontAwesomeSolid}">
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontFamily="{StaticResource FontAwesomeSolid}">
                     </TextBlock>
                     <Viewbox Width="5"></Viewbox>
                     <TextBlock Text="Import Excel"
@@ -157,8 +157,7 @@
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Id" Width="100" Binding="{Binding Account.Id}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Username" Binding="{Binding Account.Username}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Student Code" Width="150" Binding="{Binding Account.Mssv}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Fullname" Binding="{Binding Account.FullName}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Phone" Binding="{Binding Account.Phone}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Email" Binding="{Binding Account.Email}"></DataGridTextColumn>

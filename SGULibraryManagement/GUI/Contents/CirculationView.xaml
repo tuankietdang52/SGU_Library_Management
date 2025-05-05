@@ -14,6 +14,51 @@
                        FontSize="30">
                 All Circulation
             </TextBlock>
+            <StackPanel Canvas.Right="20" Orientation="Horizontal">
+                <buttons:RoundButton Foreground="White"
+                                     Background="Black"
+                                     Height="50"
+                                     CornerRadius="20"
+                                     HoverBackgroundColor="#2B2B2B"
+                                     Click="OnBorrow">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock Text="&#xf02d;"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontFamily="{StaticResource FontAwesomeSolid}">
+                        </TextBlock>
+                        <Viewbox Width="5"></Viewbox>
+                        <TextBlock Text="Borrow"
+                                   Foreground="White"
+                                   FontSize="15">
+                        </TextBlock>
+                    </StackPanel>
+                </buttons:RoundButton>
+                <Viewbox Width="50"></Viewbox>
+                <buttons:RoundButton Foreground="White"
+                                     Background="Black"
+                                     Height="50"
+                                     CornerRadius="20"
+                                     HoverBackgroundColor="#2B2B2B"
+                                     Click="OnReturn">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock Text="&#xf3e5;"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontFamily="{StaticResource FontAwesomeSolid}">
+                        </TextBlock>
+                        <Viewbox Width="5"></Viewbox>
+                        <TextBlock Text="Return"
+                                   Foreground="White"
+                                   FontSize="15">
+                        </TextBlock>
+                    </StackPanel>
+                </buttons:RoundButton>
+            </StackPanel>
         </Canvas>
         <Border Width="{Binding Source={StaticResource AppContentWidth}, 
                                 Converter={StaticResource SubtractConverter}, 
@@ -97,16 +142,29 @@
                                 <DataTrigger Binding="{Binding IsReturn}" Value="True">
                                     <Setter Property="Background" Value="{StaticResource ActiveBackground}"></Setter>
                                 </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsReturn}" Value="True"/>
+                                        <Condition Binding="{Binding IsDue}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource WarningBackground}"></Setter>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource TableItemSelected}"></Setter>
+                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="70"/>
                         <DataGridTextColumn Header="Device" Binding="{Binding Device.Name}" Width="1.5*"/>
-                        <DataGridTextColumn Header="User" Binding="{Binding User.Email}" Width="1.5*"/>
+                        <DataGridTextColumn Header="User" Binding="{Binding User.Mssv}" Width="150"/>
+                        <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="120"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
                         <DataGridTextColumn Header="Date Borrow" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
-                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy}" Width="*"/>
+                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy, Converter={StaticResource DateTimeConverter}}" Width="*"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Date Return Expected" Binding="{Binding DateReturnExpected, StringFormat=dd/MM/yyyy}" Width="*"/>
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

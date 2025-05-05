@@ -198,61 +198,65 @@ namespace SGULibraryManagement.GUI.Contents
         }
         private void ImportExcel(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Excel Files|*.xlsx";
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new()
             {
-                string filePath = openFileDialog.FileName;
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                Filter = "Excel Files|*.xlsx"
+            };
+            if (openFileDialog.ShowDialog() != true) return;
 
-                // Xử lý file Excel
-                using (var excelPackage = new ExcelPackage(new FileInfo(filePath)))
-                {
-                    var worksheet = excelPackage.Workbook.Worksheets[0];
-                    int startRow = worksheet.Dimension.Start.Row + 1;
-                    int endRow = worksheet.Dimension.End.Row;
+            var listDevice = Importing(openFileDialog);
 
-                    List<DeviceDTO> listDevice = new();
-                    for (int i = startRow; i <= endRow; i++)
-                    {
-                        List<string> rowData = new List<string>();
-                        for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
-                        {
-                            rowData.Add(worksheet.Cells[i, j].Text);
-                        }
-                        try
-                        {
-                            listDevice.Add(new DeviceDTO()
-                            {
-                                Name = rowData[0],
-                                Quantity = int.Parse(rowData[1]),
-                                ImageSource = rowData[2],
-                                Description = rowData[3],
-                                IsAvailable = false,
-                                IsDeleted = false
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Sai kiểu dữ liệu khi import");
-                            return;
-                        }
-
-                    }
-
-                    if (BUS.CreateListDevice(listDevice) == false)
-                    {
-                        MessageBox.Show("Import thất bại");
-                        return;
-                    }
-                    MessageBox.Show("Import thành công");
-                    Fetch();
-
-
-                }
+            if (BUS.CreateListDevice(listDevice) == false)
+            {
+                MessageBox.Show("Import failed");
+                return;
             }
+
+            MessageBox.Show("Import successfully!");
+            Fetch();
         }
-        
+
+        private List<DeviceDTO> Importing(OpenFileDialog openFileDialog)
+        {
+            string filePath = openFileDialog.FileName;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            // Xử lý file Excel
+            using var excelPackage = new ExcelPackage(new FileInfo(filePath));
+            var worksheet = excelPackage.Workbook.Worksheets[0];
+            int startRow = worksheet.Dimension.Start.Row + 1;
+            int endRow = worksheet.Dimension.End.Row;
+
+            List<DeviceDTO> listDevice = [];
+            for (int i = startRow; i <= endRow; i++)
+            {
+                List<string> rowData = [];
+                for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
+                {
+                    rowData.Add(worksheet.Cells[i, j].Text);
+                }
+                try
+                {
+                    listDevice.Add(new DeviceDTO()
+                    {
+                        Name = rowData[0],
+                        Quantity = int.Parse(rowData[1]),
+                        ImageSource = rowData[2],
+                        Description = rowData[3],
+                        IsAvailable = false,
+                        IsDeleted = false
+                    });
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("One or more object in excel does not match with device object");
+                    return [];
+                }
+
+            }
+
+            return listDevice;
+        }
 
         private void OnView(object sender, DeviceDTO model)
         {

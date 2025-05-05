@@ -1,0 +1,209 @@
+﻿<UserControl x:Class="SGULibraryManagement.GUI.DialogGUI.CirculationDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
+             xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
+             xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             mc:Ignorable="d" 
+             Width="500"
+             Height="550">
+    <Border Padding="20">
+        <StackPanel>
+            <TextBlock x:Name="title"
+                       HorizontalAlignment="Center"
+                       FontSize="24"
+                       FontWeight="Bold">
+            </TextBlock>
+            <Grid>
+                <StackPanel x:Name="borrowContainer"
+                            Margin="0, 30, 0, 0">
+                    <TextBlock Text="Student Code"
+                               FontSize="18"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <textFields:TextField x:Name="studentCodeTF"
+                                          Height="40"
+                                          CornerRadius="10"
+                                          VerticalContentAlignment="Center"
+                                          MaxLength="10"
+                                          AcceptNumberOnly="True"
+                                          Placeholder="Enter student code"
+                                          Margin="0, 10">
+                    </textFields:TextField>
+                    <Viewbox Height="20"></Viewbox>
+                    <TextBlock Text="Device Id"
+                               FontSize="18"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <textFields:TextField x:Name="deviceIdTF"
+                                          VerticalContentAlignment="Center"
+                                          Height="40"
+                                          CornerRadius="10"
+                                          AcceptNumberOnly="True"
+                                          Placeholder="Enter device Id"
+                                          Margin="0, 10">
+                    </textFields:TextField>
+                    <Viewbox Height="20"></Viewbox>
+                    <TextBlock Text="Quantity"
+                               FontSize="18"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <ui:NumberBox x:Name="quantityTextField"
+                                  MaxDecimalPlaces="0"
+                                  Height="40"
+                                  Minimum="0"
+                                  Margin="0, 10">
+                    </ui:NumberBox>
+                    <Viewbox Height="20"></Viewbox>
+                    <TextBlock Text="Due Date"
+                               FontSize="18"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <DatePicker x:Name="dueDatePicker"
+                                Height="40"
+                                IsTodayHighlighted="True">
+                    </DatePicker>
+                    <buttons:RoundButton CornerRadius="10"
+                                         Width="100"
+                                         Margin="0, 20"
+                                         Foreground="White"
+                                         Background="{StaticResource Blue74}"
+                                         HoverBackgroundColor="{StaticResource Blue90}"
+                                         Click="OnCreate">
+                        Create
+                    </buttons:RoundButton>
+                </StackPanel>
+                <StackPanel x:Name="returnContainer"
+                            Margin="0, 30, 0 ,0"
+                            Visibility="Collapsed">
+                    <TextBlock Text="Code"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center">
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <textFields:TextField x:Name="codeTF"
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              MaxLength="6"
+                                              Width="250"
+                                              Height="40"
+                                              CornerRadius="10, 0, 0, 10"
+                                              Placeholder="Enter code to return device"
+                                              Margin="0, 10">
+                        </textFields:TextField>
+                        <buttons:RoundButton CornerRadius="0, 10, 10, 0"
+                                             Width="100"
+                                             Margin="0, 20"
+                                             Foreground="White"
+                                             Background="{StaticResource Blue74}"
+                                             HoverBackgroundColor="{StaticResource Blue90}"
+                                             Click="OnFind">
+                            Find
+                        </buttons:RoundButton>
+                    </StackPanel>
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Margin="10">
+                        <StackPanel>
+                            <Border Height="40"
+                                    Background="{StaticResource AppThemeSecondary}"
+                                    CornerRadius="10, 10, 0, 0">
+                                <Grid>
+                                    <TextBlock Foreground="White"
+                                               FontSize="18"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold">
+                                        Information
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                            <Canvas Height="50" Margin="0, 10, 0, 0">
+                                <TextBlock Canvas.Left="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                    Student Code: 
+                                </TextBlock>
+                                <TextBlock x:Name="studentCodeTB"
+                                           Canvas.Right="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                </TextBlock>
+                            </Canvas>
+                            <Canvas Height="50">
+                                <TextBlock Canvas.Left="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                    Device Id:
+                                </TextBlock>
+                                <TextBlock x:Name="deviceIdTB"
+                                           Canvas.Right="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                </TextBlock>
+                            </Canvas>
+                            <Canvas Height="50">
+                                <TextBlock Canvas.Left="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                    Date Borrow: 
+                                </TextBlock>
+                                <TextBlock x:Name="dateBorrowTB"
+                                           Canvas.Right="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                </TextBlock>
+                            </Canvas>
+                            <Canvas Height="40">
+                                <TextBlock Canvas.Left="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                    Return Date Expected:
+                                </TextBlock>
+                                <TextBlock x:Name="dueDateTB"
+                                           Canvas.Right="10"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center">
+                                </TextBlock>
+                            </Canvas>
+                            <Grid x:Name="lateDescription"
+                                  Visibility="Collapsed"
+                                  Margin="0, 0, 0, 10">
+                                <TextBlock HorizontalAlignment="Center"
+                                           Foreground="Red"
+                                           FontSize="15">
+                                    *This account did not return the device on time
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <buttons:RoundButton x:Name="returnButton"
+                                         CornerRadius="10"
+                                         Width="100"
+                                         Margin="0, 20"
+                                         Foreground="White"
+                                         IsEnabled="False"
+                                         Background="{StaticResource Blue74}"
+                                         HoverBackgroundColor="{StaticResource Blue90}"
+                                         Click="OnReturn">
+                        Return
+                    </buttons:RoundButton>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

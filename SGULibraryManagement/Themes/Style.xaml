@@ -12,6 +12,8 @@
 
     <converter:PlusConverter x:Key="PlusConverter"></converter:PlusConverter>
     <converter:SubtractConverter x:Key="SubtractConverter"></converter:SubtractConverter>
+    <converter:DateTimeConverter x:Key="DateTimeConverter"></converter:DateTimeConverter>
+    <converter:CamelCaseConverter x:Key="CamelCaseConverter"></converter:CamelCaseConverter>
 
     <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Resources/Fonts/#Font Awesome 6 Free Solid</FontFamily>
 

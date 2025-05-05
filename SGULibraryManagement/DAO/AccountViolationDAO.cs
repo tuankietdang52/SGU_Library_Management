@@ -1,13 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Asn1.Ocsp;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SGULibraryManagement.DAO
 {
@@ -24,6 +19,7 @@ namespace SGULibraryManagement.DAO
                 UserId = reader.GetInt64("mssv"),
                 ViolationId = reader.GetInt64("violation_id"),
                 DateCreate = reader.GetDateTime("create_at"),
+                Status = Enum.Parse<AccountViolationStatus>(reader.GetString("status")),
                 BanExpired = reader.GetDateTime("ban_expired"),
                 Compensation = reader.GetInt64("compensation"),
                 IsDeleted = reader.GetBoolean("is_deleted")
@@ -56,7 +52,7 @@ namespace SGULibraryManagement.DAO
 
         public List<AccountViolationDTO> FindByAccountId(long accountId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE user_id = @UserId";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @UserId";
             Logger.Log($"Query: {query}");
 
             try
@@ -147,16 +143,19 @@ namespace SGULibraryManagement.DAO
 
         private void AddData(MySqlCommand command, AccountViolationDTO request)
         {
-            command.Parameters.AddWithValue("@UserId", request.UserId);
+            command.Parameters.AddWithValue("@Mssv", request.UserId);
             command.Parameters.AddWithValue("@ViolationId", request.ViolationId);
             command.Parameters.AddWithValue("@DateCreate", request.DateCreate);
+            command.Parameters.AddWithValue("@BanExpired", request.BanExpired);
+            command.Parameters.AddWithValue("@Compensation", request.Compensation);
+            command.Parameters.AddWithValue("@Status", request.Status.ToString());
             command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
         }
 
         public AccountViolationDTO Create(AccountViolationDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (mssv, violation_id, create_at, is_deleted) 
-                              VALUES (@Mssv, @ViolationId, @DateCreate, @IsDeleted)";
+            string query = $@"INSERT INTO {TableName} (mssv, violation_id, create_at, ban_expired, status, compensation, is_deleted) 
+                              VALUES (@Mssv, @ViolationId, @DateCreate, @BanExpired, @Compensation, @Status, @IsDeleted)";
             Logger.Log($"Query: {query}");
 
             try
@@ -182,6 +181,9 @@ namespace SGULibraryManagement.DAO
             string query = $@"UPDATE {TableName} 
                               SET mssv = @Mssv, 
                                   violation_id = @ViolationId, 
+                                  status = @Status, 
+                                  ban_expired = @BanExpired,
+                                  compensation = @Compensation, 
                                   create_at = @DateCreate, 
                                   is_deleted = @IsDeleted
                               WHERE id = @Id";
@@ -234,8 +236,7 @@ namespace SGULibraryManagement.DAO
 
         public AccountViolationDTO? IsAccountLocked(long accountId)
         {
-            string query1 = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND is_deleted = 0";
-            string query = $"SELECT * FROM {TableName} Where mssv = @AccountId AND DATE(ban_expired) < CURDATE() ORDER BY ABS(DATEDIFF(create_at, CURDATE())) LIMIT 1";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND DATE(ban_expired) > CURDATE() ORDER BY ABS(DATEDIFF(create_at, CURDATE())) LIMIT 1";
             Logger.Log($"accountId truyen vao violation :{accountId}");
             Logger.Log($"Query cua vialation: {query}");
 
@@ -261,9 +262,11 @@ namespace SGULibraryManagement.DAO
             return null;
         }
 
-        public List<AccountViolationDTO> GetAllLockedUsers()
+        public HashSet<AccountViolationDTO> GetAllLockedUsers()
         {
-            string query = $"SELECT * FROM {TableName} WHERE is_deleted = 0";
+            string query = $@"SELECT * FROM account_violation 
+                              WHERE DATE(ban_expired) > CURDATE() AND is_deleted = 0
+                              ORDER BY ABS(DATEDIFF(create_at, CURDATE()))";
             Logger.Log($"Query: {query}");
 
             try
@@ -271,8 +274,7 @@ namespace SGULibraryManagement.DAO
                 using MySqlCommand command = new(query, Connection);
                 command.Prepare();
 
-                List<AccountViolationDTO> result = [];
-
+                HashSet<AccountViolationDTO> result = new(new AccountViolationUserIdComparer());
                 using var reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -292,7 +294,10 @@ namespace SGULibraryManagement.DAO
 
         public bool IsRuleViolatedByUser(long violationId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE violation_id = {violationId} AND is_deleted = 0";
+            string query = $@"SELECT * FROM {TableName} 
+                              WHERE violation_id = {violationId} 
+                              AND DATE(ban_expired) > CURDATE()
+                              AND is_deleted = 0";
             Logger.Log($"Query: {query}");
 
             try
@@ -309,6 +314,19 @@ namespace SGULibraryManagement.DAO
             }
 
             return false;
+        }
+    }
+
+    public class AccountViolationUserIdComparer : IEqualityComparer<AccountViolationDTO>
+    {
+        public bool Equals(AccountViolationDTO? x, AccountViolationDTO? y)
+        {
+            return x.UserId == y.UserId;
+        }
+
+        public int GetHashCode([DisallowNull] AccountViolationDTO obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }

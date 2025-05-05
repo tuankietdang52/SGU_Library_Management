@@ -2,20 +2,8 @@
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.Contents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SGULibraryManagement.GUI.DialogGUI
 {
@@ -53,10 +41,18 @@ namespace SGULibraryManagement.GUI.DialogGUI
             violationCB.ItemsSource = violationBUS.GetAll();
             violationCB.DisplayMemberPath = "Name";
             violationCB.SelectedIndex = 0;
+
+            banExpiredDatePicker.DisplayDateStart = DateTime.Now;
+            banExpiredDatePicker.SelectedDate = DateTime.Now;
+
+            statusCB.ItemsSource = Enum.GetValues<AccountViolationStatus>();
+            statusCB.SelectedIndex = 0;
         }
 
         private void SetupUpdateComponent()
         {
+            if (accountViolation is null) return;
+
             title.Text = $"{account.Mssv} is currently lock for ";
 
             foreach(var item in violationCB.ItemsSource)
@@ -69,8 +65,17 @@ namespace SGULibraryManagement.GUI.DialogGUI
                 }
             }
 
+            banExpiredDatePicker.SelectedDate = accountViolation.BanExpired;
+            compensationTB.Value = accountViolation.Compensation;
+            statusCB.SelectedItem = accountViolation.Status;
+
             lockButton.Visibility = Visibility.Collapsed;
             updateButtonContainer.Visibility = Visibility.Visible;
+        }
+
+        private void OnDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            banExpiredDatePicker.SelectedDate ??= DateTime.Now;
         }
 
         private void OnViolationRuleChanged(object sender, SelectionChangedEventArgs e)
@@ -128,17 +133,27 @@ namespace SGULibraryManagement.GUI.DialogGUI
             OnCloseDialog?.Invoke(this);
         }
 
-        private async Task<bool> LockingAccount()
+        private AccountViolationDTO? GatherData()
         {
-            if (violationCB.SelectedItem is not ViolationDTO violation) return false;
+            if (violationCB.SelectedItem is not ViolationDTO violation) return null;
+            if (statusCB.SelectedItem is not AccountViolationStatus status) return null;
 
-            AccountViolationDTO model = new()
+            return new()
             {
                 UserId = account.Mssv,
                 ViolationId = violation.Id,
                 DateCreate = DateTime.Now,
+                BanExpired = banExpiredDatePicker.SelectedDate!.Value,
+                Compensation = long.Parse(compensationTB.Text),
+                Status = status,
                 IsDeleted = false
             };
+        }
+
+        private async Task<bool> LockingAccount()
+        {
+            var model = GatherData();
+            if (model is null) return false;
 
             if (accountViolationBUS.Create(model) is not null)
             {
@@ -152,12 +167,13 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private async Task<bool> SavingLockAccount()
         {
-            if (violationCB.SelectedItem is not ViolationDTO violation) return false;
             if (accountViolation is null) return false;
 
+            var model = GatherData();
+            if (model is null) return false;
 
-            accountViolation.ViolationId = violation.Id;
-            if (accountViolationBUS.Update(accountViolation.Id, accountViolation))
+            model.DateCreate = accountViolation.DateCreate;
+            if (accountViolationBUS.Update(accountViolation.Id, model))
             {
                 await OnLockSucess();
                 return true;

@@ -73,9 +73,9 @@ namespace SGULibraryManagement.BUS
             return DAO.IsRuleViolatedByUser(violation.Id);
         }
 
-        public List<AccountViolationDTO> GetAllLockedUsers()
+        public HashSet<long> GetAllLockedUsers()
         {
-            return DAO.GetAllLockedUsers();
+            return [.. DAO.GetAllLockedUsers().Select(item => item.UserId)];
         }
     }
 }
