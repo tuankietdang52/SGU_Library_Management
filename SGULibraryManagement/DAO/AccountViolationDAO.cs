@@ -22,7 +22,8 @@ namespace SGULibraryManagement.DAO
                 Status = Enum.Parse<AccountViolationStatus>(reader.GetString("status")),
                 BanExpired = reader.GetDateTime("ban_expired"),
                 Compensation = reader.GetInt64("compensation"),
-                IsDeleted = reader.GetBoolean("is_deleted")
+                IsDeleted = reader.GetBoolean("is_deleted"),
+                IsBanEternal = reader.GetBoolean("is_ban_eternal")
             };
         }
 
@@ -50,6 +51,7 @@ namespace SGULibraryManagement.DAO
             return null!;
         }
 
+        
         public List<AccountViolationDTO> FindByAccountId(long accountId)
         {
             string query = $"SELECT * FROM {TableName} WHERE mssv = @UserId";
@@ -150,12 +152,13 @@ namespace SGULibraryManagement.DAO
             command.Parameters.AddWithValue("@Compensation", request.Compensation);
             command.Parameters.AddWithValue("@Status", request.Status.ToString());
             command.Parameters.AddWithValue("@IsDeleted", request.IsDeleted);
+            command.Parameters.AddWithValue("@IsBanEternal", request.IsBanEternal);
         }
 
         public AccountViolationDTO Create(AccountViolationDTO request)
         {
-            string query = $@"INSERT INTO {TableName} (mssv, violation_id, create_at, ban_expired, status, compensation, is_deleted) 
-                              VALUES (@Mssv, @ViolationId, @DateCreate, @BanExpired, @Compensation, @Status, @IsDeleted)";
+            string query = $@"INSERT INTO {TableName} (mssv, violation_id, create_at, ban_expired, status, compensation, is_deleted , is_ban_eternal) 
+                              VALUES (@Mssv, @ViolationId, @DateCreate, @BanExpired ,@Status, @Compensation , @IsDeleted , @IsBanEternal)";
             Logger.Log($"Query: {query}");
 
             try
