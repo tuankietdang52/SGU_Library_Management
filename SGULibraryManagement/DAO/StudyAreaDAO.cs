@@ -51,12 +51,79 @@ namespace SGULibraryManagement.DAO
                 Logger.LogError(ex.StackTrace!);
             }
 
-            return null!;
+            return [];
+        }
+
+        public List<StudyAreaDTO> GetAll(bool isActive)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE is_deleted = @IsDeleted";
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@IsDeleted", !isActive);
+                command.Prepare();
+
+                List<StudyAreaDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        public List<StudyAreaDTO> GetAllByDate(DateTime date)
+        {
+            return GetAllByDate(date, date);
+        }
+
+        public List<StudyAreaDTO> GetAllByDate(DateTime start, DateTime end)
+        {
+            string query = $@"SELECT * FROM study_area 
+                              WHERE DATE(check_in_date) >= @Start AND DATE(check_in_date) <= @End
+                              AND is_deleted = 0";
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Start", start);
+                command.Parameters.AddWithValue("@End", end);
+
+                command.Prepare();
+
+                List<StudyAreaDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
         }
 
         public StudyAreaDTO Create(StudyAreaDTO request)
         {
-            string query = $@"Insert into {TableName} (mssv , check_in_date , is_deleted )
+            string query = $@"Insert into {TableName} (mssv , check_in_date , is_deleted)
                             Values (@MSSV , @CheckInDate , @IsDeleted)";
             Logger.Log($"query ceate study area : {query}");
 
@@ -86,11 +153,6 @@ namespace SGULibraryManagement.DAO
         public bool Delete(long id)
         {
             return false;
-        }
-
-        public List<StudyAreaDTO> GetAll(bool isActive)
-        {
-            return null;
         }
 
         public StudyAreaDTO FindById(long id)

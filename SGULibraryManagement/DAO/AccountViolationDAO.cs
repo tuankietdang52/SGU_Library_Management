@@ -155,7 +155,7 @@ namespace SGULibraryManagement.DAO
         public AccountViolationDTO Create(AccountViolationDTO request)
         {
             string query = $@"INSERT INTO {TableName} (mssv, violation_id, create_at, ban_expired, status, compensation, is_deleted) 
-                              VALUES (@Mssv, @ViolationId, @DateCreate, @BanExpired, @Compensation, @Status, @IsDeleted)";
+                              VALUES (@Mssv, @ViolationId, @DateCreate, @BanExpired, @Status, @Compensation, @IsDeleted)";
             Logger.Log($"Query: {query}");
 
             try

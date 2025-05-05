@@ -1,10 +1,5 @@
 ﻿using SGULibraryManagement.DAO;
 using SGULibraryManagement.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGULibraryManagement.BUS
 {
@@ -12,6 +7,20 @@ namespace SGULibraryManagement.BUS
     {
         private readonly StudyAreaDAO Dao = new();
 
+        public List<StudyAreaDTO> GetAll()
+        {
+            return Dao.GetAll(true);
+        }
+
+        public List<StudyAreaDTO> GetAllByDate(DateTime date)
+        {
+            return Dao.GetAllByDate(date);
+        }
+
+        public List<StudyAreaDTO> GetAllByDate(DateTime start, DateTime end)
+        {
+            return Dao.GetAllByDate(start, end);
+        }
 
         public StudyAreaDTO Create(StudyAreaDTO request)
         {

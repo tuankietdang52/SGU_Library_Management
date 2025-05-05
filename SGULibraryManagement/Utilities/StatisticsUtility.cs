@@ -1,13 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Legends;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace SGULibraryManagement.Utilities
@@ -37,10 +30,12 @@ namespace SGULibraryManagement.Utilities
 
             var categoryAxis = new CategoryAxis
             {
+                Key = "y",
                 Title = yAxisTitle,
                 Position = AxisPosition.Bottom,
-                IsZoomEnabled = false,
-                Key = "y"
+                AxisTitleDistance = 20,
+                TitleFontWeight = FontWeights.Bold,
+                IsZoomEnabled = false
             };
 
             foreach (var item in values.Keys) {
@@ -53,10 +48,12 @@ namespace SGULibraryManagement.Utilities
             model.Axes.Add(categoryAxis);
             model.Axes.Add(new LinearAxis
             {
+                Key = "x",
                 Title = xAxisTitle,
                 Position = AxisPosition.Left,
-                IsZoomEnabled = false,
-                Key = "x"
+                AxisTitleDistance = 20,
+                TitleFontWeight = FontWeights.Bold,
+                IsZoomEnabled = false
             });
 
             return model;

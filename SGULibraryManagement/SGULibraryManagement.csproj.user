@@ -5,6 +5,15 @@
     <Compile Update="Components\Dashboards\DashboardQuantityStatistics.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\Dashboards\StudyAreaStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\Dashboards\Top3Statistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\Dashboards\UserStatusStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Dialogs\Dialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

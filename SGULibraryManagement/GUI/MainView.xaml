@@ -92,22 +92,21 @@
                                             Converter={StaticResource SubtractConverter},
                                             ConverterParameter=5}"
                             Canvas.Top="0">
-
-                    <sideMenu:SideMenuItem x:Name="StudyAreaView"
-                        Text="Study Area"
-                        Glyph="&#xf201;"
-                        MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:StudyAreaView></contents:StudyAreaView>
-                        </sideMenu:SideMenuItem.ContentView>
-                    </sideMenu:SideMenuItem>
-
                     <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
                                            Text="Dashboard"
                                            Glyph="&#xf201;"
                                            MouseDown="Navigate">
                         <sideMenu:SideMenuItem.ContentView>
                             <contents:DashboardView></contents:DashboardView>
+                        </sideMenu:SideMenuItem.ContentView>
+                    </sideMenu:SideMenuItem>
+
+                    <sideMenu:SideMenuItem x:Name="StudyAreaView"
+                                           Text="Study Area"
+                                           Glyph="&#xf19d;"
+                                           MouseDown="Navigate">
+                        <sideMenu:SideMenuItem.ContentView>
+                            <contents:StudyAreaView></contents:StudyAreaView>
                         </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
