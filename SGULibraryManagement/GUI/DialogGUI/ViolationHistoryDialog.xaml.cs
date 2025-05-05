@@ -47,12 +47,14 @@ namespace SGULibraryManagement.GUI.DialogGUI
             AccountViolations = list.Select(item =>
             {
                 var app = App.Instance!;
-                var bgColor = item.IsDeleted ? Brushes.White : app.Resources["ActiveBackground"] as SolidColorBrush;
+                var bgColor = item.BanExpired.Date < DateTime.Now.Date ? Brushes.White : app.Resources["ActiveBackground"] as SolidColorBrush;
 
                 return new ACHistoryViewModel()
                 {
                     Violation = violations[item.ViolationId],
                     DateCreate = item.DateCreate,
+                    BanExpired = item.BanExpired,
+                    Compensation = item.Compensation,
                     BgColor = bgColor!
                 };
             });

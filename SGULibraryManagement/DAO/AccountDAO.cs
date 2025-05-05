@@ -99,7 +99,7 @@ namespace SGULibraryManagement.DAO
             try
             {
                 using MySqlCommand command = new(query, Connection);
-                command.Parameters.AddWithValue("@mssv", request.Mssv);
+                command.Parameters.AddWithValue("@Mssv", request.Mssv);
                 command.Parameters.AddWithValue("@Password", request.Password);
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);
@@ -137,7 +137,7 @@ namespace SGULibraryManagement.DAO
             try
             {
                 using MySqlCommand command = new(query, Connection, transaction);
-                command.Parameters.AddWithValue("@mssv", request.Mssv);
+                command.Parameters.AddWithValue("@Mssv", request.Mssv);
                 command.Parameters.AddWithValue("@Password", request.Password);
                 command.Parameters.AddWithValue("@First_name", request.FirstName);
                 command.Parameters.AddWithValue("@Last_name", request.LastName);

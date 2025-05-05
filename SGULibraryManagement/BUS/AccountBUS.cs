@@ -46,7 +46,7 @@ namespace SGULibraryManagement.BUS
         public List<AccountViewModel> GetAllWithRole()
         {
             roles = roleBUS.GetAll().ToDictionary(role => role.Id);
-            lockedUser = [.. accountViolationBUS.GetAllLockedUsers().Select(item => item.UserId)];
+            lockedUser = accountViolationBUS.GetAllLockedUsers();
 
             var list = GetAll();
 
@@ -116,7 +116,7 @@ namespace SGULibraryManagement.BUS
             var list = collection ?? users;
             if (status == "All") return [.. list];
 
-            lockedUser ??= [.. accountViolationBUS.GetAllLockedUsers().Select(item => item.UserId)];
+            lockedUser = accountViolationBUS.GetAllLockedUsers();
             bool isLocked = status == "Locked";
 
             return [.. list.Where(user => isLocked ? lockedUser.Contains(user.Account.Mssv) : !lockedUser.Contains(user.Account.Mssv))];

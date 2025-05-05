@@ -15,6 +15,8 @@ namespace SGULibraryManagement.GUI.ViewModels
     {
         public required ViolationDTO Violation { get; set; }
         public required DateTime DateCreate { get; set; }
-        public required Brush BgColor { get; set; }
+        public required DateTime BanExpired { get; set; }
+        public required long Compensation { get; set; }
+        public required SolidColorBrush BgColor { get; set; }
     }
 }

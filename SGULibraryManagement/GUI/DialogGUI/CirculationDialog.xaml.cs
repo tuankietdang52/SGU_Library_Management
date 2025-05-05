@@ -15,6 +15,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private readonly BorrowDevicesBUS borrowDevicesBUS = new();
         private readonly AccountBUS accountBUS = new();
         private readonly DeviceBUS deviceBUS = new();
+        private readonly AccountViolationBUS accountViolationBUS = new();
 
         private BorrowDevicesDTO? Current;
 
@@ -85,7 +86,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             return brQuantity;
         }
 
-        private Result Validate()
+        private Result ValidateField()
         {
             string emptyMessage = "All field must not empty";
 
@@ -98,12 +99,23 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
             if (dueDatePicker.SelectedDate is null) return new(false, emptyMessage);
 
+            return new(true, "");
+        }
+
+        private Result Validate()
+        {
             long studentCode = long.Parse(studentCodeTF.Text);
             long deviceId = long.Parse(deviceIdTF.Text);
 
-            if (accountBUS.FindById(long.Parse(studentCodeTF.Text)) is null)
+            var account = accountBUS.FindById(long.Parse(studentCodeTF.Text));
+            if (account is null)
             {
                 return new(false, $"Cant find student with code {studentCode}");
+            }
+
+            if (accountViolationBUS.IsAccountLocked(account, out var _))
+            {
+                return new(false, $"This student is being banned");
             }
 
             var device = deviceBUS.FindById(deviceId);

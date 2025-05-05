@@ -83,7 +83,7 @@ namespace SGULibraryManagement.DAO
 
         public List<Pair<ViolationDTO, int>> GetAllWithViolationCount()
         {
-            string query = $@"SELECT COUNT(user_id) as violation_count, violations.*
+            string query = $@"SELECT COUNT(mssv) as violation_count, violations.*
                               FROM account_violation
                               INNER JOIN {TableName} ON violations.id = violation_id AND account_violation.is_deleted = 0
                               GROUP BY violation_id";

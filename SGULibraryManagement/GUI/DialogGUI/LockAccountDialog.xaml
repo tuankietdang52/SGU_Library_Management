@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SGULibraryManagement.GUI.DialogGUI"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:textFields="clr-namespace:SGULibraryManagement.Components.TextFields"
              xmlns:buttons="clr-namespace:SGULibraryManagement.Components.Buttons"
              mc:Ignorable="d" 
-             Height="410"
+             Height="650"
              Width="500">
     <StackPanel>
         <TextBlock x:Name="title" 
@@ -27,6 +28,54 @@
                       SelectionChanged="OnViolationRuleChanged">
             </ComboBox>
         </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="10, 20, 10, 10">
+            <TextBlock FontSize="15"
+                       VerticalAlignment="Center"
+                       Width="110">
+                Ban Expired Date
+            </TextBlock>
+            <DatePicker x:Name="banExpiredDatePicker"
+                        Width="350"
+                        Height="40"
+                        Margin="10, 0"
+                        SelectedDateChanged="OnDateChanged">
+            </DatePicker>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="10, 20, 10, 10">
+            <TextBlock FontSize="15"
+                       VerticalAlignment="Center"
+                       Width="110">
+                Compensation
+            </TextBlock>
+            <ui:NumberBox x:Name="compensationTB"
+                          Width="350"
+                          Height="35"
+                          Minimum="0"
+                          Value="0"
+                          Margin="10, 0">
+            </ui:NumberBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="10, 20, 10, 10">
+            <TextBlock FontSize="15"
+                       VerticalAlignment="Center"
+                       Width="110">
+                Status
+            </TextBlock>
+            <ComboBox x:Name="statusCB"
+                      Width="350"
+                      Height="35"
+                      FontSize="15"
+                      Margin="10, 0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
         <TextBlock Margin="10, 5"
                    FontSize="15">
             Violation Description
@@ -39,7 +88,7 @@
                  Margin="10, 0"
                  Height="200">
         </TextBox>
-        <Grid Margin="0, 10" 
+        <Grid Margin="0, 30" 
               HorizontalAlignment="Center">
             <buttons:RoundButton x:Name="lockButton"
                                  Content="Accept"
@@ -65,18 +114,6 @@
                                      BorderThickness="1"
                                      HoverBackgroundColor="{StaticResource ErrorColor}"
                                      Click="OnUpdateLockAccount">
-                </buttons:RoundButton>
-                <Viewbox Width="50"></Viewbox>
-                <buttons:RoundButton x:Name="unlockButton"
-                                     Content="Unlock"
-                                     Height="40"
-                                     Width="150"
-                                     CornerRadius="10"
-                                     Background="Green"
-                                     BorderThickness="1"
-                                     Foreground="White"
-                                     HoverBackgroundColor="LightGreen"
-                                     Click="OnUnlockAccount">
                 </buttons:RoundButton>
             </StackPanel>
         </Grid>

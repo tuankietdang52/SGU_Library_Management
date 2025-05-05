@@ -127,6 +127,18 @@ namespace SGULibraryManagement.GUI.Contents
             Fetch();
 
         }
+        private async void OnAlert(string title, string message)
+        {
+            SimpleDialog dialog = new()
+            {
+                Title = title,
+                Content = message,
+                Width = 400,
+                Height = 300
+            };
+
+            await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+        }
 
         private void ImportExcel(object sender, RoutedEventArgs e)
         {
@@ -141,11 +153,11 @@ namespace SGULibraryManagement.GUI.Contents
 
             if (userBUS.CreateListAccount(listAccount) == false)
             {
-                MessageBox.Show("Import failed");
+                OnAlert("Fail", "Import Failed");
                 return;
             }
 
-            MessageBox.Show("Import successfully!");
+            OnAlert("Success", "Import Successfully!");
             MainView.Instance.FetchAll([typeof(UsersView), typeof(ViolationView)]);
         }
 
@@ -186,14 +198,13 @@ namespace SGULibraryManagement.GUI.Contents
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("One or more object in excel does not match with account object");
+                    OnAlert("Fail", "One or more object in excel does not match with account object");
                     return [];
                 }
             }
 
             return listAccount;
         }
-
 
         private void OnViewClick(object sender, object model)
         {
