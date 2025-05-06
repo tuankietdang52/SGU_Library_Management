@@ -11,11 +11,9 @@ namespace SGULibraryManagement.GUI.Contents
     public partial class DashboardView : UserControl, IContent
     {
         private readonly AccountBUS accountBUS = new();
-        private readonly AccountViolationBUS accountViolationBUS = new();
         private readonly DeviceBUS deviceBUS = new();
         private readonly BorrowDevicesBUS borrowDevicesBUS = new();
         private readonly ReservationBUS reservationBUS = new();
-        private readonly StudyAreaBUS studyAreaBUS = new();
 
         public DashboardView()
         {

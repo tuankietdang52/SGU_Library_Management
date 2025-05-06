@@ -1,8 +1,10 @@
-﻿using OxyPlot;
+﻿using DotNetEnv;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.Wpf;
 using System.Windows.Media;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace SGULibraryManagement.Utilities
 {
@@ -158,16 +160,7 @@ namespace SGULibraryManagement.Utilities
                 MajorGridlineStyle = LineStyle.Solid
             };
 
-            if (values.Count() <= 1)
-            {
-                dateAxis.Minimum = start.HasValue ? DateTimeAxis.ToDouble(start.Value) : DateTimeAxis.ToDouble(DateTime.Today);
-                if (!end.HasValue)
-                {
-                    if (start.HasValue) dateAxis.Maximum = DateTimeAxis.ToDouble(start.Value.AddDays(10));
-                    else dateAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Today.AddDays(10));
-                }
-                else dateAxis.Maximum = DateTimeAxis.ToDouble(end.Value);
-            }
+            AdjustDatePosition(dateAxis, values, start, end);
 
             if (!values.Any())
             {
@@ -179,6 +172,38 @@ namespace SGULibraryManagement.Utilities
             model.Axes.Add(valueAxis);
             
             return model;
+        }
+
+        private static void AdjustDatePosition(DateTimeAxis dateAxis,
+                                               IEnumerable<DataPoint> values, 
+                                               DateTime? start, 
+                                               DateTime? end)
+        {
+            int length = values.Count();
+
+            if (length == 0)
+            {
+                if (!start.HasValue)
+                {
+                    if (end.HasValue) dateAxis.Minimum = DateTimeAxis.ToDouble(end.Value.AddDays(-10));
+                    else dateAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Today);
+                }
+                else dateAxis.Minimum = DateTimeAxis.ToDouble(start.Value);
+
+                if (!end.HasValue)
+                {
+                    if (start.HasValue) dateAxis.Maximum = DateTimeAxis.ToDouble(start.Value.AddDays(10));
+                    else dateAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Today.AddDays(10));
+                }
+                else dateAxis.Maximum = DateTimeAxis.ToDouble(end.Value);
+            }
+
+            if (length == 1)
+            {
+                var data = values.First();
+                dateAxis.Minimum = data.X - 2;
+                dateAxis.Maximum = data.X + 2;
+            }
         }
     }
 }

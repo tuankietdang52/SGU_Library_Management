@@ -64,6 +64,8 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
+        #region Get By Borrow Date
+
         public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime date, bool fromStart)
         {
             if (fromStart) return GetAllByDateStart(date);
@@ -105,7 +107,7 @@ namespace SGULibraryManagement.DAO
 
         private List<BorrowDevicesDTO> GetAllByDateEnd(DateTime end)
         {
-            string query = $@"SELECT * FROM study_area 
+            string query = $@"SELECT * FROM {TableName}
                               WHERE DATE(date_borrow) <= DATE(@End)
                               AND is_deleted = 0";
 
@@ -141,6 +143,116 @@ namespace SGULibraryManagement.DAO
             string query = $@"SELECT * FROM {TableName} 
                               WHERE DATE(date_borrow) >= DATE(@Start) AND DATE(date_borrow) <= DATE(@End)
                               AND is_deleted = 0";
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Start", start);
+                command.Parameters.AddWithValue("@End", end);
+
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        #endregion
+
+        public List<BorrowDevicesDTO> GetCurrentlyBorrowByDate(DateTime date, bool fromStart)
+        {
+            if (fromStart) return GetCurrentlyBorrowByDateStart(date);
+            else return GetCurrentlyBorrowByDateEnd(date);
+        }
+
+        private List<BorrowDevicesDTO> GetCurrentlyBorrowByDateStart(DateTime start)
+        {
+            string query = $@"SELECT * FROM {TableName}
+                              WHERE DATE(COALESCE(date_return, date_return_expected)) >= DATE(@Start)
+                              AND is_deleted = 0 
+                              AND is_return = 0";
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Start", start);
+
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        private List<BorrowDevicesDTO> GetCurrentlyBorrowByDateEnd(DateTime end)
+        {
+            string query = $@"SELECT * FROM {TableName} 
+                              WHERE DATE(date_borrow) <= DATE(@End)
+                              AND is_deleted = 0
+                              AND is_return = 0";
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@End", end);
+
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        public List<BorrowDevicesDTO> GetCurrentlyBorrowByDate(DateTime start, DateTime end)
+        {
+            string query = $@"SELECT * FROM {TableName} 
+                              WHERE NOT (@End < date_borrow OR @Start > DATE(COALESCE(date_return, date_return_expected)))
+                              AND is_return = 0 
+                              AND is_deleted = 0;";
             try
             {
                 MySqlCommand command = new(query, Connection);
