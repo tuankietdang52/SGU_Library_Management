@@ -86,6 +86,8 @@ namespace SGULibraryManagement.Components.TextFields
         public bool AcceptNumberOnly { get; set; } = false;
         public bool IsEmailField { get; set; } = false;
 
+        public bool IsValid { get; set; } = true;
+
         private Brush? initBorderBrush;
 
         public new bool Focus()
@@ -143,9 +145,9 @@ namespace SGULibraryManagement.Components.TextFields
         private void CheckEmailFormat(TextBox textBox)
         {
             string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-            bool isValid = Regex.IsMatch(textBox.Text, pattern);
+            IsValid = Regex.IsMatch(textBox.Text, pattern);
 
-            if (!isValid) textBox.BorderBrush = Brushes.Red;
+            if (!IsValid) textBox.BorderBrush = Brushes.Red;
             else textBox.BorderBrush = initBorderBrush;
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
@@ -21,6 +22,22 @@ namespace SGULibraryManagement.GUI.Contents
             LoadData();
         }
 
+        private async Task<bool> ValidateEmail()
+        {
+            if (emailField.IsValid) return true;
+
+            SimpleDialog dialog = new()
+            {
+                Title = "Update Failed",
+                Content = "Email is not valid",
+                Width = 450,
+                Height = 300
+            };
+
+            await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+            return false;
+        }
+
         private void LoadData()
         {
             if (Current is null) return;
@@ -29,7 +46,7 @@ namespace SGULibraryManagement.GUI.Contents
             lastNameField.Text = Current.LastName;
             usernameField.Text = Current.Mssv.ToString();
             passwordField.Password = Current.Password;
-            emailField.Text = Current.LastName;
+            emailField.Text = Current.Email;
             phoneField.Text = Current.Phone;
             roleLabel.Text = roleBUS.FindById(Current.IdRole).Name;
             imageChooser.FilePath = Current.Avatar;
@@ -58,8 +75,9 @@ namespace SGULibraryManagement.GUI.Contents
             };
         }
 
-        private void OnSave(object sender, RoutedEventArgs e)
+        private async void OnSave(object sender, RoutedEventArgs e)
         {
+            if (!await ValidateEmail()) return;
             var model = GatherData();
 
             if (accountBUS.UpdateAccount(Current!.Mssv, model))
