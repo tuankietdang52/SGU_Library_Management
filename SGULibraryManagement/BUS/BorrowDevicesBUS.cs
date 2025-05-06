@@ -1,6 +1,7 @@
 ﻿using SGULibraryManagement.DAO;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.ViewModels;
+using SGULibraryManagement.Utilities;
 
 namespace SGULibraryManagement.BUS
 {
@@ -17,10 +18,15 @@ namespace SGULibraryManagement.BUS
             return dao.GetAll(true);
         }
 
+        public List<BorrowDevicesDTO> GetCurrentlyBorrow()
+        {
+            return [.. dao.GetAll(true).Where(item => !item.IsReturn)];
+        }
+
         public List<BorrowDeviceViewModel> GetAllWithDetail()
         {
             var list = GetAll();
-            Dictionary<long, AccountDTO> accounts = accountBUS.GetAll().ToDictionary(pr => pr.Id);
+            Dictionary<long, AccountDTO> accounts = accountBUS.GetAll().ToDictionary(pr => pr.Mssv);
             Dictionary<long, DeviceDTO> devices = deviceBUS.GetAll().ToDictionary(pr => pr.Id);
 
             return BorrowDevices = [.. list.Select(item => {
@@ -36,8 +42,10 @@ namespace SGULibraryManagement.BUS
                     Id = item.Id,
                     Device = device,
                     User = account,
+                    Code = item.Code!,
                     Quantity = item.Quantity,
                     DateBorrow = item.DateBorrow,
+                    DateReturnExpected = item.DateReturnExpected,
                     DateReturn = item.DateReturn,
                     IsReturn = item.IsReturn
                 };
@@ -49,9 +57,14 @@ namespace SGULibraryManagement.BUS
             return dao.FindById(id);
         }
 
+        public BorrowDevicesDTO FindByCode(string code)
+        {
+            return dao.FindByCode(code);
+        }
+
         public List<BorrowDevicesDTO> FindByAccount(AccountDTO account)
         {
-            return dao.FindByAccountId(account.Id);
+            return dao.FindByAccountMssv(account.Mssv);
         }
 
         public List<BorrowDevicesDTO> FindByDevice(DeviceDTO device)
@@ -61,6 +74,9 @@ namespace SGULibraryManagement.BUS
 
         public BorrowDevicesDTO Create(BorrowDevicesDTO request)
         {
+            string code = CodeUtility.GenerateRandom(6);
+            request.Code = code;
+
             return dao.Create(request);
         }
 
@@ -74,6 +90,16 @@ namespace SGULibraryManagement.BUS
             return dao.Delete(id);
         }
 
+        public bool DeleteByStudentCode(long studentCode)
+        {
+            return dao.DeleteByStudentCode(studentCode);
+        }
+
+        public bool DeleteMultipleByStudent(List<AccountDTO> students)
+        {
+            return dao.DeleteMultipleByStudentCode([.. students.Select(s => s.Mssv)]);
+        }
+
         public IEnumerable<BorrowDeviceViewModel> FilterByQuery(string query, string searchBy, IEnumerable<BorrowDeviceViewModel>? collections = null)
         {
             var list = collections ?? BorrowDevices;
@@ -83,6 +109,7 @@ namespace SGULibraryManagement.BUS
             {
                 "Device Name" => list.Where(item => item.Device.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)),
                 "User Email" => list.Where(item => item.User.Email.Contains(query, StringComparison.CurrentCultureIgnoreCase)),
+                "Code" => list.Where(item => item.Code.Contains(query)),
                 _ => []
             };
         }
@@ -96,10 +123,43 @@ namespace SGULibraryManagement.BUS
             {
                 "All" => list,
                 "Return" => list.Where(item => item.IsReturn),
-                "Not Return" => list.Where(item => item.IsDue),
+                "Return Late" => list.Where(item => item.IsReturn && item.IsDue),
+                "Not Return" => list.Where(item => !item.IsReturn && item.IsDue),
                 "Not yet due" => list.Where(item => DateTime.Now.Date < item.DateReturn.Date),
                 _ => []
             };
-        } 
+        }
+
+        /// <summary>
+        /// Get all by date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="fromStart">if true will get from date, else will get to date</param>
+        /// <returns></returns>
+        public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime date, bool fromStart)
+        {
+            return dao.GetAllByBorrowDate(date, fromStart);
+        }
+
+        public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime start, DateTime end)
+        {
+            return dao.GetAllByBorrowDate(start, end);
+        }
+
+        /// <summary>
+        /// Get currently borrow by date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="fromStart">if true will get from date, else will get to date</param>
+        /// <returns></returns>
+        public List<BorrowDevicesDTO> GetCurrentlyBorrowByDate(DateTime date, bool fromStart)
+        {
+            return dao.GetCurrentlyBorrowByDate(date, fromStart);
+        }
+
+        public List<BorrowDevicesDTO> GetCurrentlyBorrowByDate(DateTime start, DateTime end)
+        {
+            return dao.GetCurrentlyBorrowByDate(start, end);
+        }
     }
 }

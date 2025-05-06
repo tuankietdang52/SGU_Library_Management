@@ -40,6 +40,29 @@
                     </TextBlock>
                 </StackPanel>
             </buttons:RoundButton>
+            <buttons:RoundButton Canvas.Right="200"
+                                 Foreground="White"
+                                 Background="Black"
+                                 Height="40"
+                                 CornerRadius="20"
+                                 HoverBackgroundColor="#2B2B2B"
+                                 Click="ImportExcel">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="&#xf055;"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontFamily="{StaticResource FontAwesomeSolid}">
+                    </TextBlock>
+                    <Viewbox Width="5"></Viewbox>
+                    <TextBlock Text="Import Excel"
+                               Foreground="White"
+                               FontSize="15">
+
+                    </TextBlock>
+                </StackPanel>
+            </buttons:RoundButton>
         </Canvas>
         <Border Width="{Binding Source={StaticResource AppContentWidth}, 
                                 Converter={StaticResource SubtractConverter}, 
@@ -101,14 +124,58 @@
                               Width="200"
                               VerticalAlignment="Center"
                               SelectedIndex="0"
-                              SelectionChanged="OnFilterCbChanged">
+                              SelectionChanged="OnStatusChanged">
                     </ComboBox>
+                    <Viewbox Width="50"></Viewbox>
+                    <StackPanel x:Name="vrCBContainer"
+                                Orientation="Horizontal">
+                        <TextBlock FontSize="20"
+                                   VerticalAlignment="Center"
+                                   Margin="0, 0, 20, 0">
+                            Violation Rule: 
+                        </TextBlock>
+                        <ComboBox x:Name="vrComboBox"
+                                  Height="40"
+                                  Width="200"
+                                  VerticalAlignment="Center"
+                                  SelectedIndex="0"
+                                  DisplayMemberPath="Name"
+                                  SelectionChanged="OnFilterCbChanged">
+                        </ComboBox>
+                    </StackPanel>
                 </StackPanel>
+                <Viewbox Height="10"></Viewbox>
+                <Grid>
+                    <buttons:RoundButton HorizontalAlignment="Right"
+                                         Margin="20, 0"
+                                         Foreground="White"
+                                         Height="40"
+                                         CornerRadius="10"
+                                         Background="Red"
+                                         HoverBackgroundColor="DarkRed"
+                                         Click="OnDeleteClick">
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <TextBlock Text="&#xf2ed;"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource FontAwesomeSolid}">
+                            </TextBlock>
+                            <Viewbox Width="5"></Viewbox>
+                            <TextBlock Text="Delete"
+                                       Foreground="White"
+                                       FontSize="15">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </buttons:RoundButton>
+                </Grid>
                 <DataGrid x:Name="userTable" 
                           Width="{Binding Source={StaticResource AppContentWidth}, 
                                           Converter={StaticResource SubtractConverter}, 
                                           ConverterParameter=50}"
-                          Height="400"
+                          Height="350"
                           ColumnWidth="*"
                           AutoGenerateColumns="False"
                           CanUserResizeRows="False"
@@ -119,13 +186,28 @@
                           BorderBrush="Black"
                           BorderThickness="0, 1, 0, 0"
                           ColumnHeaderHeight="40"
-                          RowHeaderWidth="30"
-                          HeadersVisibility="Column"
+                          RowHeaderWidth="50"
                           ItemsSource="{Binding Users}">
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Setter Property="Margin" Value="0"/>
                             <Setter Property="Padding" Value="0"/>
+                            <Setter Property="HeaderStyle">
+                                <Setter.Value>
+                                    <Style TargetType="DataGridRowHeader">
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <CheckBox Height="50"
+                                                              Width="50"
+                                                              IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}, Mode=TwoWay}">
+                                                    </CheckBox>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
@@ -134,8 +216,7 @@
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Id" Width="100" Binding="{Binding Account.Id}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Username" Binding="{Binding Account.Username}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Student Code" Width="150" Binding="{Binding Account.Mssv}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Fullname" Binding="{Binding Account.FullName}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Phone" Binding="{Binding Account.Phone}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Email" Binding="{Binding Account.Email}"></DataGridTextColumn>
@@ -157,8 +238,7 @@
                                 <DataTemplate>
                                     <tables:ActionColumn Model="{Binding Account}"
                                                          OnEditClick="OnEditClick"
-                                                         OnViewClick="OnViewClick"
-                                                         OnDeleteClick="OnDeleteClick">
+                                                         OnViewClick="OnViewClick">
                                     </tables:ActionColumn>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

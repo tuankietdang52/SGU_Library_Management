@@ -1,21 +1,12 @@
-﻿using SGULibraryManagement.BUS;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
+using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.Contents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SGULibraryManagement.Utilities;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Logger = SGULibraryManagement.Utilities.Logger;
 
 namespace SGULibraryManagement.GUI.DialogGUI
 {
@@ -24,7 +15,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private readonly ViolationBUS violationBUS = new();
         private readonly AccountBUS accountBUS = new();
         private readonly AccountViolationBUS accountViolationBUS = new();
-
+        private bool isBanEternal = false;
         public ContentPresenter? PopupHost { get; set; }
 
         public event OnCloseDialogHandler? OnCloseDialog;
@@ -48,16 +39,24 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private void SetupComponent()
         {
-            title.Text = $"Lock {account.Username} for ";
+            title.Text = $"Lock {account.Mssv} for ";
 
             violationCB.ItemsSource = violationBUS.GetAll();
             violationCB.DisplayMemberPath = "Name";
             violationCB.SelectedIndex = 0;
+
+            banExpiredDatePicker.DisplayDateStart = DateTime.Now;
+            banExpiredDatePicker.SelectedDate = DateTime.Now;
+
+            statusCB.ItemsSource = Enum.GetValues<AccountViolationStatus>();
+            statusCB.SelectedIndex = 0;
         }
 
         private void SetupUpdateComponent()
         {
-            title.Text = $"{account.Username} is currently lock for ";
+            if (accountViolation is null) return;
+
+            title.Text = $"{account.Mssv} is currently lock for ";
 
             foreach(var item in violationCB.ItemsSource)
             {
@@ -69,8 +68,17 @@ namespace SGULibraryManagement.GUI.DialogGUI
                 }
             }
 
+            banExpiredDatePicker.SelectedDate = accountViolation.BanExpired;
+            compensationTB.Value = accountViolation.Compensation;
+            statusCB.SelectedItem = accountViolation.Status;
+
             lockButton.Visibility = Visibility.Collapsed;
             updateButtonContainer.Visibility = Visibility.Visible;
+        }
+
+        private void OnDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            banExpiredDatePicker.SelectedDate ??= DateTime.Now;
         }
 
         private void OnViolationRuleChanged(object sender, SelectionChangedEventArgs e)
@@ -79,13 +87,44 @@ namespace SGULibraryManagement.GUI.DialogGUI
             violationDescription.Text = violation.Description;
         }
 
+
+        private void OnChecked(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                isBanEternal = true;
+                banExpiredDatePicker.IsEnabled = false;
+                banExpiredDatePicker.SelectedDate = null;
+            }
+            else
+            {
+                checkbox.IsChecked = false;
+                isBanEternal = false;
+                banExpiredDatePicker.IsEnabled = true;
+
+            }
+        }
+
+        private void OnUnChecked(object sender, EventArgs e)
+        {
+            isBanEternal = false;
+            banExpiredDatePicker.IsEnabled = true;
+
+        }
+
+
+
+
+
         private async void OnUnlockAccount(object sender, RoutedEventArgs e)
         {
             if (accountViolation is null) return;
 
             SimpleDialog dialog = new()
             {
-                Title = $"Unlock {account.Username}",
+                Title = $"Unlock {account.Mssv}",
                 Content = "Do you want to unlock this account ?",
                 Width = 300,
                 Height = 200
@@ -103,42 +142,55 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private async void OnLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await LockingAccount()) return;
-
-            List<Type> fetchTarget =
-            [
-                typeof(UsersView),
-                typeof(ViolationView)
-            ];
-
-            MainView.Instance.FetchAll(fetchTarget);
             OnCloseDialog?.Invoke(this);
         }
 
         private async void OnUpdateLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await SavingLockAccount()) return;
-
-            List<Type> fetchTarget =
-            [
-                typeof(UsersView),
-                typeof(ViolationView)
-            ];
-
-            MainView.Instance.FetchAll(fetchTarget);
             OnCloseDialog?.Invoke(this);
+        }
+
+
+        private AccountViolationDTO? GatherDataBanEternal()
+        {
+            if (violationCB.SelectedItem is not ViolationDTO violation) return null;
+            if (statusCB.SelectedItem is not AccountViolationStatus status) return null;
+
+            return new()
+            {
+                UserId = account.Mssv,
+                ViolationId = violation.Id,
+                DateCreate = DateTime.Now,
+                Compensation = long.Parse(compensationTB.Text),
+                Status = status,
+                IsDeleted = false , 
+                IsBanEternal = true
+            };
+        }
+        private AccountViolationDTO? GatherData()
+        {
+            if (violationCB.SelectedItem is not ViolationDTO violation) return null;
+            if (statusCB.SelectedItem is not AccountViolationStatus status) return null;
+
+            return new()
+            {
+                UserId = account.Mssv,
+                ViolationId = violation.Id,
+                DateCreate = DateTime.Now,
+                BanExpired = banExpiredDatePicker.SelectedDate!.Value,
+                Compensation = long.Parse(compensationTB.Text),
+                Status = status,
+                IsDeleted = false,
+                IsBanEternal = false
+            };
         }
 
         private async Task<bool> LockingAccount()
         {
-            if (violationCB.SelectedItem is not ViolationDTO violation) return false;
-
-            AccountViolationDTO model = new()
-            {
-                UserId = account.Id,
-                ViolationId = violation.Id,
-                DateCreate = DateTime.Now,
-                IsDeleted = false
-            };
+            Logger.Log($"is ban eternal : {isBanEternal}");
+            var model = isBanEternal? GatherDataBanEternal() : GatherData();
+            if (model is null) return false;
 
             if (accountViolationBUS.Create(model) is not null)
             {
@@ -152,12 +204,13 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private async Task<bool> SavingLockAccount()
         {
-            if (violationCB.SelectedItem is not ViolationDTO violation) return false;
             if (accountViolation is null) return false;
 
+            var model = GatherData();
+            if (model is null) return false;
 
-            accountViolation.ViolationId = violation.Id;
-            if (accountViolationBUS.Update(accountViolation.Id, accountViolation))
+            model.DateCreate = accountViolation.DateCreate;
+            if (accountViolationBUS.Update(accountViolation.Id, model))
             {
                 await OnLockSucess();
                 return true;
@@ -172,7 +225,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             SimpleDialog dialog = new()
             {
                 Title = "Success",
-                Content = $"Lock {account.Username} successful!",
+                Content = $"Lock {account.Mssv} successful!",
                 Width = 300,
                 Height = 200
             };
@@ -185,7 +238,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
             SimpleDialog dialog = new()
             {
                 Title = "Failed",
-                Content = $"Lock {account.Username} fail",
+                Content = $"Lock {account.Mssv} fail",
                 Width = 300,
                 Height = 200
             };

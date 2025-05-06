@@ -15,4 +15,9 @@ namespace SGULibraryManagement.Components.Dialogs
         public event OnCloseDialogHandler? OnCloseDialog;
         public ContentPresenter? PopupHost { get; set; }
     }
+
+    public interface IDialog<TReturn> : IDialog
+    {
+        public TReturn? Return { get; } 
+    }
 }

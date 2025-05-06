@@ -24,6 +24,7 @@
                                      Foreground="{TemplateBinding Foreground}"
                                      Text="{TemplateBinding Text}"
                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                     MaxLength="{TemplateBinding MaxLength}"
                                      Padding="10, 0, 30, 0"
                                      OverridesDefaultStyle="True"
                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"

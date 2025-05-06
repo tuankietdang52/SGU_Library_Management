@@ -1,14 +1,10 @@
-﻿using OxyPlot;
+﻿using DotNetEnv;
+using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Legends;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OxyPlot.Wpf;
 using System.Windows.Media;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace SGULibraryManagement.Utilities
 {
@@ -26,7 +22,6 @@ namespace SGULibraryManagement.Utilities
             };
 
             var color = (SolidColorBrush) App.Instance!.Resources["AppThemeSecondary"];
-
             var series = new BarSeries()
             {
                 Title = seriesTitle,
@@ -37,10 +32,12 @@ namespace SGULibraryManagement.Utilities
 
             var categoryAxis = new CategoryAxis
             {
-                Title = yAxisTitle,
+                Key = "y",
+                Title = xAxisTitle,
                 Position = AxisPosition.Bottom,
-                IsZoomEnabled = false,
-                Key = "y"
+                AxisTitleDistance = 20,
+                TitleFontWeight = FontWeights.Bold,
+                IsZoomEnabled = false
             };
 
             foreach (var item in values.Keys) {
@@ -53,10 +50,12 @@ namespace SGULibraryManagement.Utilities
             model.Axes.Add(categoryAxis);
             model.Axes.Add(new LinearAxis
             {
-                Title = xAxisTitle,
+                Key = "x",
+                Title = yAxisTitle,
                 Position = AxisPosition.Left,
-                IsZoomEnabled = false,
-                Key = "x"
+                AxisTitleDistance = 20,
+                TitleFontWeight = FontWeights.Bold,
+                IsZoomEnabled = false
             });
 
             return model;
@@ -111,6 +110,100 @@ namespace SGULibraryManagement.Utilities
 
             model.Series.Add(series);
             return model;
+        }
+
+        public static PlotModel CreateDateLineChart(string title,
+                                                    string seriesTitle,
+                                                    IEnumerable<DataPoint> values,
+                                                    string xAxisTitle = "",
+                                                    string yAxisTitle = "",
+                                                    string format = "",
+                                                    DateTime? start = null,
+                                                    DateTime? end = null)
+        {
+            PlotModel model = new() { Title = title };
+
+            var color = (SolidColorBrush)App.Instance!.Resources["AppThemeSecondary"];
+            var series = new LineSeries()
+            {
+                Title = seriesTitle,
+                Color = color.ParseToOxyColor(),
+                CanTrackerInterpolatePoints = false,
+                TrackerFormatString = "{0}\n{1}: {2:dd/MM/yyyy}\n{3}: {4:0.###}",
+                MarkerType = MarkerType.Circle
+            };
+
+            series.Points.AddRange(values);
+            model.Series.Add(series);
+
+            var dateAxis = new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = format,
+                Title = xAxisTitle,
+                AxisTitleDistance = 20,
+                TitleFontWeight = FontWeights.Bold,
+                MajorGridlineStyle = LineStyle.Solid
+            };
+
+            var valueAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = yAxisTitle,
+                IsZoomEnabled = false,
+                AxisTitleDistance = 20,
+                Minimum = 0,
+                AbsoluteMinimum = 0,
+                MajorStep = 1,
+                MinorStep = 1,
+                TitleFontWeight = FontWeights.Bold,
+                MajorGridlineStyle = LineStyle.Solid
+            };
+
+            AdjustDatePosition(dateAxis, values, start, end);
+
+            if (!values.Any())
+            {
+                valueAxis.Minimum = 0;
+                valueAxis.Maximum = 10;
+            }
+
+            model.Axes.Add(dateAxis);
+            model.Axes.Add(valueAxis);
+            
+            return model;
+        }
+
+        private static void AdjustDatePosition(DateTimeAxis dateAxis,
+                                               IEnumerable<DataPoint> values, 
+                                               DateTime? start, 
+                                               DateTime? end)
+        {
+            int length = values.Count();
+
+            if (length == 0)
+            {
+                if (!start.HasValue)
+                {
+                    if (end.HasValue) dateAxis.Minimum = DateTimeAxis.ToDouble(end.Value.AddDays(-10));
+                    else dateAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Today);
+                }
+                else dateAxis.Minimum = DateTimeAxis.ToDouble(start.Value);
+
+                if (!end.HasValue)
+                {
+                    if (start.HasValue) dateAxis.Maximum = DateTimeAxis.ToDouble(start.Value.AddDays(10));
+                    else dateAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Today.AddDays(10));
+                }
+                else dateAxis.Maximum = DateTimeAxis.ToDouble(end.Value);
+            }
+
+            if (length == 1)
+            {
+                var data = values.First();
+                dateAxis.Minimum = data.X - 2;
+                dateAxis.Maximum = data.X + 2;
+            }
         }
     }
 }

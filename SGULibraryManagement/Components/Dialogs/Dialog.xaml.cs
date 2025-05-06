@@ -1,26 +1,15 @@
-﻿using SGULibraryManagement.GUI;
-using SGULibraryManagement.GUI.Contents;
-using SGULibraryManagement.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SGULibraryManagement.GUI.Contents;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Wpf.Ui.Controls;
 
 namespace SGULibraryManagement.Components.Dialogs
 {
     public partial class Dialog : FluentWindow
     {
+        protected IDialog? DialogContent;
+
         public Dialog()
         {
             InitializeComponent();
@@ -29,6 +18,7 @@ namespace SGULibraryManagement.Components.Dialogs
         public Dialog(string title, IDialog content)
         {
             InitializeComponent();
+            DialogContent = content;
 
             if (content is not UserControl userControl)
             {
@@ -72,13 +62,28 @@ namespace SGULibraryManagement.Components.Dialogs
 
         private void OnStatusBarMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) DragMove();
         }
 
-        private void OnCloseDialog(object sender, RoutedEventArgs e)
+        protected virtual void OnCloseDialog(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+    }
+
+    public partial class Dialog<TReturn> : Dialog
+    {
+        private IDialog<TReturn>? DContent => DialogContent as IDialog<TReturn>;
+        public TReturn? Return => DContent is null ? default : DContent.Return;
+
+        public Dialog() : base()
+        {
+
+        }
+
+        public Dialog(string title, IDialog<TReturn> content) : base(title, content)
+        {
+
         }
     }
 }

@@ -118,11 +118,7 @@ namespace SGULibraryManagement.GUI.Contents
                 BUS.Checkout(reservation);
             }
 
-            MainView.Instance.FetchAll([
-                typeof(UsersView), 
-                typeof(ReservationView), 
-                typeof(CirculationView)
-            ]);
+            Fetch();
         }
     }
 

@@ -21,7 +21,7 @@ namespace SGULibraryManagement.Components.SideMenu
 
         public static readonly DependencyProperty ContentViewProperty =
             DependencyProperty.Register(nameof(ContentView),
-                                        typeof(UserControl),
+                                        typeof(Type),
                                         typeof(SideMenuItem),
                                         new PropertyMetadata(null));
 
@@ -44,9 +44,9 @@ namespace SGULibraryManagement.Components.SideMenu
             set => SetValue(GlyphProperty, value);
         }
 
-        public UserControl ContentView
+        public Type ContentView
         {
-            get => (UserControl)GetValue(ContentViewProperty);
+            get => (Type)GetValue(ContentViewProperty);
             set => SetValue(ContentViewProperty, value);
         }
 

@@ -34,18 +34,6 @@
                                              Margin="0, 0, 10, 0">
 
                         </buttons:RoundButton>
-                        <buttons:RoundButton x:Name="deleteAction"
-                                             Content="&#xf2ed;"
-                                             FontFamily="{DynamicResource FontAwesomeSolid}"
-                                             Background="Red"
-                                             HoverBackgroundColor="DarkRed"
-                                             CornerRadius="50"
-                                             FontSize="13"
-                                             Height="35"
-                                             Width="35"
-                                             Foreground="White">
-
-                        </buttons:RoundButton>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>

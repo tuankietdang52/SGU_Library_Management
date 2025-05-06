@@ -1,24 +1,16 @@
-﻿using SGULibraryManagement.BUS;
+﻿using Microsoft.Win32;
+using OfficeOpenXml;
+using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.Components.Equipments;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SGULibraryManagement.GUI.Contents
 {
@@ -192,6 +184,67 @@ namespace SGULibraryManagement.GUI.Contents
 
             Fetch();
             OnApplySort();
+        }
+        private void ImportExcel(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "Excel Files|*.xlsx"
+            };
+            if (openFileDialog.ShowDialog() != true) return;
+
+            var listDevice = Importing(openFileDialog);
+
+            if (BUS.CreateListDevice(listDevice) == false)
+            {
+                MessageBox.Show("Import failed");
+                return;
+            }
+
+            MessageBox.Show("Import successfully!");
+            Fetch();
+        }
+
+        private List<DeviceDTO> Importing(OpenFileDialog openFileDialog)
+        {
+            string filePath = openFileDialog.FileName;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            // Xử lý file Excel
+            using var excelPackage = new ExcelPackage(new FileInfo(filePath));
+            var worksheet = excelPackage.Workbook.Worksheets[0];
+            int startRow = worksheet.Dimension.Start.Row + 1;
+            int endRow = worksheet.Dimension.End.Row;
+
+            List<DeviceDTO> listDevice = [];
+            for (int i = startRow; i <= endRow; i++)
+            {
+                List<string> rowData = [];
+                for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
+                {
+                    rowData.Add(worksheet.Cells[i, j].Text);
+                }
+                try
+                {
+                    listDevice.Add(new DeviceDTO()
+                    {
+                        Name = rowData[0],
+                        Quantity = int.Parse(rowData[1]),
+                        ImageSource = rowData[2],
+                        Description = rowData[3],
+                        IsAvailable = false,
+                        IsDeleted = false
+                    });
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("One or more object in excel does not match with device object");
+                    return [];
+                }
+
+            }
+
+            return listDevice;
         }
 
         private void OnView(object sender, DeviceDTO model)

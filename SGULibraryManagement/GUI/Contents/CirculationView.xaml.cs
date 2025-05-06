@@ -1,9 +1,11 @@
 ﻿using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
+using SGULibraryManagement.GUI.DialogGUI;
 using SGULibraryManagement.GUI.ViewModels;
 using SGULibraryManagement.Utilities;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Wpf.Ui.Input;
@@ -14,11 +16,6 @@ namespace SGULibraryManagement.GUI.Contents
     {
         public ObservableCollection<BorrowDeviceViewModel> BorrowDevices { get; set; } = [];
         private readonly BorrowDevicesBUS BUS = new();
-        private readonly AccountViolationBUS accountViolationBUS = new();
-        private readonly ViolationBUS violationBUS = new();
-
-        public ICommand? LockCommand { get; set; }
-
         private Action<BorrowDeviceFilter?>? searchDebounce;
 
         public CirculationView()
@@ -42,18 +39,23 @@ namespace SGULibraryManagement.GUI.Contents
         private void SetupComponent()
         {
             DataContext = this;
-            LockCommand = new RelayCommand<AccountDTO>(OnLockUser!);
-
             searchDebounce = ((Action<BorrowDeviceFilter?>)(OnApplyFilter)).Debounce(200);
 
             searchByComboBox.ItemsSource = new List<string>
             {
                 "Device Name",
-                "User Email"
+                "User Email",
+                "Code"
             };
             searchByComboBox.SelectedIndex = 0;
 
-            statusComboBox.ItemsSource = new List<string> { "All", "Return", "Not Return", "Not yet due" };
+            statusComboBox.ItemsSource = new List<string> { 
+                "All", 
+                "Return", 
+                "Return Late",
+                "Not Return", 
+                "Not yet due" 
+            };
             statusComboBox.SelectedIndex = 0;
         }
 
@@ -94,87 +96,20 @@ namespace SGULibraryManagement.GUI.Contents
             OnApplyFilter(filter);
         }
 
-        private async void OnLockUser(AccountDTO account)
+        private void OnBorrow(object sender, RoutedEventArgs e)
         {
-            if (await LockingUser(account))
-            {
-                MainView.Instance.FetchAll([typeof(UsersView)]);
-            }
+            Dialog dialog = new("Borrow Device", new CirculationDialog(CirculationDialogType.Borrow));
+            dialog.ShowDialog();
+
+            Fetch();
         }
 
-        private async Task<bool> LockingUser(AccountDTO account)
+        private void OnReturn(object sender, RoutedEventArgs e)
         {
-            if (accountViolationBUS.IsAccountLocked(account, out var accountViolation))
-            {
-                ChangeUserViolation(account, accountViolation);
-                return true;
-            }
+            Dialog dialog = new("Return Device", new CirculationDialog(CirculationDialogType.Return));
+            dialog.ShowDialog();
 
-            SimpleDialog alreadyLockedDialog = new()
-            {
-                Title = "Lock User",
-                Content = "Do you want to lock this user for not return device on time ?",
-                Width = 300,
-                Height = 300
-            };
-
-            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(alreadyLockedDialog, SimpleDialogType.YesNo);
-            AccountViolationDTO violation = new()
-            {
-                UserId = account.Id,
-                ViolationId = 1,
-                DateCreate = DateTime.Now,
-                IsDeleted = false
-            };
-
-            if (result == SimpleDialogResult.Yes)
-            {
-                return accountViolationBUS.Create(violation) is not null;
-            }
-            else return false;
-        }
-
-        private async void ChangeUserViolation(AccountDTO account, AccountViolationDTO accountViolation)
-        {
-            var mainWindow = MainWindow.Instance!;
-
-            if (accountViolation.ViolationId == 1)
-            {
-                SimpleDialog alreadyLockedDialog = new()
-                {
-                    Title = "Already Locked",
-                    Content = "This user already locked for not return device on time",
-                    Width = 300,
-                    Height = 300
-                };
-
-                await mainWindow.ShowSimpleDialogAsync(alreadyLockedDialog, SimpleDialogType.OK);
-                return;
-            }
-
-            var violation = violationBUS.FindById(accountViolation.ViolationId);
-
-            SimpleDialog changeDialog = new()
-            {
-                Title = "Change User Violation",
-                Content = $"This user is currently lock for {violation.Name}. Do you want to change this user violation to Not Return Device ?",
-                Width = 400,
-                Height = 300
-            };
-
-            var result = await mainWindow.ShowSimpleDialogAsync(changeDialog, SimpleDialogType.YesNo);
-            AccountViolationDTO newViolation = new()
-            {
-                UserId = account.Id,
-                ViolationId = 1,
-                DateCreate = DateTime.Now,
-                IsDeleted = false,
-            };
-
-            if (result == SimpleDialogResult.Yes)
-            {
-                accountViolationBUS.ChangeViolation(accountViolation.Id, newViolation);
-            }
+            Fetch();
         }
     }
 

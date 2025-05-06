@@ -32,7 +32,7 @@ namespace SGULibraryManagement.DAO
 
         public DeviceDTO FindById(long id)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id AND is_deleted = 0";
             Logger.Log($"Query: {query}");
 
             try
@@ -155,6 +155,58 @@ namespace SGULibraryManagement.DAO
             }
 
             return null!;
+        }
+
+        public DeviceDTO CreateV1(DeviceDTO request, MySqlTransaction transaction)
+        {
+            string query = $@"INSERT INTO {TableName} (name, quantity, img, description, is_deleted, is_available) 
+                              VALUES (@Name, @Quantity, @Img, @Description, @IsDeleted, @IsAvailable)";
+
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection, transaction);
+                AddData(command, request);
+                command.Prepare();
+
+                command.ExecuteNonQuery();
+
+                return request;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return null!;
+        }
+
+        public bool CreateListDevice(List<DeviceDTO> listDevice)
+        {
+            MySqlTransaction tr = null;
+            try
+            {
+                tr = this.Connection.BeginTransaction();
+                foreach (DeviceDTO device in listDevice)
+                {
+                    var result = CreateV1(device, tr);
+                    if (result == null)
+                    {
+                        tr.Rollback();
+                        return false;
+                    }
+
+                }
+
+                tr.Commit();
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                tr.Rollback();
+                return false;
+            }
         }
 
         public bool Update(long id, DeviceDTO request)

@@ -111,6 +111,10 @@
                                     <DataTrigger Binding="{Binding IsCheckedOut}" Value="True">
                                         <Setter Property="Background" Value="{StaticResource ActiveBackground}"></Setter>
                                     </DataTrigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource TableItemSelected}"></Setter>
+                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                    </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.CellStyle>

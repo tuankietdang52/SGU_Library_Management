@@ -63,13 +63,15 @@
                     </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
-                            <Setter Property="Background" Value="{Binding BgColor}"></Setter>
                             <Setter Property="Height" Value="70"></Setter>
+                            <Setter Property="Background" Value="{Binding BgColor}"></Setter>
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Violation" Binding="{Binding Violation.Name}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Date Create" Binding="{Binding DateCreate}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Ban Date Expired" Binding="{Binding BanExpired}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Compensation" Binding="{Binding Compensation}"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

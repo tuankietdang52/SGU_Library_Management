@@ -14,6 +14,51 @@
                        FontSize="30">
                 All Circulation
             </TextBlock>
+            <StackPanel Canvas.Right="20" Orientation="Horizontal">
+                <buttons:RoundButton Foreground="White"
+                                     Background="Black"
+                                     Height="50"
+                                     CornerRadius="20"
+                                     HoverBackgroundColor="#2B2B2B"
+                                     Click="OnBorrow">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock Text="&#xf02d;"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontFamily="{StaticResource FontAwesomeSolid}">
+                        </TextBlock>
+                        <Viewbox Width="5"></Viewbox>
+                        <TextBlock Text="Borrow"
+                                   Foreground="White"
+                                   FontSize="15">
+                        </TextBlock>
+                    </StackPanel>
+                </buttons:RoundButton>
+                <Viewbox Width="50"></Viewbox>
+                <buttons:RoundButton Foreground="White"
+                                     Background="Black"
+                                     Height="50"
+                                     CornerRadius="20"
+                                     HoverBackgroundColor="#2B2B2B"
+                                     Click="OnReturn">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock Text="&#xf3e5;"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontFamily="{StaticResource FontAwesomeSolid}">
+                        </TextBlock>
+                        <Viewbox Width="5"></Viewbox>
+                        <TextBlock Text="Return"
+                                   Foreground="White"
+                                   FontSize="15">
+                        </TextBlock>
+                    </StackPanel>
+                </buttons:RoundButton>
+            </StackPanel>
         </Canvas>
         <Border Width="{Binding Source={StaticResource AppContentWidth}, 
                                 Converter={StaticResource SubtractConverter}, 
@@ -90,6 +135,7 @@
                     </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Setter Property="Height" Value="50"></Setter>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDue}" Value="True">
                                     <Setter Property="Background" Value="{StaticResource LockedBackground}"></Setter>
@@ -97,47 +143,29 @@
                                 <DataTrigger Binding="{Binding IsReturn}" Value="True">
                                     <Setter Property="Background" Value="{StaticResource ActiveBackground}"></Setter>
                                 </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsReturn}" Value="True"/>
+                                        <Condition Binding="{Binding IsDue}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource WarningBackground}"></Setter>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource TableItemSelected}"></Setter>
+                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="70"/>
                         <DataGridTextColumn Header="Device" Binding="{Binding Device.Name}" Width="1.5*"/>
-                        <DataGridTextColumn Header="User" Binding="{Binding User.Email}" Width="1.5*"/>
+                        <DataGridTextColumn Header="User" Binding="{Binding User.Mssv}" Width="150"/>
+                        <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="120"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
                         <DataGridTextColumn Header="Date Borrow" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
-                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy}" Width="*"/>
-                        <DataGridTemplateColumn Header="Actions">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <buttons:RoundButton CornerRadius="100"
-                                                         Margin="0, 10"
-                                                         Height="35"
-                                                         Width="35"
-                                                         Content="&#xf023;"
-                                                         Foreground="White"
-                                                         FontFamily="{DynamicResource FontAwesomeSolid}"
-                                                         Command="{Binding LockCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                         CommandParameter="{Binding User}">
-                                        <buttons:RoundButton.Style>
-                                            <Style TargetType="buttons:RoundButton">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsDue}" Value="False">
-                                                        <Setter Property="IsEnabled" Value="False"></Setter>
-                                                        <Setter Property="Background" Value="Gray"></Setter>
-                                                        <Setter Property="HoverBackgroundColor" Value="Gray"></Setter>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsDue}" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource ErrorColor}"></Setter>
-                                                        <Setter Property="HoverBackgroundColor" Value="DarkRed"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </buttons:RoundButton.Style>
-                                    </buttons:RoundButton>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy, Converter={StaticResource DateTimeConverter}}" Width="*"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Date Return Expected" Binding="{Binding DateReturnExpected, StringFormat=dd/MM/yyyy}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

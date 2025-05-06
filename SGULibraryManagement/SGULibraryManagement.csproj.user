@@ -5,6 +5,18 @@
     <Compile Update="Components\Dashboards\DashboardQuantityStatistics.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\Dashboards\DeviceStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\Dashboards\StudyAreaStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\Dashboards\Top3Statistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\Dashboards\UserStatusStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Dialogs\Dialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14,7 +26,13 @@
     <Compile Update="GUI\Contents\ReservationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\Contents\StudyAreaView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DialogGUI\BorrowDeviceHistoryDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DialogGUI\CirculationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DialogGUI\EquipmentDialog.xaml.cs">
@@ -59,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="GUI\Contents\CirculationView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\Contents\StudyAreaView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Compile Update="GUI\Contents\UsersView.xaml.cs">

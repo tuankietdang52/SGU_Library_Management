@@ -27,7 +27,7 @@ namespace SGULibraryManagement.BUS
         public List<ReservationViewModel> GetAllWithDetail()
         {
             var list = GetAll();
-            Dictionary<long, AccountDTO> accounts = accountBUS.GetAll().ToDictionary(pr => pr.Id);
+            Dictionary<long, AccountDTO> accounts = accountBUS.GetAll().ToDictionary(pr => pr.Mssv);
             Dictionary<long, DeviceDTO> devices = deviceBUS.GetAll().ToDictionary(pr => pr.Id);
 
             return Reservations = [.. list.Select(item => {
@@ -54,7 +54,7 @@ namespace SGULibraryManagement.BUS
 
         public List<ReservationDTO> FindByAccount(AccountDTO account)
         {
-            return DAO.FindByAccountId(account.Id);
+            return DAO.FindByAccountId(account.Mssv);
         }
 
         public List<ReservationDTO> FindByDevice(DeviceDTO device)
@@ -90,6 +90,11 @@ namespace SGULibraryManagement.BUS
         public bool Delete(long id)
         {
             return DAO.Delete(id);
+        }
+
+        public bool DeleteMultipleByAccount(List<AccountDTO> accounts)
+        {
+            return DAO.DeleteMultipleByStudentCode([.. accounts.Select(a => a.Mssv)]);
         }
 
         public IEnumerable<ReservationViewModel> FilterByQuery(string query, string searchBy, IEnumerable<ReservationViewModel>? collections = null)
