@@ -72,6 +72,17 @@ namespace SGULibraryManagement.GUI.DialogGUI
             compensationTB.Value = accountViolation.Compensation;
             statusCB.SelectedItem = accountViolation.Status;
 
+            checkbox.Checked -= OnChecked;
+            if (accountViolation.IsBanEternal.HasValue && accountViolation.IsBanEternal.Value)
+            {
+                isBanEternal = true;
+                checkbox.IsChecked = isBanEternal;
+                banExpiredDatePicker.IsEnabled = false;
+                banExpiredDatePicker.SelectedDate = null;
+            }
+
+            checkbox.Checked += OnChecked;
+
             lockButton.Visibility = Visibility.Collapsed;
             updateButtonContainer.Visibility = Visibility.Visible;
         }
@@ -114,31 +125,6 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         }
 
-
-
-
-
-        private async void OnUnlockAccount(object sender, RoutedEventArgs e)
-        {
-            if (accountViolation is null) return;
-
-            SimpleDialog dialog = new()
-            {
-                Title = $"Unlock {account.Mssv}",
-                Content = "Do you want to unlock this account ?",
-                Width = 300,
-                Height = 200
-            };
-
-            var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo, PopupHost);
-
-            if (result == SimpleDialogResult.Yes)
-            {
-                accountViolationBUS.Delete(accountViolation.Id);
-                OnCloseDialog?.Invoke(this);
-            }
-        }
-
         private async void OnLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await LockingAccount()) return;
@@ -150,7 +136,6 @@ namespace SGULibraryManagement.GUI.DialogGUI
             if (!await SavingLockAccount()) return;
             OnCloseDialog?.Invoke(this);
         }
-
 
         private AccountViolationDTO? GatherDataBanEternal()
         {
@@ -189,7 +174,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private async Task<bool> LockingAccount()
         {
             Logger.Log($"is ban eternal : {isBanEternal}");
-            var model = isBanEternal? GatherDataBanEternal() : GatherData();
+            var model = isBanEternal ? GatherDataBanEternal() : GatherData();
             if (model is null) return false;
 
             if (accountViolationBUS.Create(model) is not null)
@@ -206,7 +191,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
         {
             if (accountViolation is null) return false;
 
-            var model = GatherData();
+            var model = isBanEternal ? GatherDataBanEternal() : GatherData();
             if (model is null) return false;
 
             model.DateCreate = accountViolation.DateCreate;

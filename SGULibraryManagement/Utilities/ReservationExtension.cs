@@ -15,9 +15,10 @@ namespace SGULibraryManagement.Utilities
             {
                 DeviceId = reservation.DeviceId,
                 UserId = reservation.UserId,
+                Quantity = reservation.Quantity,
                 DateCreate = reservation.DateCreate,
                 DateBorrow = reservation.DateBorrow,
-                DateReturn = reservation.DateReturn,
+                DateReturnExpected = reservation.DateReturn,
                 IsDeleted = false,
                 IsReturn = false
             };

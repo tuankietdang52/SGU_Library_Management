@@ -187,7 +187,8 @@ namespace SGULibraryManagement.DAO
                                   status = @Status, 
                                   ban_expired = @BanExpired,
                                   compensation = @Compensation, 
-                                  create_at = @DateCreate, 
+                                  create_at = @DateCreate,
+                                  is_ban_eternal = @IsBanEternal,
                                   is_deleted = @IsDeleted
                               WHERE id = @Id";
 
@@ -269,7 +270,11 @@ namespace SGULibraryManagement.DAO
 
         public AccountViolationDTO? IsAccountLocked(long accountId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND DATE(ban_expired) > CURDATE() ORDER BY ABS(DATEDIFF(create_at, CURDATE())) LIMIT 1";
+            string query = $@"SELECT * FROM {TableName} 
+                              WHERE (is_ban_eternal = 1 OR DATE(ban_expired) > CURDATE())
+                              AND mssv = @AccountId AND is_deleted = 0
+                              ORDER BY ABS(DATEDIFF(create_at, CURDATE())) LIMIT 1";
+
             Logger.Log($"accountId truyen vao violation :{accountId}");
             Logger.Log($"Query cua vialation: {query}");
 
@@ -297,8 +302,10 @@ namespace SGULibraryManagement.DAO
 
         public HashSet<AccountViolationDTO> GetAllLockedUsers()
         {
-            string query = $@"SELECT * FROM account_violation 
-                              WHERE DATE(ban_expired) > CURDATE() AND is_deleted = 0
+            string query = $@"SELECT * FROM {TableName}
+                              WHERE (is_ban_eternal = 1
+                              OR (DATE(ban_expired) > CURDATE()))
+                              AND is_deleted = 0
                               ORDER BY ABS(DATEDIFF(create_at, CURDATE()))";
             Logger.Log($"Query: {query}");
 
