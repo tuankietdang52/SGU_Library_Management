@@ -14,6 +14,7 @@ namespace SGULibraryManagement.GUI.Contents
     {
         private readonly ViolationBUS BUS = new();
         private readonly AccountViolationBUS accountViolationBUS = new();
+        private readonly ViolationBUS violationBUS = new();
 
         public ObservableCollection<ViolationViewModel> Violations { get; set; } = [];
         private Action<string>? searchDebounce;
@@ -82,30 +83,54 @@ namespace SGULibraryManagement.GUI.Contents
             Fetch();
         }
 
-        private async void OnDeleteClick(object sender, object model)
+        private async void AlertNoneSelected()
         {
-            if (model is not ViolationDTO violation) return;
+            SimpleDialog dialog = new()
+            {
+                Content = $"Please select user to delete ?",
+                Title = $"Fail",
+                Width = 400,
+                Height = 200
+            };
+
+            await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
+        }
+
+        private async void OnDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var list = violationTable.SelectedItems;
+
+            if (list.Count == 0)
+            {
+                AlertNoneSelected();
+                return;
+            }
+
+            if (list[0] is not ViolationViewModel) return;
 
             SimpleDialog dialog = new()
             {
-                Content = $"Are you really want to delete {violation.Name} ?",
-                Title = $"Delete {violation.Name}",
+                Content = $"Are you really want to delete selected item ?",
+                Title = $"Delete",
                 Width = 400,
                 Height = 200
             };
 
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo);
-            
-            if (result == SimpleDialogResult.Yes) Deleting(violation);
+            List<ViolationDTO> violations = [.. list.Cast<ViolationViewModel>().Select(v => v.Violation)];
+
+            if (result == SimpleDialogResult.Yes) Deleting(violations);
             else return;
 
             Fetch();
         }
 
-        private async void Deleting(ViolationDTO violation)
+        private async void Deleting(List<ViolationDTO> violations)
         {
-            if (accountViolationBUS.IsRuleViolatedByUser(violation))
+            var list = accountViolationBUS.IsRulesViolatedByUser(violations);
+            if (list.Count != 0)
             {
+                var violation = violationBUS.FindById(list.First().ViolationId);
                 SimpleDialog dialog = new()
                 {
                     Content = $"Cannot delete '{violation.Name}' rule because there are users who violated this rule",
@@ -118,11 +143,11 @@ namespace SGULibraryManagement.GUI.Contents
                 return;
             }
 
-            if (!BUS.Delete(violation))
+            if (!BUS.DeleteMultiple(violations))
             {
                 SimpleDialog dialog = new()
                 {
-                    Content = $"Delete {violation.Name} failed",
+                    Content = $"Delete selected item failed",
                     Title = $"Delete Failed",
                     Width = 400,
                     Height = 200

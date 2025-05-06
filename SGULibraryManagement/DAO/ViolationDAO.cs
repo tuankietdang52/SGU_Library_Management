@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1.Ocsp;
+using SGULibraryManagement.BUS;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
@@ -165,6 +166,37 @@ namespace SGULibraryManagement.DAO
 
                 int rowsAffected = command.ExecuteNonQuery();
                 return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
+        }
+
+        public bool DeleteMultiple(List<long> ids)
+        {
+            string item = "(";
+
+            foreach (var id in ids)
+            {
+                item += $"{id}, ";
+            }
+
+            item = item.Trim()[..^1];
+            item += ");";
+
+            string query = $@"UPDATE {TableName} 
+                              SET is_deleted = 1
+                              WHERE id In {item}";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected >= 0;
             }
             catch (Exception ex)
             {

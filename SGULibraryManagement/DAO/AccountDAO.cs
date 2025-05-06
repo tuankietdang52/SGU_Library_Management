@@ -68,7 +68,7 @@ namespace SGULibraryManagement.DAO
 
         public AccountDTO FindById(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE mssv = @MSSV";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @MSSV AND is_deleted = 0";
 
             try
             {
@@ -238,6 +238,7 @@ namespace SGULibraryManagement.DAO
         public AccountDTO? FindByUsername(long mssv)
         {
             string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv AND is_deleted = 0";
+            Logger.Log(query);
 
             try
             {
@@ -265,11 +266,48 @@ namespace SGULibraryManagement.DAO
             string query = $@"UPDATE {TableName} 
                             SET is_deleted = 1 
                             WHERE mssv = @Mssv";
+
+            Logger.Log(query);
+
             try
             {
                 using MySqlCommand command = new(query, Connection);
                 command.Parameters.AddWithValue("@Mssv", mssv);
                 command.Prepare();
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+            return false;
+        }
+
+        public bool DeleteMultiple(List<long> ids)
+        {
+            string query = $@"UPDATE {TableName} 
+                            SET is_deleted = 1 
+                            WHERE mssv IN (";
+
+            Logger.Log(query);
+
+            foreach (var id in ids)
+            {
+                query += $"{id}, ";
+            }
+
+            query = query.Trim()[..^1];
+            query += ");";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
                 int rowsAffected = command.ExecuteNonQuery();
                 if (rowsAffected > 0)
                 {

@@ -1,10 +1,5 @@
 ﻿using SGULibraryManagement.DAO;
 using SGULibraryManagement.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGULibraryManagement.BUS
 {
@@ -62,6 +57,11 @@ namespace SGULibraryManagement.BUS
             return DAO.Delete(id);
         }
 
+        public bool DeleteMultipleByAccount(List<AccountDTO> accounts)
+        {
+            return DAO.DeleteMultipleByStudentCode([.. accounts.Select(a => a.Mssv)]);
+        }
+
         public bool IsAccountLocked(AccountDTO account, out AccountViolationDTO accountViolation)
         {
             accountViolation = DAO.IsAccountLocked(account.Mssv)!;
@@ -73,9 +73,14 @@ namespace SGULibraryManagement.BUS
             return DAO.IsRuleViolatedByUser(violation.Id);
         }
 
-        public HashSet<long> GetAllLockedUsers()
+        public List<AccountViolationDTO> IsRulesViolatedByUser(List<ViolationDTO> violations)
         {
-            return [.. DAO.GetAllLockedUsers().Select(item => item.UserId)];
+            return DAO.IsRulesViolatedByUser([.. violations.Select(v => v.Id)]);
+        }
+
+        public HashSet<AccountViolationDTO> GetAllLockedUsers()
+        {
+            return [.. DAO.GetAllLockedUsers()];
         }
     }
 }

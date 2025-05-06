@@ -12,14 +12,20 @@ namespace SGULibraryManagement.BUS
     public class RoleBUS
     {
         private readonly RoleDAO RoleDAO = new();
-        public Dictionary<ERole, SolidColorBrush> RoleColors { get; set; } = [];
+
+        private Dictionary<ERole, SolidColorBrush>? roleColors;
+        public Dictionary<ERole, SolidColorBrush> RoleColors
+        {
+            get => roleColors ??= InitializeRoleColors();
+            set => roleColors = value;
+        }
 
         public RoleBUS()
         {
-            InitializeRoleColors();
+
         }
 
-        private void InitializeRoleColors()
+        private Dictionary<ERole, SolidColorBrush> InitializeRoleColors()
         {
             var app = App.Instance!;
             if (app.Resources["ErrorColor"] is not SolidColorBrush adminColor)
@@ -31,7 +37,7 @@ namespace SGULibraryManagement.BUS
                 userColor = Brushes.Blue;
             }
 
-            RoleColors = new() {
+            return new() {
                 { ERole.Admin, adminColor },
                 { ERole.User, userColor }
             };

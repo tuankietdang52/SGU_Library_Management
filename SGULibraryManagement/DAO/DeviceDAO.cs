@@ -32,7 +32,7 @@ namespace SGULibraryManagement.DAO
 
         public DeviceDTO FindById(long id)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id AND is_deleted = 0";
             Logger.Log($"Query: {query}");
 
             try

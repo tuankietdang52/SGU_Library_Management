@@ -237,6 +237,36 @@ namespace SGULibraryManagement.DAO
             return false;
         }
 
+        public bool DeleteMultipleByStudentCode(List<long> studentCodes)
+        {
+            string query = $@"UPDATE {TableName} 
+                              SET is_deleted = 1 
+                              WHERE mssv IN (";
+            Logger.Log($"Query: {query}");
+
+            foreach (var id in studentCodes)
+            {
+                query += $"{id}, ";
+            }
+
+            query = query.Trim()[..^1];
+            query += ");";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected >= 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
+        }
+
         public AccountViolationDTO? IsAccountLocked(long accountId)
         {
             string query = $"SELECT * FROM {TableName} WHERE mssv = @AccountId AND DATE(ban_expired) > CURDATE() ORDER BY ABS(DATEDIFF(create_at, CURDATE())) LIMIT 1";
@@ -317,6 +347,48 @@ namespace SGULibraryManagement.DAO
             }
 
             return false;
+        }
+
+        public List<AccountViolationDTO> IsRulesViolatedByUser(List<long> violationIds)
+        {
+            string item = "(";
+
+            foreach (var id in violationIds)
+            {
+                item += $"{id}, ";
+            }
+
+            item = item.Trim()[..^1];
+            item += ") ";
+
+            string query = $@"SELECT * FROM {TableName} 
+                              WHERE violation_id IN {item}
+                              AND DATE(ban_expired) > CURDATE()
+                              AND is_deleted = 0";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                List<AccountViolationDTO> result = [];
+
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
         }
     }
 
