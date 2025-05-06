@@ -12,9 +12,15 @@ namespace SGULibraryManagement.BUS
             return Dao.GetAll(true);
         }
 
-        public List<StudyAreaDTO> GetAllByDate(DateTime date)
+        /// <summary>
+        /// Get all by date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="fromStart">if true will get from date, else will get to date</param>
+        /// <returns></returns>
+        public List<StudyAreaDTO> GetAllByDate(DateTime date, bool fromStart)
         {
-            return Dao.GetAllByDate(date);
+            return Dao.GetAllByDate(date, fromStart);
         }
 
         public List<StudyAreaDTO> GetAllByDate(DateTime start, DateTime end)

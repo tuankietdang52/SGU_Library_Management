@@ -71,11 +71,6 @@ namespace SGULibraryManagement.GUI.DialogGUI
             await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK, PopupHost);
             
             OnCloseDialog?.Invoke(this);
-            MainView.Instance!.FetchAll([
-                typeof(CirculationView),
-                typeof(ReservationView),
-                typeof(EquipmentsView)
-            ]);
         }
 
         private int GetBorrowQuantity(long deviceId)

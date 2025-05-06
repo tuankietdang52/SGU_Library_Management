@@ -64,6 +64,111 @@ namespace SGULibraryManagement.DAO
             return [];
         }
 
+        public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime date, bool fromStart)
+        {
+            if (fromStart) return GetAllByDateStart(date);
+            else return GetAllByDateEnd(date);
+        }
+
+        private List<BorrowDevicesDTO> GetAllByDateStart(DateTime start)
+        {
+            string query = $@"SELECT * FROM {TableName}
+                              WHERE DATE(date_borrow) >= @Start
+                              AND is_deleted = 0";
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Start", start);
+
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        private List<BorrowDevicesDTO> GetAllByDateEnd(DateTime end)
+        {
+            string query = $@"SELECT * FROM study_area 
+                              WHERE DATE(date_borrow) <= @End
+                              AND is_deleted = 0";
+
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@End", end);
+
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
+        public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime start, DateTime end)
+        {
+            string query = $@"SELECT * FROM {TableName} 
+                              WHERE DATE(date_borrow) >= @Start AND DATE(date_borrow) <= @End
+                              AND is_deleted = 0";
+            try
+            {
+                MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Start", start);
+                command.Parameters.AddWithValue("@End", end);
+
+                command.Prepare();
+
+                List<BorrowDevicesDTO> result = [];
+
+                using MySqlDataReader reader = command.ExecuteReader();
+                Logger.Log($"Query: {query}");
+
+                while (reader.Read())
+                {
+                    result.Add(FetchData(reader));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+            }
+
+            return [];
+        }
+
         public List<BorrowDevicesDTO> FindByAccountMssv(long mssv)
         {
             string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv";
@@ -92,6 +197,7 @@ namespace SGULibraryManagement.DAO
 
             return [];
         }
+
 
         public BorrowDevicesDTO FindByCode(string code)
         {
@@ -223,7 +329,7 @@ namespace SGULibraryManagement.DAO
                               WHERE id = @Id";
 
             Logger.Log($"Query: {query}");
-
+            
             try
             {
                 using MySqlCommand command = new(query, Connection);

@@ -51,6 +51,9 @@
                                 <dashboards:StudyAreaStatistics x:Name="studyAreaContainer">
                                     
                                 </dashboards:StudyAreaStatistics>
+                                <dashboards:DeviceStatistics x:Name="deviceContainer">
+
+                                </dashboards:DeviceStatistics>
                                 <dashboards:UserStatusStatistics x:Name="userStatusContainer">
                                     
                                 </dashboards:UserStatusStatistics>

@@ -5,6 +5,9 @@
     <Compile Update="Components\Dashboards\DashboardQuantityStatistics.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\Dashboards\DeviceStatistics.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Dashboards\StudyAreaStatistics.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

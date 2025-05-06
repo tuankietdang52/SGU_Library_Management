@@ -52,7 +52,7 @@ namespace SGULibraryManagement.Components.Dashboards
                                                   .ToDictionary(pr => pr.Key,
                                                                 pr => new BarItem() { Value = pr.Value });
 
-            top3DeviceChart.Model = StatisticsUtility.CreateHorizontalBarChart("Top 3 most borrowed devices", "Borrow Quantity", top3, "Borrow Quantity", "Device");
+            top3DeviceChart.Model = StatisticsUtility.CreateHorizontalBarChart("Top 3 most borrowed devices", "Borrow Quantity", top3, "Device", "Borrow Quantity");
         }
 
         private void FetchTop3User()
@@ -80,7 +80,7 @@ namespace SGULibraryManagement.Components.Dashboards
                                                  .ToDictionary(pr => pr.Key.ToString(),
                                                                pr => new BarItem() { Value = pr.Value });
 
-            top3UserChart.Model = StatisticsUtility.CreateHorizontalBarChart("Top 3 User", "Borrow Time", top3, "Borrow Time", "Student Code");
+            top3UserChart.Model = StatisticsUtility.CreateHorizontalBarChart("Top 3 User", "Borrow Time", top3, "Student Code", "Borrow Time");
         }
 
     }

@@ -113,6 +113,22 @@ namespace SGULibraryManagement.BUS
                 "Not yet due" => list.Where(item => DateTime.Now.Date < item.DateReturn.Date),
                 _ => []
             };
-        } 
+        }
+
+        /// <summary>
+        /// Get all by date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="fromStart">if true will get from date, else will get to date</param>
+        /// <returns></returns>
+        public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime date, bool fromStart)
+        {
+            return dao.GetAllByBorrowDate(date, fromStart);
+        }
+
+        public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime start, DateTime end)
+        {
+            return dao.GetAllByBorrowDate(start, end);
+        }
     }
 }

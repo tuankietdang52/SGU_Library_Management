@@ -95,59 +95,45 @@
                     <sideMenu:SideMenuItem x:Name="SideMenuHomeItem"
                                            Text="Dashboard"
                                            Glyph="&#xf201;"
+                                           ContentView="{x:Type contents:DashboardView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:DashboardView></contents:DashboardView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
                     <sideMenu:SideMenuItem x:Name="StudyAreaView"
                                            Text="Study Area"
                                            Glyph="&#xf19d;"
+                                           ContentView="{x:Type contents:StudyAreaView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:StudyAreaView></contents:StudyAreaView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
                     <sideMenu:SideMenuItem Text="Circulation"
                                            Glyph="&#xe4bb;"
+                                           ContentView="{x:Type contents:CirculationView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:CirculationView></contents:CirculationView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
                     <sideMenu:SideMenuItem Text="Reservation"
                                            Glyph="&#xf073;"
+                                           ContentView="{x:Type contents:ReservationView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:ReservationView></contents:ReservationView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
                     <sideMenu:SideMenuItem Text="Equipments"
                                            Glyph="&#xf5fd;"
+                                           ContentView="{x:Type contents:EquipmentsView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:EquipmentsView></contents:EquipmentsView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
                     <sideMenu:SideMenuItem Text="Users"
                                            Glyph="&#xf0c0;"
+                                           ContentView="{x:Type contents:UsersView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:UsersView></contents:UsersView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
 
                     <sideMenu:SideMenuItem Text="Violation Rules"
                                            Glyph="&#xf24e;"
+                                           ContentView="{x:Type contents:ViolationView}"
                                            MouseDown="Navigate">
-                        <sideMenu:SideMenuItem.ContentView>
-                            <contents:ViolationView></contents:ViolationView>
-                        </sideMenu:SideMenuItem.ContentView>
                     </sideMenu:SideMenuItem>
                 </StackPanel>
                 <StackPanel Canvas.Bottom="40"

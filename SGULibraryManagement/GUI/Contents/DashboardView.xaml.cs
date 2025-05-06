@@ -31,8 +31,9 @@ namespace SGULibraryManagement.GUI.Contents
             statisticOptions.ItemsSource = new List<string>()
             {
                 "Top 3",
-                "Users Status",
-                "Study Area"
+                "Study Area",
+                "Device",
+                "Users Status"
             };
             statisticOptions.SelectedIndex = 0;
         }
@@ -69,6 +70,7 @@ namespace SGULibraryManagement.GUI.Contents
             top3Container.Visibility = Visibility.Collapsed;
             userStatusContainer.Visibility = Visibility.Collapsed;
             studyAreaContainer.Visibility = Visibility.Collapsed;
+            deviceContainer.Visibility = Visibility.Collapsed;
         }
 
         private void OnOptionChanged(object sender, SelectionChangedEventArgs e)
@@ -89,9 +91,14 @@ namespace SGULibraryManagement.GUI.Contents
                     return;
 
                 case "Study Area":
+                    studyAreaContainer.Fetch();
                     studyAreaContainer.Visibility = Visibility.Visible;
                     return;
 
+                case "Device":
+                    deviceContainer.Fetch();
+                    deviceContainer.Visibility = Visibility.Visible;
+                    return;
                 default:
                     return;
             }

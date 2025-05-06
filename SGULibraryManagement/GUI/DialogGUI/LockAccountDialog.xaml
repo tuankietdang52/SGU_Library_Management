@@ -35,12 +35,22 @@
                        Width="110">
                 Ban Expired Date
             </TextBlock>
+            
             <DatePicker x:Name="banExpiredDatePicker"
                         Width="350"
                         Height="40"
                         Margin="10, 0"
                         SelectedDateChanged="OnDateChanged">
             </DatePicker>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"  Margin="10, 0, 0, 0">
+            <TextBlock FontSize="15"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Width="110">
+                Ban forever ?
+            </TextBlock>
+            <CheckBox x:Name="checkbox" Checked="OnChecked" Unchecked="OnUnChecked"></CheckBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Margin="10, 20, 10, 10">

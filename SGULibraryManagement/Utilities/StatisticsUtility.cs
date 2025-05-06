@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using OxyPlot.Wpf;
 using System.Windows.Media;
 
 namespace SGULibraryManagement.Utilities
@@ -19,7 +20,6 @@ namespace SGULibraryManagement.Utilities
             };
 
             var color = (SolidColorBrush) App.Instance!.Resources["AppThemeSecondary"];
-
             var series = new BarSeries()
             {
                 Title = seriesTitle,
@@ -31,7 +31,7 @@ namespace SGULibraryManagement.Utilities
             var categoryAxis = new CategoryAxis
             {
                 Key = "y",
-                Title = yAxisTitle,
+                Title = xAxisTitle,
                 Position = AxisPosition.Bottom,
                 AxisTitleDistance = 20,
                 TitleFontWeight = FontWeights.Bold,
@@ -49,7 +49,7 @@ namespace SGULibraryManagement.Utilities
             model.Axes.Add(new LinearAxis
             {
                 Key = "x",
-                Title = xAxisTitle,
+                Title = yAxisTitle,
                 Position = AxisPosition.Left,
                 AxisTitleDistance = 20,
                 TitleFontWeight = FontWeights.Bold,
@@ -107,6 +107,74 @@ namespace SGULibraryManagement.Utilities
             if (series.Slices.Count == 1) series.StrokeThickness = 0;
 
             model.Series.Add(series);
+            return model;
+        }
+
+        public static PlotModel CreateDateLineChart(string title,
+                                                    string seriesTitle,
+                                                    IEnumerable<DataPoint> values,
+                                                    string xAxisTitle = "",
+                                                    string yAxisTitle = "",
+                                                    string format = "",
+                                                    DateTime? start = null,
+                                                    DateTime? end = null)
+        {
+            PlotModel model = new() { Title = title };
+
+            var color = (SolidColorBrush)App.Instance!.Resources["AppThemeSecondary"];
+            var series = new LineSeries()
+            {
+                Title = seriesTitle,
+                Color = color.ParseToOxyColor(),
+                CanTrackerInterpolatePoints = false,
+                TrackerFormatString = "{0}\n{1}: {2:dd/MM/yyyy}\n{3}: {4:0.###}",
+                MarkerType = MarkerType.Circle
+            };
+
+            series.Points.AddRange(values);
+            model.Series.Add(series);
+
+            var dateAxis = new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = format,
+                Title = xAxisTitle,
+                AxisTitleDistance = 20,
+                TitleFontWeight = FontWeights.Bold,
+                MajorGridlineStyle = LineStyle.Solid
+            };
+
+            var valueAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = yAxisTitle,
+                IsZoomEnabled = false,
+                AxisTitleDistance = 20,
+                Minimum = 0,
+                AbsoluteMinimum = 0,
+                MajorStep = 1,
+                MinorStep = 1,
+                TitleFontWeight = FontWeights.Bold,
+                MajorGridlineStyle = LineStyle.Solid
+            };
+
+            if (!values.Any())
+            {
+                dateAxis.Minimum = start.HasValue ? DateTimeAxis.ToDouble(start.Value) : DateTimeAxis.ToDouble(DateTime.Today);
+                if (!end.HasValue)
+                {
+                    if (start.HasValue) dateAxis.Maximum = DateTimeAxis.ToDouble(start.Value.AddDays(10));
+                    else dateAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Today.AddDays(10));
+                }
+                else dateAxis.Maximum = DateTimeAxis.ToDouble(end.Value);
+
+                valueAxis.Minimum = 0;
+                valueAxis.Maximum = 10;
+            }
+
+            model.Axes.Add(dateAxis);
+            model.Axes.Add(valueAxis);
+            
             return model;
         }
     }

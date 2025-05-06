@@ -107,28 +107,24 @@ namespace SGULibraryManagement.GUI.Contents
         {
             Dialog dialog = new("Borrow Device", new CirculationDialog(CirculationDialogType.Borrow));
             dialog.ShowDialog();
+
+            Fetch();
         }
 
         private void OnReturn(object sender, RoutedEventArgs e)
         {
             Dialog dialog = new("Return Device", new CirculationDialog(CirculationDialogType.Return));
             dialog.ShowDialog();
+
+            Fetch();
         }
 
         private async void OnLockUser(AccountDTO account)
         {
-            if (await LockingUser(account))
-            {
-                MainView.Instance.FetchAll([typeof(UsersView)]);
-            }
-        }
-
-        private async Task<bool> LockingUser(AccountDTO account)
-        {
             if (accountViolationBUS.IsAccountLocked(account, out var accountViolation))
             {
                 ChangeUserViolation(account, accountViolation);
-                return true;
+                return;
             }
 
             SimpleDialog alreadyLockedDialog = new()
@@ -148,11 +144,7 @@ namespace SGULibraryManagement.GUI.Contents
                 IsDeleted = false
             };
 
-            if (result == SimpleDialogResult.Yes)
-            {
-                return accountViolationBUS.Create(violation) is not null;
-            }
-            else return false;
+            if (result == SimpleDialogResult.Yes) accountViolationBUS.Create(violation);
         }
 
         private async void ChangeUserViolation(AccountDTO account, AccountViolationDTO accountViolation)

@@ -16,6 +16,8 @@ namespace SGULibraryManagement.DTO
         public DateTime BanExpired { get; set; }
         public long Compensation { get; set; }
         public bool IsDeleted { get; set; }
+
+        public bool? IsBanEternal { get; set; }
     }
 
     public enum AccountViolationStatus

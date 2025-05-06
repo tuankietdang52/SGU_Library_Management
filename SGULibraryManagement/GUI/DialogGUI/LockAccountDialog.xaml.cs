@@ -1,9 +1,12 @@
-﻿using SGULibraryManagement.BUS;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
+using SGULibraryManagement.BUS;
 using SGULibraryManagement.Components.Dialogs;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.Contents;
+using SGULibraryManagement.Utilities;
 using System.Windows;
 using System.Windows.Controls;
+using Logger = SGULibraryManagement.Utilities.Logger;
 
 namespace SGULibraryManagement.GUI.DialogGUI
 {
@@ -12,7 +15,7 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private readonly ViolationBUS violationBUS = new();
         private readonly AccountBUS accountBUS = new();
         private readonly AccountViolationBUS accountViolationBUS = new();
-
+        private bool isBanEternal = false;
         public ContentPresenter? PopupHost { get; set; }
 
         public event OnCloseDialogHandler? OnCloseDialog;
@@ -84,6 +87,37 @@ namespace SGULibraryManagement.GUI.DialogGUI
             violationDescription.Text = violation.Description;
         }
 
+
+        private void OnChecked(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                isBanEternal = true;
+                banExpiredDatePicker.IsEnabled = false;
+                banExpiredDatePicker.SelectedDate = null;
+            }
+            else
+            {
+                checkbox.IsChecked = false;
+                isBanEternal = false;
+                banExpiredDatePicker.IsEnabled = true;
+
+            }
+        }
+
+        private void OnUnChecked(object sender, EventArgs e)
+        {
+            isBanEternal = false;
+            banExpiredDatePicker.IsEnabled = true;
+
+        }
+
+
+
+
+
         private async void OnUnlockAccount(object sender, RoutedEventArgs e)
         {
             if (accountViolation is null) return;
@@ -108,31 +142,32 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private async void OnLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await LockingAccount()) return;
-
-            List<Type> fetchTarget =
-            [
-                typeof(UsersView),
-                typeof(ViolationView)
-            ];
-
-            MainView.Instance.FetchAll(fetchTarget);
             OnCloseDialog?.Invoke(this);
         }
 
         private async void OnUpdateLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await SavingLockAccount()) return;
-
-            List<Type> fetchTarget =
-            [
-                typeof(UsersView),
-                typeof(ViolationView)
-            ];
-
-            MainView.Instance.FetchAll(fetchTarget);
             OnCloseDialog?.Invoke(this);
         }
 
+
+        private AccountViolationDTO? GatherDataBanEternal()
+        {
+            if (violationCB.SelectedItem is not ViolationDTO violation) return null;
+            if (statusCB.SelectedItem is not AccountViolationStatus status) return null;
+
+            return new()
+            {
+                UserId = account.Mssv,
+                ViolationId = violation.Id,
+                DateCreate = DateTime.Now,
+                Compensation = long.Parse(compensationTB.Text),
+                Status = status,
+                IsDeleted = false , 
+                IsBanEternal = true
+            };
+        }
         private AccountViolationDTO? GatherData()
         {
             if (violationCB.SelectedItem is not ViolationDTO violation) return null;
@@ -146,13 +181,15 @@ namespace SGULibraryManagement.GUI.DialogGUI
                 BanExpired = banExpiredDatePicker.SelectedDate!.Value,
                 Compensation = long.Parse(compensationTB.Text),
                 Status = status,
-                IsDeleted = false
+                IsDeleted = false,
+                IsBanEternal = false
             };
         }
 
         private async Task<bool> LockingAccount()
         {
-            var model = GatherData();
+            Logger.Log($"is ban eternal : {isBanEternal}");
+            var model = isBanEternal? GatherDataBanEternal() : GatherData();
             if (model is null) return false;
 
             if (accountViolationBUS.Create(model) is not null)
