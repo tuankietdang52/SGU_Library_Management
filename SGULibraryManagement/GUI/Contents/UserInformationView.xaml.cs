@@ -27,13 +27,14 @@ namespace SGULibraryManagement.GUI.Contents
 
             firstNameField.Text = Current.FirstName;
             lastNameField.Text = Current.LastName;
-            //usernameField.Text = Current.Username;
+            usernameField.Text = Current.Mssv.ToString();
             passwordField.Password = Current.Password;
             emailField.Text = Current.LastName;
             phoneField.Text = Current.Phone;
             roleLabel.Text = roleBUS.FindById(Current.IdRole).Name;
             imageChooser.FilePath = Current.Avatar;
 
+            usernameField.IsEnabled = false;
             avatarFilePath = Current.Avatar;
         }
 
