@@ -142,28 +142,12 @@ namespace SGULibraryManagement.GUI.DialogGUI
         private async void OnLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await LockingAccount()) return;
-
-            List<Type> fetchTarget =
-            [
-                typeof(UsersView),
-                typeof(ViolationView)
-            ];
-
-            MainView.Instance.FetchAll(fetchTarget);
             OnCloseDialog?.Invoke(this);
         }
 
         private async void OnUpdateLockAccount(object sender, RoutedEventArgs e)
         {
             if (!await SavingLockAccount()) return;
-
-            List<Type> fetchTarget =
-            [
-                typeof(UsersView),
-                typeof(ViolationView)
-            ];
-
-            MainView.Instance.FetchAll(fetchTarget);
             OnCloseDialog?.Invoke(this);
         }
 

@@ -8,9 +8,7 @@ using SGULibraryManagement.GUI.ViewModels;
 using SGULibraryManagement.Helper;
 using SGULibraryManagement.Utilities;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
-using System.Transactions;
 using System.Windows;
 using System.Windows.Controls;
 using LicenseContext = OfficeOpenXml.LicenseContext;
@@ -124,6 +122,7 @@ namespace SGULibraryManagement.GUI.Contents
         {
             Dialog dialog = new("Add new User", new UserDialog());
             dialog.ShowDialog();
+
             Fetch();
 
         }
@@ -158,7 +157,7 @@ namespace SGULibraryManagement.GUI.Contents
             }
 
             OnAlert("Success", "Import Successfully!");
-            MainView.Instance.FetchAll([typeof(UsersView), typeof(ViolationView)]);
+            Fetch();
         }
 
         private List<AccountDTO> Importing(OpenFileDialog openFileDialog)
@@ -210,6 +209,7 @@ namespace SGULibraryManagement.GUI.Contents
         {
             Dialog dialog = new("View user", new UserDialog(EDialogType.View, (AccountDTO)model));
             dialog.ShowDialog();
+
             Fetch();
         }
 
@@ -217,6 +217,7 @@ namespace SGULibraryManagement.GUI.Contents
         {
             Dialog dialog = new("Update user", new UserDialog(EDialogType.Edit, (AccountDTO)model));
             dialog.ShowDialog();
+
             Fetch();
         }
 

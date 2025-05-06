@@ -34,14 +34,15 @@ namespace SGULibraryManagement.GUI
         {
             SideMenuItem item = (SideMenuItem)sender;
 
-            if (currentContent == item.ContentView) return;
+            var nextContent = (UserControl)Activator.CreateInstance(item.ContentView)!;
+            if (nextContent is null) return;
+
+            if (currentContent == nextContent) return;
 
             OnChangeContent();
             item.IsSelected = true;
 
-            currentContent = item.ContentView;
-            if (currentContent is DashboardView view) view.Fetch();
-
+            currentContent = nextContent;
             content.Navigate(currentContent);
 
             PlayNavigateAnimation();
@@ -54,7 +55,7 @@ namespace SGULibraryManagement.GUI
             foreach (var child in list)
             {
                 if (child is not SideMenuItem sideMenuItem) continue;
-                if (sideMenuItem.ContentView is not TContent) continue;
+                if (sideMenuItem.ContentView != typeof(TContent)) continue;
 
                 sideMenuItem.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
                 {
@@ -87,25 +88,6 @@ namespace SGULibraryManagement.GUI
                 userAvatar.Source = new BitmapImage(new Uri(current.Avatar));
             }
             catch { }
-        }
-
-        /// <summary>
-        /// Refetch all content view in types, if types is null, refetch all
-        /// </summary>
-        /// <param name="types"></param>
-        public void FetchAll(List<Type>? types = null)
-        {
-            var list = sideMenu.Children;
-            List<string> typeNames = types != null ? [.. types.Select(type => type.Name)] : [];
-
-            foreach (var child in list)
-            {
-                if (child is not SideMenuItem sideMenuItem) continue;
-                if (sideMenuItem.ContentView is not IContent content) continue;
-
-                if (typeNames.Count == 0) content.Fetch();
-                else if (typeNames.Contains(content.GetType().Name)) content.Fetch();
-            }
         }
 
         private void OnChangeContent()
