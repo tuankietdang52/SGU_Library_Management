@@ -245,7 +245,9 @@ namespace SGULibraryManagement.DAO
 
         public bool Delete(long id)
         {
-            string query = $"DELETE FROM {TableName} WHERE id = @Id";
+            string query = $@"UPDATE {TableName} 
+                              SET is_deleted = 1 
+                              WHERE mssv = @Id";
             Logger.Log($"Query: {query}");
 
             try
@@ -256,6 +258,36 @@ namespace SGULibraryManagement.DAO
 
                 int rowsAffected = command.ExecuteNonQuery();
                 return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
+        }
+
+        public bool DeleteMultipleByStudentCode(List<long> studentCodes)
+        {
+            string query = $@"UPDATE {TableName} 
+                              SET is_deleted = 1 
+                              WHERE mssv IN (";
+            Logger.Log($"Query: {query}");
+
+            foreach (var id in studentCodes)
+            {
+                query += $"{id}, ";
+            }
+
+            query = query.Trim()[..^1];
+            query += ");";
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected >= 0;
             }
             catch (Exception ex)
             {

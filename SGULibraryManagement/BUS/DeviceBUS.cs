@@ -16,13 +16,18 @@ namespace SGULibraryManagement.BUS
         private readonly BorrowDevicesDAO borrowDeviceDAO = new();
 
         private List<DeviceDTO> devices = [];
-        public Dictionary<long, int> DeviceBorrowQuantity;
+
+        private Dictionary<long, int>? deviceBorrowQuantity;
+        public Dictionary<long, int> DeviceBorrowQuantity
+        {
+            get => deviceBorrowQuantity ??= DAO.GetAllWithBorrowQuantity().ToDictionary(pair => pair.First.Id, pair => pair.Last);
+            set => deviceBorrowQuantity = value;
+        }
 
         public DeviceBUS()
         {
-            DeviceBorrowQuantity = DAO.GetAllWithBorrowQuantity().ToDictionary(pair => pair.First.Id, pair => pair.Last);
-        }
 
+        }
 
         public bool CreateListDevice(List<DeviceDTO> listDevice)
         {

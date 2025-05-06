@@ -99,6 +99,9 @@ namespace SGULibraryManagement.GUI.DialogGUI
 
         private Result Validate()
         {
+            var validateFieldRS = ValidateField();
+            if (!validateFieldRS.Value) return validateFieldRS;
+
             long studentCode = long.Parse(studentCodeTF.Text);
             long deviceId = long.Parse(deviceIdTF.Text);
 

@@ -283,7 +283,7 @@ namespace SGULibraryManagement.DAO
 
         public List<BorrowDevicesDTO> FindByAccountMssv(long mssv)
         {
-            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv";
+            string query = $"SELECT * FROM {TableName} WHERE mssv = @Mssv AND is_deleted = 0";
             try
             {
                 using MySqlCommand command = new(query, Connection);
@@ -313,7 +313,7 @@ namespace SGULibraryManagement.DAO
 
         public BorrowDevicesDTO FindByCode(string code)
         {
-            string query = $"SELECT * FROM {TableName} WHERE code = @Code";
+            string query = $"SELECT * FROM {TableName} WHERE code = @Code AND is_deleted = 0";
 
             try
             {
@@ -337,7 +337,7 @@ namespace SGULibraryManagement.DAO
 
         public List<BorrowDevicesDTO> FindByDeviceId(long deviceId)
         {
-            string query = $"SELECT * FROM {TableName} WHERE device_id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE device_id = @Id AND is_deleted = 0";
             try
             {
                 using MySqlCommand command = new(query, Connection);
@@ -366,7 +366,7 @@ namespace SGULibraryManagement.DAO
 
         public BorrowDevicesDTO FindById(long id)
         {
-            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id AND is_deleted = 0";
             try
             {
                 using MySqlCommand command = new(query, Connection);
@@ -476,6 +476,59 @@ namespace SGULibraryManagement.DAO
 
                 int rowsAffected = command.ExecuteNonQuery();
                 return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
+        }
+
+        public bool DeleteByStudentCode(long studentCode)
+        {
+            string query = $@"UPDATE {TableName} 
+                              SET is_deleted = 1 
+                              WHERE mssv = @Id";
+            Logger.Log($"Query: {query}");
+
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Parameters.AddWithValue("@Id", studentCode);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.StackTrace!);
+                return false;
+            }
+        }
+
+        public bool DeleteMultipleByStudentCode(List<long> studentCodes)
+        {
+            string query = $@"UPDATE {TableName} 
+                              SET is_deleted = 1 
+                              WHERE mssv IN (";
+
+            foreach (var id in studentCodes)
+            {
+                query += $"{id}, ";
+            }
+
+            query = query.Trim()[..^1];
+            query += ");";
+
+            Logger.Log($"Query: {query}");
+            try
+            {
+                using MySqlCommand command = new(query, Connection);
+                command.Prepare();
+
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected >= 0;
             }
             catch (Exception ex)
             {

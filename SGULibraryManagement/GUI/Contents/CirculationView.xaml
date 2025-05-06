@@ -135,6 +135,7 @@
                     </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Setter Property="Height" Value="50"></Setter>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDue}" Value="True">
                                     <Setter Property="Background" Value="{StaticResource LockedBackground}"></Setter>
@@ -165,37 +166,6 @@
                         <DataGridTextColumn Header="Date Borrow" Binding="{Binding DateBorrow, StringFormat=dd/MM/yyyy}" Width="*"/>
                         <DataGridTextColumn Header="Date Return" Binding="{Binding DateReturn, StringFormat=dd/MM/yyyy, Converter={StaticResource DateTimeConverter}}" Width="*"></DataGridTextColumn>
                         <DataGridTextColumn Header="Date Return Expected" Binding="{Binding DateReturnExpected, StringFormat=dd/MM/yyyy}" Width="*"/>
-                        <DataGridTemplateColumn Header="Actions">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <buttons:RoundButton CornerRadius="100"
-                                                         Margin="0, 10"
-                                                         Height="35"
-                                                         Width="35"
-                                                         Content="&#xf023;"
-                                                         Foreground="White"
-                                                         FontFamily="{DynamicResource FontAwesomeSolid}"
-                                                         Command="{Binding LockCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                         CommandParameter="{Binding User}">
-                                        <buttons:RoundButton.Style>
-                                            <Style TargetType="buttons:RoundButton">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsDue}" Value="False">
-                                                        <Setter Property="IsEnabled" Value="False"></Setter>
-                                                        <Setter Property="Background" Value="Gray"></Setter>
-                                                        <Setter Property="HoverBackgroundColor" Value="Gray"></Setter>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsDue}" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource ErrorColor}"></Setter>
-                                                        <Setter Property="HoverBackgroundColor" Value="DarkRed"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </buttons:RoundButton.Style>
-                                    </buttons:RoundButton>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

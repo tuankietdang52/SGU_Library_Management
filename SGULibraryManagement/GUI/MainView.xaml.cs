@@ -37,7 +37,7 @@ namespace SGULibraryManagement.GUI
             var nextContent = (UserControl)Activator.CreateInstance(item.ContentView)!;
             if (nextContent is null) return;
 
-            if (currentContent == nextContent) return;
+            if (currentContent?.GetType() == nextContent.GetType()) return;
 
             OnChangeContent();
             item.IsSelected = true;

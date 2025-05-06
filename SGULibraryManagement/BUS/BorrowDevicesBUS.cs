@@ -90,6 +90,16 @@ namespace SGULibraryManagement.BUS
             return dao.Delete(id);
         }
 
+        public bool DeleteByStudentCode(long studentCode)
+        {
+            return dao.DeleteByStudentCode(studentCode);
+        }
+
+        public bool DeleteMultipleByStudent(List<AccountDTO> students)
+        {
+            return dao.DeleteMultipleByStudentCode([.. students.Select(s => s.Mssv)]);
+        }
+
         public IEnumerable<BorrowDeviceViewModel> FilterByQuery(string query, string searchBy, IEnumerable<BorrowDeviceViewModel>? collections = null)
         {
             var list = collections ?? BorrowDevices;

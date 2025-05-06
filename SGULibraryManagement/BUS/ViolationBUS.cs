@@ -1,12 +1,6 @@
 ﻿using SGULibraryManagement.DAO;
 using SGULibraryManagement.DTO;
 using SGULibraryManagement.GUI.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace SGULibraryManagement.BUS
 {
@@ -66,6 +60,11 @@ namespace SGULibraryManagement.BUS
         public bool Delete(ViolationDTO violation)
         {
             return DAO.Delete(violation.Id);
+        }
+
+        public bool DeleteMultiple(List<ViolationDTO> violations)
+        {
+            return DAO.DeleteMultiple([.. violations.Select(v => v.Id)]);
         }
 
         public List<ViolationViewModel> FilterByQuery(string query, IEnumerable<ViolationViewModel>? collections = null)

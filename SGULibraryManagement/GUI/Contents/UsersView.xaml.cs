@@ -20,6 +20,7 @@ namespace SGULibraryManagement.GUI.Contents
     {
         private readonly AccountBUS userBUS = new();
         private readonly RoleBUS roleBUS = new();
+        private readonly ViolationBUS violationBUS = new();
 
         private Action<UserFilter?>? searchDebounce;
 
@@ -72,6 +73,12 @@ namespace SGULibraryManagement.GUI.Contents
 
             statusComboBox.ItemsSource = new List<string>() { "All", "Locked", "Normal" };
             statusComboBox.SelectedIndex = 0;
+
+            List<ViolationDTO> violations = [new ViolationDTO() { Id = -1, Name = "All" }];
+            violations.AddRange(violationBUS.GetAll());
+
+            vrComboBox.ItemsSource = violations;
+            vrComboBox.SelectedIndex = 0;
         }
 
         private UserFilter? GetFilter()
@@ -79,20 +86,21 @@ namespace SGULibraryManagement.GUI.Contents
             if (searchByComboBox.SelectedItem is not UserQueryOption queryOption) return null;
             if (roleComboBox.SelectedItem is not RoleDTO role) return null;
             if (statusComboBox.SelectedItem is not string status) return null;
+            if (vrComboBox.SelectedItem is not ViolationDTO violation) return null;
 
             return new UserFilter()
             {
                 Query = searchField.Text,
                 UserQueryOption = queryOption,
                 Role = role,
-                Status = status
+                Status = status,
+                Violation = violation
             };
         }
 
         private void OnApplyFilter(UserFilter? filter)
         {
             if (filter is null) return;
-
             var result = userBUS.FilterByQuery(filter.Query, filter.UserQueryOption);
 
             if (filter.Role is not null && filter.Role.Id != -1)
@@ -100,7 +108,7 @@ namespace SGULibraryManagement.GUI.Contents
                 result = userBUS.FilterByRole(filter.Role, result);
             }
 
-            result = userBUS.FilterByLockStatus(filter.Status, result);
+            result = userBUS.FilterByLockStatus(filter.Status, filter.Violation, result);
             RenderTable(result);
         }
 
@@ -114,6 +122,17 @@ namespace SGULibraryManagement.GUI.Contents
 
         private void OnFilterCbChanged(object sender, SelectionChangedEventArgs e)
         {
+            UserFilter? filter = GetFilter();
+            OnApplyFilter(filter);
+        }
+
+        private void OnStatusChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (statusComboBox.SelectedItem is not string status) return;
+
+            if (status == "Locked") vrCBContainer.Visibility = Visibility.Visible;
+            else vrCBContainer.Visibility = Visibility.Collapsed;
+
             UserFilter? filter = GetFilter();
             OnApplyFilter(filter);
         }
@@ -221,26 +240,49 @@ namespace SGULibraryManagement.GUI.Contents
             Fetch();
         }
 
-        private async void OnDeleteClick(object sender, object model)
+        private async void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (model is not AccountDTO user) return;
+            var list = userTable.SelectedItems;
+
+            if (list.Count == 0)
+            {
+                AlertNoneSelected();
+                return;
+            }
+            
+            if (list[0] is not AccountViewModel) return;
 
             SimpleDialog dialog = new()
             {
-                Content = $"Are you really want to delete {user.FullName} ?",
-                Title = $"Delete {user.FullName}",
+                Content = $"Are you really want to delete selected user ?",
+                Title = $"Delete",
                 Width = 400,
                 Height = 200
             };
 
+            List<AccountDTO> accounts = [.. list.Cast<AccountViewModel>().Select(u => u.Account)]; 
+
             var result = await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.YesNo);
             if (result == SimpleDialogResult.Yes)
             {
-                userBUS.DeleteAccount(user);
+                userBUS.DeleteMultipleAccounts(accounts);
             }
             else return;
 
             Fetch();
+        }
+
+        private async void AlertNoneSelected()
+        {
+            SimpleDialog dialog = new()
+            {
+                Content = $"Please select user to delete ?",
+                Title = $"Fail",
+                Width = 400,
+                Height = 200
+            };
+
+            await MainWindow.Instance!.ShowSimpleDialogAsync(dialog, SimpleDialogType.OK);
         }
 
         private class UserFilter
@@ -249,6 +291,7 @@ namespace SGULibraryManagement.GUI.Contents
             public RoleDTO? Role { get; set; }
             public UserQueryOption UserQueryOption { get; set; }
             public string Status { get; set; } = "All";
+            public ViolationDTO? Violation { get; set; }
         }
     }
 }

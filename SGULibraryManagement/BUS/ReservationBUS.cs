@@ -92,6 +92,11 @@ namespace SGULibraryManagement.BUS
             return DAO.Delete(id);
         }
 
+        public bool DeleteMultipleByAccount(List<AccountDTO> accounts)
+        {
+            return DAO.DeleteMultipleByStudentCode([.. accounts.Select(a => a.Mssv)]);
+        }
+
         public IEnumerable<ReservationViewModel> FilterByQuery(string query, string searchBy, IEnumerable<ReservationViewModel>? collections = null)
         {
             var list = collections ?? Reservations;

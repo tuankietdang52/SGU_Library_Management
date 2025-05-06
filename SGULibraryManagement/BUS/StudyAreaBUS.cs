@@ -5,7 +5,7 @@ namespace SGULibraryManagement.BUS
 {
     public class StudyAreaBUS
     {
-        private readonly StudyAreaDAO Dao = new();
+        private readonly DAO.StudyAreaDAO Dao = new();
 
         public List<StudyAreaDTO> GetAll()
         {
@@ -38,6 +38,9 @@ namespace SGULibraryManagement.BUS
             return Dao.FindByMSSV(mssv);
         }
 
-
+        public bool DeleteMultipleByAccount(List<AccountDTO> accounts)
+        {
+            return Dao.DeleteMultipleByStudentCode([.. accounts.Select(a => a.Mssv)]);
+        }
     }
 }
