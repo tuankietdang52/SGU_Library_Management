@@ -158,7 +158,7 @@ namespace SGULibraryManagement.Utilities
                 MajorGridlineStyle = LineStyle.Solid
             };
 
-            if (!values.Any())
+            if (values.Count() <= 1)
             {
                 dateAxis.Minimum = start.HasValue ? DateTimeAxis.ToDouble(start.Value) : DateTimeAxis.ToDouble(DateTime.Today);
                 if (!end.HasValue)
@@ -167,7 +167,10 @@ namespace SGULibraryManagement.Utilities
                     else dateAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Today.AddDays(10));
                 }
                 else dateAxis.Maximum = DateTimeAxis.ToDouble(end.Value);
+            }
 
+            if (!values.Any())
+            {
                 valueAxis.Minimum = 0;
                 valueAxis.Maximum = 10;
             }

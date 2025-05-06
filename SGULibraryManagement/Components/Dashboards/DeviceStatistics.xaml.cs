@@ -50,7 +50,9 @@ namespace SGULibraryManagement.Components.Dashboards
                                                                                 dataPoints,
                                                                                 "Date",
                                                                                 "Number of devices",
-                                                                                "dd/MM/yyyy");
+                                                                                "dd/MM/yyyy",
+                                                                                startPicker.SelectedDate,
+                                                                                endPicker.SelectedDate);
         }
 
         private List<DataPoint> GetBorrowDataPoints(IEnumerable<BorrowDevicesDTO> list)

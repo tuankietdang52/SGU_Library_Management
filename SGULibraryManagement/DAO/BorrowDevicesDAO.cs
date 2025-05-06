@@ -73,7 +73,7 @@ namespace SGULibraryManagement.DAO
         private List<BorrowDevicesDTO> GetAllByDateStart(DateTime start)
         {
             string query = $@"SELECT * FROM {TableName}
-                              WHERE DATE(date_borrow) >= @Start
+                              WHERE DATE(date_borrow) >= DATE(@Start)
                               AND is_deleted = 0";
 
             try
@@ -106,7 +106,7 @@ namespace SGULibraryManagement.DAO
         private List<BorrowDevicesDTO> GetAllByDateEnd(DateTime end)
         {
             string query = $@"SELECT * FROM study_area 
-                              WHERE DATE(date_borrow) <= @End
+                              WHERE DATE(date_borrow) <= DATE(@End)
                               AND is_deleted = 0";
 
             try
@@ -139,7 +139,7 @@ namespace SGULibraryManagement.DAO
         public List<BorrowDevicesDTO> GetAllByBorrowDate(DateTime start, DateTime end)
         {
             string query = $@"SELECT * FROM {TableName} 
-                              WHERE DATE(date_borrow) >= @Start AND DATE(date_borrow) <= @End
+                              WHERE DATE(date_borrow) >= DATE(@Start) AND DATE(date_borrow) <= DATE(@End)
                               AND is_deleted = 0";
             try
             {

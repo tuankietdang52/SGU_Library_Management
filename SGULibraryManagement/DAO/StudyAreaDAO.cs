@@ -98,7 +98,7 @@ namespace SGULibraryManagement.DAO
         private List<StudyAreaDTO> GetAllByDateStart(DateTime start)
         {
             string query = $@"SELECT * FROM {TableName} 
-                              WHERE DATE(check_in_date) >= @Start
+                              WHERE DATE(check_in_date) >= DATE(@Start)
                               AND is_deleted = 0";
 
             try
@@ -131,7 +131,7 @@ namespace SGULibraryManagement.DAO
         private List<StudyAreaDTO> GetAllByDateEnd(DateTime end)
         {
             string query = $@"SELECT * FROM {TableName} 
-                              WHERE DATE(check_in_date) <= @End
+                              WHERE DATE(check_in_date) <= DATE(@End)
                               AND is_deleted = 0";
 
             try
@@ -164,7 +164,7 @@ namespace SGULibraryManagement.DAO
         public List<StudyAreaDTO> GetAllByDate(DateTime start, DateTime end)
         {
             string query = $@"SELECT * FROM {TableName} 
-                              WHERE DATE(check_in_date) >= @Start AND DATE(check_in_date) <= @End
+                              WHERE DATE(check_in_date) >= DATE(@Start) AND DATE(check_in_date) <= DATE(@End)
                               AND is_deleted = 0";
             try
             {
