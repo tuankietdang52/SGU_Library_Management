@@ -38,6 +38,7 @@ namespace SGULibraryManagement.GUI.Contents
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             OnSearch();
+            SearchInput.Text = "";
         }
 
         private long ValidationField(string query)
