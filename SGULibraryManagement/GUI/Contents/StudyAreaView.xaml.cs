@@ -21,9 +21,6 @@ using ZstdSharp.Unsafe;
 
 namespace SGULibraryManagement.GUI.Contents
 {
-    /// <summary>
-    /// Interaction logic for StudyArea.xaml
-    /// </summary>
     public partial class StudyAreaView : UserControl
     {
         public StudyAreaView()
@@ -38,6 +35,7 @@ namespace SGULibraryManagement.GUI.Contents
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             OnSearch();
+            SearchInput.Text = "";
         }
 
         private long ValidationField(string query)
@@ -108,6 +106,5 @@ namespace SGULibraryManagement.GUI.Contents
             Falculity.Text = user.Faculty.ToString();
             Major.Text = user.Major.ToString();
         }
-
     }
 }
