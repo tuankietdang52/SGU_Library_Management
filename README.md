@@ -33,6 +33,11 @@
 ![image](https://github.com/user-attachments/assets/97fb5911-c35f-477f-9be3-4b8b72f0a694)
 ![image](https://github.com/user-attachments/assets/48fcfd75-43b1-4b63-9b78-7f5cf057598e)
 
+# More
+Frontend Web (Simple Web with HTML, CSS, JS): https://github.com/MPIO1002/SGU-Library-FE
+
+Backend Web (ASP.NET): https://github.com/tuankietdang52/SGU_Library_BE
+
 # Contributors
 <a href="https://github.com/tuankietdang52/SGU_Library_Management/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=tuankietdang52/SGU_Library_Management" />
