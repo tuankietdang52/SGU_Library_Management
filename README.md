@@ -4,7 +4,7 @@
     <img src="https://img.shields.io/badge/language-c%23-blue" />
     <img src="https://img.shields.io/badge/framework-wpf-blue?logo=.net" />
     <img src="https://img.shields.io/badge/database-mysql-purple?logo=mysql" />
-    <img src="https://img.shields.io/badge/theme-lepoco_wpfUI-4650E3" />
+    <a href="https://github.com/lepoco/wpfui"><img src="https://img.shields.io/badge/theme-lepoco_wpfUI-4650E3" /></a>
   </div>
   <p>A simple library management system for school project, written in C#</p>
 </div>
