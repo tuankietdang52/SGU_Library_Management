@@ -22,7 +22,7 @@
 
 # Getting Started
 1. After clone or install project, make sure all dependencies are installed
-2. Get the sql script (MYSQL) in initialize database in here
+2. Get the sql script (MYSQL) in initialize database in <a href="https://github.com/tuankietdang52/SGU_Library_Management/tree/main/SGULibraryManagement/Resources/Database">here</a>
 3. Create an .env file in Resources folder and write all databasae information inside, ex:
   
  ![image](https://github.com/user-attachments/assets/4fe06dfe-6c22-45ee-b28a-7e29342f3e64)
@@ -32,3 +32,8 @@
 # Screenshots
 ![image](https://github.com/user-attachments/assets/97fb5911-c35f-477f-9be3-4b8b72f0a694)
 ![image](https://github.com/user-attachments/assets/48fcfd75-43b1-4b63-9b78-7f5cf057598e)
+
+# Contributors
+<a href="https://github.com/tuankietdang52/SGU_Library_Management/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tuankietdang52/SGU_Library_Management" />
+</a>
